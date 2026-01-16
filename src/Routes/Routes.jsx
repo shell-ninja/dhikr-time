@@ -3,6 +3,7 @@ import Main from "./Main";
 import Home from "../Components/Home/Home";
 import AsmaUlHusna from "../Components/AsmaUlHusna/AsmaUlHusna";
 import Dua from "../Components/Dua/Dua";
+import Form from "../Components/Form/Form";
 
 export const routes = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const routes = createBrowserRouter([
       {
         path: "/asma-ul-husna",
         Component: AsmaUlHusna,
+      },
+      {
+        path: "/form",
+        Component: Form,
       },
     ],
   },

@@ -1,3 +1,5 @@
+import Form from "../Form/Form";
+
 const Home = () => {
   return (
     <div>
@@ -16,7 +18,7 @@ const Home = () => {
         <div className="absolute inset-0"></div>
 
         {/* Ayat content */}
-        <div className="absolute top-[200px] md:top-[250px] z-10 flex flex-col items-center justify-center text-center px-6">
+        <div className="absolute md:top-[250px] z-10 flex flex-col items-center justify-center text-center px-6">
           <p className="text-3xl md:text-[48px] lg:text-6xl font-amiri font-bold tracking-widest leading-relaxed text-[#105A59]">
             يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱسْتَعِينُوا۟ بِٱلصَّبْرِ
             وَٱلصَّلَوٰةِ ۚ إِنَّ ٱللَّهَ مَعَ ٱلصَّـٰبِرِينَ
@@ -31,6 +33,9 @@ const Home = () => {
             Al-Baqarah 2:153
           </p>
         </div>
+      </div>
+      <div className="z-[100]">
+        <Form />
       </div>
     </div>
   );
