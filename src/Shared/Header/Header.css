@@ -1,0 +1,13 @@
+/* Custom hover effect for nav links */
+.hover-effect {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem; /* same as Tailwind rounded */
+  transition: all 0.3s ease-in-out;
+}
+
+/* On hover */
+.hover-effect:hover {
+  background-color: #e4f6d9; /* dark teal */
+  transform: scale(1.05); /* slightly enlarge */
+  color: #105a59; /* optional text color change */
+}
