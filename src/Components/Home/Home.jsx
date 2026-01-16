@@ -1,7 +1,12 @@
 const Home = () => {
   return (
-    <div>
-      <h1>Welcome to my Home</h1>
+    <div
+      className="min-h-screen bg-no-repeat bg-cover bg-center md:hidden"
+      style={{ backgroundImage: `url("../../../public/images/BG.png")` }}
+    >
+      {/* image for small device*/}
+      {/* image for mid device*/}
+      {/* image for large device*/}
     </div>
   );
 };
