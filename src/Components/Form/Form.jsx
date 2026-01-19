@@ -10,6 +10,27 @@ const Form = () => {
   const [selectedMethod, setSelectedMethod] = useState(methods[0]);
   const [methodOpen, setMethodOpen] = useState(false);
 
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  // const [school, setSchool] = useState("");
+  // const [method, setMethod] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const schoolNum = selectedSchool === "Hanafi" ? 1 : 2;
+
+    const formData = {
+      City: city,
+      Country: country,
+      School: selectedSchool,
+      Number: schoolNum,
+      Method: selectedMethod,
+    };
+
+    console.log(formData);
+  };
+
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-5xl text-[#105A59] font-amiri font-bold">
@@ -18,16 +39,23 @@ const Form = () => {
       <div className="h-2 w-[75%] md:w-[40%] bg-[#105A59] rounded-2xl mt-2 mb-8"></div>
 
       {/* Mobile Device */}
-      <form className="flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[70%] px-[50px] py-[50px] rounded-[20px] md:hidden">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[70%] px-[50px] py-[50px] rounded-[20px] md:hidden"
+      >
         <input
           className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none"
           type="text"
           placeholder="City"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
         />
         <input
           className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none"
           type="text"
           placeholder="Country"
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
         />
 
         {/* School Dropdown */}
@@ -100,17 +128,24 @@ const Form = () => {
       </form>
 
       {/* Tab Device */}
-      <form className="hidden md:flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[800px] px-[50px] py-[50px] rounded-[20px]">
+      <form
+        onSubmit={handleSubmit}
+        className="hidden md:flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[800px] px-[50px] py-[50px] rounded-[20px]"
+      >
         <div className="flex justify-center items-center gap-5">
           <input
             className="h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none"
             type="text"
             placeholder="City"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
           />
           <input
             className="h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none"
             type="text"
             placeholder="Country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
           />
         </div>
 
