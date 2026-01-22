@@ -3,7 +3,8 @@ import Main from "./Main";
 import Home from "../Components/Home/Home";
 import AsmaUlHusna from "../Components/AsmaUlHusna/AsmaUlHusna";
 import Dua from "../Components/Dua/Dua";
-import Form from "../Components/Form/Form";
+import Times from "../Components/Times/Times";
+import Methods from "../Components/Form/Methods";
 
 export const routes = createBrowserRouter([
   {
@@ -23,8 +24,12 @@ export const routes = createBrowserRouter([
         Component: AsmaUlHusna,
       },
       {
-        path: "/form",
-        Component: Form,
+        path: "/methods",
+        Component: Methods,
+      },
+      {
+        path: "/times",
+        Component: Times,
       },
     ],
   },

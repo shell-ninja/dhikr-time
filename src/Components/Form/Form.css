@@ -1,0 +1,25 @@
+.form-style {
+  box-shadow: 10px 10px 4px #105a59;
+}
+
+.input-style {
+  transition: 0.3s ease-in-out;
+}
+
+.input-style:focus {
+  box-shadow: 10px 10px 4px #105a59;
+}
+
+/* Custom scrollbar */
+.dropdown-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-scroll::-webkit-scrollbar-thumb {
+  background-color: #0d3b35;
+  border-radius: 10px;
+}
+
+.dropdown-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}

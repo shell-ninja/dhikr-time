@@ -1,7 +1,32 @@
 import { useState } from "react";
+import "./Form.css";
+import { Link } from "react-router-dom";
 
 const schools = ["Hanafi", "Shafie"];
-const methods = ["1", "2", "3"];
+const methods = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+  "15",
+  "16",
+  "17",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
+  "23",
+];
 
 const Form = () => {
   const [selectedSchool, setSelectedSchool] = useState(schools[0]);
@@ -41,17 +66,17 @@ const Form = () => {
       {/* Mobile Device */}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[70%] px-[50px] py-[50px] rounded-[20px] md:hidden"
+        className="flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[70%] px-[50px] py-[50px] rounded-[20px] md:hidden form-style"
       >
         <input
-          className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none"
+          className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
           type="text"
           placeholder="City"
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
         <input
-          className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none"
+          className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
           type="text"
           placeholder="Country"
           value={country}
@@ -104,7 +129,7 @@ const Form = () => {
           </div>
 
           {methodOpen && (
-            <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] overflow-hidden z-50 shadow-lg">
+            <div className="absolute top-[68px] left-0 w-full bg-[#105A59] max-h-[180px] overflow-y-auto dropdown-scroll rounded-[15px] z-50 shadow-lg">
               {methods.map((method) => (
                 <div
                   key={method}
@@ -119,6 +144,13 @@ const Form = () => {
               ))}
             </div>
           )}
+
+          <p className="text-[#105A59] font-medium font-amiri">
+            Learne more about
+            <span className="font-bold">
+              <Link to="/methods"> Methods</Link>
+            </span>
+          </p>
         </div>
 
         <input
@@ -130,18 +162,18 @@ const Form = () => {
       {/* Tab Device */}
       <form
         onSubmit={handleSubmit}
-        className="hidden md:flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[800px] px-[50px] py-[50px] rounded-[20px]"
+        className="hidden md:flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[800px] px-[50px] py-[50px] rounded-[20px] form-style"
       >
         <div className="flex justify-center items-center gap-5">
           <input
-            className="h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none"
+            className="h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
             type="text"
             placeholder="City"
             value={city}
             onChange={(e) => setCity(e.target.value)}
           />
           <input
-            className="h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none"
+            className="h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
             type="text"
             placeholder="Country"
             value={country}
@@ -196,7 +228,7 @@ const Form = () => {
             </div>
 
             {methodOpen && (
-              <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] overflow-hidden z-50 shadow-lg">
+              <div className="absolute top-[68px] left-0 w-full max-h-[180px] overflow-y-auto dropdown-scroll bg-[#105A59] rounded-[15px] z-50 shadow-lg">
                 {methods.map((method) => (
                   <div
                     key={method}
@@ -211,8 +243,16 @@ const Form = () => {
                 ))}
               </div>
             )}
+
+            <p className="text-[#105A59] font-medium font-amiri">
+              Learne more about
+              <span className="font-bold">
+                <Link to="/methods"> Methods</Link>
+              </span>
+            </p>
           </div>
         </div>
+
         <input
           className="h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl font-amiri font-bold mt-6 cursor-pointer"
           type="submit"
