@@ -83,7 +83,7 @@ const Form = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center mb-20">
       <h1 className="text-5xl text-[#105A59] font-amiri font-bold">
         Prayer Times
       </h1>
@@ -180,7 +180,7 @@ const Form = () => {
         </div>
 
         <input
-          className="h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl font-amiri font-bold mt-6 cursor-pointer"
+          className="h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl font-amiri font-bold mt-6 cursor-pointer btn-submit"
           type="submit"
         />
       </form>
@@ -280,7 +280,7 @@ const Form = () => {
         </div>
 
         <input
-          className="h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl font-amiri font-bold mt-6 cursor-pointer"
+          className="h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl font-amiri font-bold mt-6 cursor-pointer btn-submit"
           type="submit"
         />
       </form>
