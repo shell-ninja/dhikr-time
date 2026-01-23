@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Form.css";
 import { Link } from "react-router-dom";
+import Times from "../Times/Times";
 
 const schools = ["Hanafi", "Shafie"];
 const methods = [
@@ -26,7 +27,7 @@ const methods = [
   "21",
   "22",
   "23",
-];
+].map(Number);
 
 const Form = () => {
   const [selectedSchool, setSelectedSchool] = useState(schools[0]);
@@ -37,23 +38,48 @@ const Form = () => {
 
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-  // const [school, setSchool] = useState("");
-  // const [method, setMethod] = useState("");
 
-  const handleSubmit = (e) => {
+  const [formData, setFormData] = useState(null);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const schoolNum = selectedSchool === "Hanafi" ? 1 : 2;
 
-    const formData = {
-      City: city,
-      Country: country,
-      School: selectedSchool,
-      Number: schoolNum,
-      Method: selectedMethod,
-    };
+    const URL = "https://nominatim.openstreetmap.org/search";
+    const QUERY = `?city=${city}&country=${country}&format=json&limit=1`;
 
-    console.log(formData);
+    try {
+      const res = await fetch(URL + QUERY, {
+        headers: {
+          "User-Agent": "your-app-name", // required by Nominatim
+        },
+      });
+
+      const data = await res.json();
+
+      if (!data.length) {
+        alert("Location not found");
+        return;
+      }
+
+      const lat = data[0].lat;
+      const lon = data[0].lon;
+
+      setFormData({
+        City: city,
+        Country: country,
+        School: selectedSchool,
+        Number: schoolNum,
+        Method: selectedMethod,
+        Latitude: lat,
+        Longitude: lon,
+      });
+
+      // 👉 use these in your prayer API
+    } catch (err) {
+      console.error("Geocoding error:", err);
+    }
   };
 
   return (
@@ -258,6 +284,7 @@ const Form = () => {
           type="submit"
         />
       </form>
+      {formData ? <Times formData={formData} /> : <p></p>}
     </div>
   );
 };

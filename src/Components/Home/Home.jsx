@@ -1,5 +1,4 @@
 import Form from "../Form/Form";
-import Times from "../Times/Times";
 
 const Home = () => {
   return (
@@ -39,7 +38,6 @@ const Home = () => {
         {/* Other components */}
 
         <Form />
-        <Times />
       </div>
     </div>
   );
