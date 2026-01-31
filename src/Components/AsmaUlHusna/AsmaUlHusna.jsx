@@ -36,29 +36,31 @@ const AsmaUlHusna = () => {
         <div className="h-2 w-[75%] md:w-[40%] bg-[#105A59] rounded-2xl mt-2 mb-8"></div>
       </div>
 
-      <Card cardData={paginatedData} />
+      <div className="px-10">
+        <Card cardData={paginatedData} />
 
-      {/* Pagination */}
-      <div className="flex justify-center gap-3 my-8">
-        <button
-          onClick={() => setPage((p) => Math.max(p - 1, 1))}
-          disabled={page === 1}
-          className="px-4 py-2 border-2 rounded-xl disabled:opacity-40 text-[#105A59] cursor-pointer border-[#105A59]"
-        >
-          Prev
-        </button>
+        {/* Pagination */}
+        <div className="flex justify-center gap-3 my-8">
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            disabled={page === 1}
+            className="px-4 py-2 border-2 rounded-xl disabled:opacity-40 text-[#105A59] cursor-pointer border-[#105A59]"
+          >
+            Prev
+          </button>
 
-        <span className="px-3 py-2 font-semibold text-[#105A59]">
-          {page} / {totalPages}
-        </span>
+          <span className="px-3 py-2 font-semibold text-[#105A59]">
+            {page} / {totalPages}
+          </span>
 
-        <button
-          onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-          disabled={page === totalPages}
-          className="px-4 py-2 rounded-xl disabled:opacity-40 text-[#105A59] cursor-pointer border-[#105A59] border-2"
-        >
-          Next
-        </button>
+          <button
+            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+            disabled={page === totalPages}
+            className="px-4 py-2 rounded-xl disabled:opacity-40 text-[#105A59] cursor-pointer border-[#105A59] border-2"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );
