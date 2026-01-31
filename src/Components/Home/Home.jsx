@@ -19,9 +19,9 @@ const Home = () => {
 
         {/* Ayat content */}
         <div className="absolute md:top-[250px] z-10 flex flex-col items-center justify-center text-center px-6">
-          <p className="text-3xl md:text-[48px] lg:text-6xl font-amiri font-bold tracking-widest leading-relaxed text-[#105A59]">
-            يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱسْتَعِينُوا۟ بِٱلصَّبْرِ
-            وَٱلصَّلَوٰةِ ۚ إِنَّ ٱللَّهَ مَعَ ٱلصَّـٰبِرِينَ
+          <p className="text-5xl md:text-6xl lg:text-8xl font-lateef leading-relaxed text-[#105A59]">
+            یٰۤاَیُّهَا الَّذِیۡنَ اٰمَنُوا اسۡتَعِیۡنُوۡا بِالصَّبۡرِ وَ
+            الصَّلٰوۃِ ؕ اِنَّ اللّٰهَ مَعَ الصّٰبِرِیۡنَ
           </p>
 
           <p className="mt-6 text-3xl md:text-[48px] lg:text-6xl font-amiri font-bold text-[#105A59]">

@@ -2,8 +2,8 @@ import "./Loader.css";
 
 const Loader = () => {
   return (
-    <div>
-      <div className="mt-20 loader"></div>
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="my-20 loader"></div>
     </div>
   );
 };

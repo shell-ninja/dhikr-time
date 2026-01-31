@@ -9,7 +9,7 @@ const ITEMS_PER_PAGE = 9;
 
 const AsmaUlHusna = () => {
   const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
-  const LANGUAGE = "bn";
+  const LANGUAGE = "en";
 
   const url = `https://islamicapi.com/api/v1/asma-ul-husna/?language=${LANGUAGE}&api_key=${API_KEY}`;
 
@@ -29,7 +29,12 @@ const AsmaUlHusna = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-center mb-6">Asma Ul Husna</h1>
+      <div className="flex flex-col justify-center items-center">
+        <h1 className="text-5xl text-[#105A59] font-amiri font-bold mt-20">
+          Asma Ul Husna
+        </h1>
+        <div className="h-2 w-[75%] md:w-[40%] bg-[#105A59] rounded-2xl mt-2 mb-8"></div>
+      </div>
 
       <Card cardData={paginatedData} />
 
