@@ -1,12 +1,24 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi"; // Hamburger & Close icons
 import "./Header.css";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  const logoRef = useRef();
+
+  useGSAP(() => {
+    gsap.from(logoRef.current, {
+      duration: 1,
+      ease: "bounce.out",
+      y: "-120%",
+    });
+  });
 
   return (
     <>
@@ -50,7 +62,10 @@ const Header = () => {
 
       {/*---------------*/}
       {/* Others */}
-      <div className="bg-[#105A59] py-7 hidden md:flex justify-around font-amiri font-bold text-3xl text-[#E4F6D9] tracking-wide sticky top-0 z-[100]">
+      <div
+        ref={logoRef}
+        className="bg-[#105A59] py-7 hidden md:flex justify-around font-amiri font-bold text-3xl text-[#E4F6D9] tracking-wide sticky top-0 z-[100]"
+      >
         {/* Logo */}
         <div>
           <Link to="/">Dhikr Time</Link>
