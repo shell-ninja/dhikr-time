@@ -1,53 +1,42 @@
 <h1 align="center">Dhikr Time</h1>
 
 <p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/prayer-time?color=56BEB8">
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/prayer-time?color=56BEB8">
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/prayer-time?color=56BEB8">
-  <img alt="License" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/prayer-time?color=56BEB8">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/shell-ninja/dhikr-time?color=56BEB8">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/shell-ninja/dhikr-time?color=56BEB8">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/shell-ninja/dhikr-time?color=56BEB8">
+  <img alt="License" src="https://img.shields.io/github/license/shell-ninja/dhikr-time?color=56BEB8">
 </p>
 
 <p align="center">
   <a href="#dart-about">About</a> &#xa0; | &#xa0; 
   <a href="#sparkles-features">Features</a> &#xa0; | &#xa0;
-  <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
-  <a href="#memo-license">License</a> &#xa0; | &#xa0;
-  <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">Author</a>
+  <a href="#memo-license">License</a> &#xa0;
 </p>
 
 <br>
 
-## :dart: About ##
+## About ##
 
-Describe your project
+A project to find the prayer times (salat times) according to a specific location. 
 
-## :sparkles: Features ##
+## Features ##
 
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
+- Search prayer times for different locations
+- Read authentic Dua and Dhikr (under development)
+- Read Asma Ul Husna (English / Bangla)
 
-## :rocket: Technologies ##
+## Requirements ##
 
-The following tools were used in this project:
+Before starting, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed. <br>
+Also you need an API key from [IslamicAPi](https://islamicapi.com/). Create an account here and get the API key.
 
-- [Expo](https://expo.io/)
-- [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-
-## :white_check_mark: Requirements ##
-
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
-
-## :checkered_flag: Starting ##
+## Starting ##
 
 ```bash
 # Clone this project
-$ git clone https://github.com/shell-ninja/dhikr-time
+$ git clone --depth=1 https://github.com/shell-ninja/dhikr-time
 
 # Access
 $ cd dhikr-time
@@ -55,18 +44,19 @@ $ cd dhikr-time
 # Install dependencies
 $ npm i
 
+# Create a .env file at the root of the project and add:
+VITE_SECRET_API_KEY="api_key_from_islamicAPI"
+
 # Run the project
 $ npm run dev
 
-# The server will initialize in the <http://localhost:3000>
+# The server will initialize in the http://localhost:5173/
 ```
 
-## :memo: License ##
+## License ##
 
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE) file.
 
-
-Made with :heart: by <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">{{YOUR_NAME}}</a>
 
 &#xa0;
 
