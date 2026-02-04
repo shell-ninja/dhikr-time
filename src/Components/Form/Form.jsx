@@ -5,6 +5,7 @@ import Times from "../Times/Times";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Loader from "../../Hooks/Loader";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,6 +46,8 @@ const Form = () => {
   const [country, setCountry] = useState("");
 
   const [formData, setFormData] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
 
   // Refs for mobile view
   const titleRef = useRef(null);
@@ -246,6 +249,8 @@ const Form = () => {
     const URL = "https://nominatim.openstreetmap.org/search";
     const QUERY = `?city=${city}&country=${country}&format=json&limit=1`;
 
+    setIsLoading(true);
+
     try {
       const res = await fetch(URL + QUERY, {
         headers: {
@@ -257,6 +262,7 @@ const Form = () => {
 
       if (!data.length) {
         alert("Location not found");
+        setIsLoading(false);
         return;
       }
 
@@ -276,6 +282,9 @@ const Form = () => {
       // 👉 use these in your prayer API
     } catch (err) {
       console.error("Geocoding error:", err);
+      alert("An error occured. Please reload the site and try again");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -506,7 +515,13 @@ const Form = () => {
         />
       </form>
       <div className="px-10">
-        {formData ? <Times formData={formData} /> : <p></p>}
+        {isLoading ? (
+          <Loader />
+        ) : formData ? (
+          <Times formData={formData} />
+        ) : (
+          <p></p>
+        )}
       </div>
     </div>
   );

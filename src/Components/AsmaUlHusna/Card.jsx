@@ -37,12 +37,12 @@ const Card = ({ cardData }) => {
         <div
           key={name}
           ref={(el) => (cardsRef.current[index] = el)}
-          className="w-full max-w-md flex flex-col justify-center items-center border-2 px-10 py-10 rounded-2xl form-style"
+          className="w-full max-w-md flex flex-col justify-center items-center border-2 px-10 py-10 rounded-2xl text-center md:text-start form-style"
         >
           <h2 className="font-normal text-6xl mb-3 font-lateef tracking-wider">
             {info.name}
           </h2>
-          <h2 className="font-bold text-4xl mb-3 tracking-wider font-amiri">
+          <h2 className="font-bold text-3xl md:text-4xl mb-3 tracking-wider font-amiri">
             {info.transliteration}
           </h2>
           <p className="font-normal text-3xl my-2 font-amiri">
