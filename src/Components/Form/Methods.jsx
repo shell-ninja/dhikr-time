@@ -1,5 +1,8 @@
+import PageTransition from "../../Hooks/PageTransition";
+
 const Methods = () => {
   return (
+    <PageTransition>
     <div className="flex flex-col justify-center items-center min-h-screen font-amiri text-[#105A59] px-5 md:px-20 text-start">
       <h1 className="text-5xl font-bold font-amiri text-[#105A59] mt-30">
         Methods
@@ -40,6 +43,7 @@ const Methods = () => {
         23 - Jordan
       </p>
     </div>
+    </PageTransition>
   );
 };
 

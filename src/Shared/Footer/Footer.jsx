@@ -3,7 +3,8 @@ import "./Footer.css";
 
 const Footer = () => {
   return (
-    <div className="flex justify-between items-center min-h-44 px-[50px] md:px-[100px] py-10 bg-[#105A59]">
+    <div className="bg-[#105A59]">
+    <div className="flex justify-between items-center min-h-44 px-[50px] md:px-[100px] py-10">
       <div className="font-amiri font-normal text-xl md:text-2xl text-[#E9F7E6]">
         <h1>A Sadaqah E Jariyah</h1>
         <p>By,</p>
@@ -27,6 +28,15 @@ const Footer = () => {
           <FaLinkedin className="link-style" />
         </a>
       </div>
+    </div>
+    <div className="text-[#E9F7E6] font-amiri text-xl pb-4 flex flex-col justify-center items-center">
+      <p className="tracking-wider">Prayer Times and Asma Ul Husna API</p>
+      <p>
+        <a
+        className="font-bold tracking-wide"
+         href="https://islamicapi.com/">IslamicAPI</a>
+      </p>
+    </div>
     </div>
   );
 };

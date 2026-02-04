@@ -1,11 +1,42 @@
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../Form/Form.css";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Card = ({ cardData }) => {
+  const cardsRef = useRef([]);
+
+  useGSAP(() => {
+    cardsRef.current.forEach((card, index) => {
+      if (card) {
+        // Determine animation direction based on position
+        const direction = index % 3 === 0 ? -100 : index % 3 === 1 ? 0 : 100;
+
+        gsap.from(card, {
+          x: direction,
+          y: direction === 0 ? 100 : 0,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        });
+      }
+    });
+  }, [cardData]);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center font-bold text-[#105A59]">
-      {cardData.map(([name, info]) => (
+      {cardData.map(([name, info], index) => (
         <div
           key={name}
+          ref={(el) => (cardsRef.current[index] = el)}
           className="w-full max-w-md flex flex-col justify-center items-center border-2 px-10 py-10 rounded-2xl form-style"
         >
           <h2 className="font-normal text-6xl mb-3 font-lateef tracking-wider">

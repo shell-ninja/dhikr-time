@@ -11,3 +11,23 @@
   transform: scale(1.05); /* slightly enlarge */
   color: #105a59; /* optional text color change */
 }
+
+.nav-link {
+  padding-bottom: 4px;
+}
+
+.nav-underline {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background-color: #e4f6d9;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover .nav-underline {
+  transform: scaleX(1);
+}
