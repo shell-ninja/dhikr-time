@@ -5,7 +5,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Form from "../Form/Form";
 import PageTransition from "../../Hooks/PageTransition";
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
@@ -134,7 +133,7 @@ const Home = () => {
             }}
           />
           {/* Ayah Content */}
-          <div className="absolute md:top-[250px] z-10 flex flex-col items-center justify-center text-center px-6">
+          <div className="absolute md:top-[250px] flex flex-col items-center justify-center text-center px-6">
             <p
               ref={ayahRef}
               className="text-5xl md:text-6xl lg:text-8xl font-lateef leading-relaxed text-[#105A59]"

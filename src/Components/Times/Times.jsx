@@ -155,17 +155,17 @@ const Times = ({ formData }) => {
       </h3>
       <div
         ref={dividerRef}
-        className="h-2 w-full md:w-[800px] bg-[#105A59] rounded-2xl mt-2 mb-8"
+        className="h-2 w-[80%] md:w-[800px] bg-[#105A59] rounded-2xl mt-2 mb-8"
       ></div>
       <div
         ref={containerRef}
-        className="flex flex-col w-full max-w-[800px] gap-10 md:gap-3 mt-8 border-2 border-[#105A59] p-10 px-[120px] md:px-10 rounded-[20px] form-style"
+        className="flex flex-col w-full max-w-[85%] gap-10 md:gap-3 mt-8 border-2 border-[#105A59] p-10 px-[120px] md:px-10 rounded-[20px] form-style"
       >
         {Object.entries(prayerTimes).map(([name, time], index) => (
           <div
             key={name}
             ref={(el) => (prayerRowsRef.current[index] = el)}
-            className="flex flex-col md:flex-row justify-between items-center text-[#105A59] font-amiri font-bold text-[30px] md:text-[40px]"
+            className="flex flex-col md:flex-row justify-center md:justify-between items-center text-[#105A59] font-amiri font-bold text-[30px] md:text-[40px]"
           >
             <span>{name}:</span>
             <span>{formatTime(time)}</span>

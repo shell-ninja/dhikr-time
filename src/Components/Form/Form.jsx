@@ -295,7 +295,7 @@ const Form = () => {
       {/* Mobile Device */}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[70%] px-[50px] py-[50px] rounded-[20px] md:hidden relative mb-20 form-style"
+        className="flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[85%] px-[50px] py-[50px] rounded-[20px] md:hidden relative mb-20 form-style"
       >
         <input
           ref={cityInputMobileRef}
@@ -505,7 +505,9 @@ const Form = () => {
           value="Find"
         />
       </form>
-      {formData ? <Times formData={formData} /> : <p></p>}
+      <div className="px-10">
+        {formData ? <Times formData={formData} /> : <p></p>}
+      </div>
     </div>
   );
 };
