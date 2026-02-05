@@ -287,7 +287,6 @@ const Form = () => {
     } finally {
       setIsLoading(false);
     }
-    console.log(formData);
   };
 
   return (

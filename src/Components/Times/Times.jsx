@@ -36,11 +36,11 @@ const Times = ({ formData }) => {
   const dividerRef = useRef(null);
   const prayerCardsRef = useRef([]);
 
-  const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
+  // const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
 
-  const API = `https://islamicapi.com/api/v1/prayer-time/?lat=${lat}&lon=${lon}&method=${selectedMethod}&school=${schoolNum}&api_key=${API_KEY}`;
+  // const API = `https://islamicapi.com/api/v1/prayer-time/?lat=${lat}&lon=${lon}&method=${selectedMethod}&school=${schoolNum}&api_key=${API_KEY}`;
 
-  // const API = `https://dhikr-time-server.onrender.com/api/prayer?lat=${lat}&lon=${lon}&method=${selectedMethod}&school=${schoolNum}`;
+  const API = `http://localhost:3000/api/prayer?lat=${lat}&lon=${lon}&method=${selectedMethod}&school=${schoolNum}`;
 
   // Guard: fetch only when coords exist
   const shouldFetch = Boolean(lat && lon);
@@ -159,7 +159,7 @@ const Times = ({ formData }) => {
           <div
             key={name}
             ref={(el) => (prayerCardsRef.current[index] = el)}
-            className={`flex flex-col justify-between items-center bg-transparent border-2 border-[#105A59] rounded-[20px] px-15 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full ${
+            className={`flex flex-col justify-between items-center bg-transparent border-2 border-[#105A59] rounded-[20px] px-15 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style ${
               index === 6 ? "md:col-span-2 lg:col-span-3" : ""
             }`}
           >
