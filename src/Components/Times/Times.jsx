@@ -36,11 +36,9 @@ const Times = ({ formData }) => {
   const dividerRef = useRef(null);
   const prayerCardsRef = useRef([]);
 
-  // const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
+  const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
 
-  // const API = `https://islamicapi.com/api/v1/prayer-time/?lat=${lat}&lon=${lon}&method=${selectedMethod}&school=${schoolNum}&api_key=${API_KEY}`;
-
-  const API = `http://localhost:3000/api/prayer?lat=${lat}&lon=${lon}&method=${selectedMethod}&school=${schoolNum}`;
+  const API = `https://islamicapi.com/api/v1/prayer-time/?lat=${lat}&lon=${lon}&method=${selectedMethod}&school=${schoolNum}&api_key=${API_KEY}`;
 
   // Guard: fetch only when coords exist
   const shouldFetch = Boolean(lat && lon);
