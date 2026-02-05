@@ -136,21 +136,21 @@ const Home = () => {
           <div className="absolute md:top-[250px] flex flex-col items-center justify-center text-center px-6">
             <p
               ref={ayahRef}
-              className="text-5xl md:text-6xl lg:text-8xl font-lateef leading-relaxed text-[#105A59]"
+              className="text-4xl md:text-6xl lg:text-8xl font-lateef leading-relaxed text-[#105A59]"
             >
               یٰۤاَیُّهَا الَّذِیۡنَ اٰمَنُوا اسۡتَعِیۡنُوۡا بِالصَّبۡرِ وَ
               الصَّلٰوۃِ ؕ اِنَّ اللّٰهَ مَعَ الصّٰبِرِیۡنَ
             </p>
             <p
               ref={translationRef}
-              className="mt-6 text-3xl md:text-[48px] lg:text-6xl font-amiri font-bold text-[#105A59]"
+              className="mt-6 text-2xl md:text-5 lg:text-6xl font-amiri font-bold text-[#105A59] px-2 md:px-6"
             >
               O believers! Seek comfort in patience and prayer. Allah is truly
               with those who are patient.
             </p>
             <p
               ref={chapterRef}
-              className="mt-5 md:mt-10 text-xl md:text-4xl font-amiri font-normal text-[#105A59]"
+              className="mt-5 md:mt-10 text-xl md:text-3xl font-amiri font-normal text-[#105A59]"
             >
               Al-Baqarah 2:153
             </p>

@@ -308,7 +308,7 @@ const Form = () => {
       >
         <input
           ref={cityInputMobileRef}
-          className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
+          className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-2xl md:text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
           type="text"
           placeholder="City"
           value={city}
@@ -316,7 +316,7 @@ const Form = () => {
         />
         <input
           ref={countryInputMobileRef}
-          className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
+          className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-2xl md:text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
           type="text"
           placeholder="Country"
           value={country}
@@ -330,7 +330,7 @@ const Form = () => {
           </label>
           <div className="relative w-[274px]">
             <div
-              className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
+              className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-2xl md:text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
               onClick={() => setSchoolOpen(!schoolOpen)}
             >
               {selectedSchool}
@@ -364,7 +364,7 @@ const Form = () => {
           </label>
           <div className="relative w-[274px]">
             <div
-              className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
+              className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-2xl md:text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
               onClick={() => setMethodOpen(!methodOpen)}
             >
               {selectedMethod}
@@ -376,7 +376,7 @@ const Form = () => {
                 {methods.map((method) => (
                   <div
                     key={method}
-                    className="px-5 py-4 text-3xl font-amiri font-bold text-[#E4F6D9] hover:bg-[#0d3b35] cursor-pointer transition-all duration-200"
+                    className="px-5 py-4 text-2xl md:text-3xl font-amiri font-bold text-[#E4F6D9] hover:bg-[#0d3b35] cursor-pointer transition-all duration-200"
                     onClick={() => {
                       setSelectedMethod(method);
                       setMethodOpen(false);
@@ -388,7 +388,7 @@ const Form = () => {
               </div>
             )}
 
-            <p className="text-[#105A59] font-medium font-amiri">
+            <p className="text-[#105A59] font-medium font-amiri text-xl md:text-2xl mt-2">
               Learne more about
               <span className="font-bold">
                 <Link to="/methods"> Methods</Link>

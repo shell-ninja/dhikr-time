@@ -22,8 +22,7 @@ const Times = ({ formData }) => {
   const dateRef = useRef(null);
   const locationRef = useRef(null);
   const dividerRef = useRef(null);
-  const containerRef = useRef(null);
-  const prayerRowsRef = useRef([]);
+  const prayerCardsRef = useRef([]);
 
   const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
   const API = `https://islamicapi.com/api/v1/prayer-time/?lat=${lat}&lon=${lon}&method=${selectedMethod}&school=${schoolNum}&api_key=${API_KEY}`;
@@ -74,31 +73,17 @@ const Times = ({ formData }) => {
       },
     });
 
-    // Container animation - fade in and scale
-    gsap.from(containerRef.current, {
-      scale: 0.95,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.3,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 85%",
-        toggleActions: "play none none reverse",
-      },
-    });
-
-    // Prayer rows stagger animation - alternate from left and right
-    prayerRowsRef.current.forEach((row, index) => {
-      if (row) {
-        gsap.from(row, {
-          x: index % 2 === 0 ? -100 : 100,
+    // Prayer cards stagger animation - fade in and slide up
+    prayerCardsRef.current.forEach((card, index) => {
+      if (card) {
+        gsap.from(card, {
+          y: 50,
           opacity: 0,
           duration: 0.6,
-          delay: 0.5 + index * 0.1,
+          delay: 0.4 + index * 0.1,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: row,
+            trigger: card,
             start: "top 90%",
             toggleActions: "play none none reverse",
           },
@@ -140,7 +125,7 @@ const Times = ({ formData }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center my-20">
+    <div className="flex flex-col justify-center items-center my-20 px-4">
       <h1
         ref={dateRef}
         className="text-4xl md:text-5xl font-amiri font-bold text-[#105A59]"
@@ -157,18 +142,23 @@ const Times = ({ formData }) => {
         ref={dividerRef}
         className="h-2 w-[80%] md:w-[800px] bg-[#105A59] rounded-2xl mt-2 mb-8"
       ></div>
-      <div
-        ref={containerRef}
-        className="flex flex-col w-full max-w-[85%] gap-10 md:gap-3 mt-8 border-2 border-[#105A59] p-10 px-[120px] md:px-10 rounded-[20px] form-style"
-      >
+
+      {/* Prayer Times Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mt-8">
         {Object.entries(prayerTimes).map(([name, time], index) => (
           <div
             key={name}
-            ref={(el) => (prayerRowsRef.current[index] = el)}
-            className="flex flex-col md:flex-row justify-center md:justify-between items-center text-[#105A59] font-amiri font-bold text-[30px] md:text-[40px]"
+            ref={(el) => (prayerCardsRef.current[index] = el)}
+            className={`flex flex-col justify-between items-center bg-transparent border-2 border-[#105A59] rounded-[20px] px-15 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style ${
+              index === 6 ? "md:col-span-2 lg:col-span-3" : ""
+            }`}
           >
-            <span>{name}:</span>
-            <span>{formatTime(time)}</span>
+            <h4 className="text-2xl md:text-3xl font-amiri font-bold text-[#105A59] mb-4">
+              {name}
+            </h4>
+            <p className="text-3xl md:text-4xl font-amiri font-bold text-[#105A59]">
+              {formatTime(time)}
+            </p>
           </div>
         ))}
       </div>
