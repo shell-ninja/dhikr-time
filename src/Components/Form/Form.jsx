@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./Form.css";
 import { Link } from "react-router-dom";
 import Times from "../Times/Times";
@@ -47,7 +47,7 @@ const Form = () => {
 
   const [formData, setFormData] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   // Refs for mobile view
   const titleRef = useRef(null);
@@ -254,7 +254,7 @@ const Form = () => {
     try {
       const res = await fetch(URL + QUERY, {
         headers: {
-          "User-Agent": "your-app-name", // required by Nominatim
+          "User-Agent": "prayer-times-app",
         },
       });
 
@@ -279,13 +279,15 @@ const Form = () => {
         Longitude: lon,
       });
 
-      // 👉 use these in your prayer API
+      // Removed the useEffect from here - it was causing the error
+      // The useEffect at the top level will handle formData changes
     } catch (err) {
       console.error("Geocoding error:", err);
-      alert("An error occured. Please reload the site and try again");
+      alert("An error occurred. Please reload the site and try again");
     } finally {
       setIsLoading(false);
     }
+    console.log(formData);
   };
 
   return (

@@ -4,6 +4,7 @@ import Card from "./Card";
 import Loader from "../../Hooks/Loader";
 import PageTransition from "../../Hooks/PageTransition";
 import "./AsmaUlHusna.css";
+import ErrorGPT from "../../Hooks/ErrorGPT";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -20,7 +21,7 @@ const AsmaUlHusna = () => {
   const [page, setPage] = useState(1);
 
   if (isLoading) return <Loader />;
-  if (error) return <p>Error...</p>;
+  if (error) return <ErrorGPT />;
 
   const entries = Object.entries(data?.data?.names || []);
   const totalPages = Math.ceil(entries.length / ITEMS_PER_PAGE);
