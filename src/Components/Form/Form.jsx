@@ -65,6 +65,19 @@ const Form = () => {
   const methodDropdownDesktopRef = useRef(null);
   const submitBtnDesktopRef = useRef(null);
 
+  // Add this useEffect to handle formData changes
+  useEffect(() => {
+    if (formData) {
+      // Scroll to the results section
+      const timesSection = document.querySelector(".px-10");
+      if (timesSection) {
+        setTimeout(() => {
+          timesSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    }
+  }, [formData]);
+
   useGSAP(() => {
     // Title and divider animation
     gsap.from(titleRef.current, {
@@ -244,10 +257,16 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Add validation
+    if (!city.trim() || !country.trim()) {
+      alert("Please enter both city and country");
+      return;
+    }
+
     const schoolNum = selectedSchool === "Hanafi" ? 1 : 2;
 
     const URL = "https://nominatim.openstreetmap.org/search";
-    const QUERY = `?city=${city}&country=${country}&format=json&limit=1`;
+    const QUERY = `?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&format=json&limit=1`;
 
     setIsLoading(true);
 
@@ -261,7 +280,7 @@ const Form = () => {
       const data = await res.json();
 
       if (!data.length) {
-        alert("Location not found");
+        alert("Location not found. Please check your city and country names.");
         setIsLoading(false);
         return;
       }
@@ -278,9 +297,6 @@ const Form = () => {
         Latitude: lat,
         Longitude: lon,
       });
-
-      // Removed the useEffect from here - it was causing the error
-      // The useEffect at the top level will handle formData changes
     } catch (err) {
       console.error("Geocoding error:", err);
       alert("An error occurred. Please reload the site and try again");
@@ -314,6 +330,7 @@ const Form = () => {
           placeholder="City"
           value={city}
           onChange={(e) => setCity(e.target.value)}
+          required
         />
         <input
           ref={countryInputMobileRef}
@@ -322,6 +339,7 @@ const Form = () => {
           placeholder="Country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
+          required
         />
 
         {/* School Dropdown */}
@@ -390,7 +408,7 @@ const Form = () => {
             )}
 
             <p className="text-[#105A59] font-medium font-amiri text-xl md:text-2xl mt-2">
-              Learne more about
+              Learn more about
               <span className="font-bold">
                 <Link to="/methods"> Methods</Link>
               </span>
@@ -419,6 +437,7 @@ const Form = () => {
             placeholder="City"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            required
           />
           <input
             ref={countryInputDesktopRef}
@@ -427,6 +446,7 @@ const Form = () => {
             placeholder="Country"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
+            required
           />
         </div>
 
@@ -499,8 +519,8 @@ const Form = () => {
               </div>
             )}
 
-            <p className="text-[#105A59] font-medium font-amiri">
-              Learne more about
+            <p className="text-[#105A59] font-medium font-amiri text-xl md:text-2xl mt-2">
+              Learn more about
               <span className="font-bold">
                 <Link to="/methods"> Methods</Link>
               </span>
