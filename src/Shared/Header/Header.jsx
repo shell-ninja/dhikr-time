@@ -5,6 +5,7 @@ import "./Header.css";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import logo from "../../assets/logo-dhikr-time.svg";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -93,7 +94,12 @@ const Header = () => {
           }`}
         >
           <div className="flex justify-center mb-6">
-            <Link to="/" onClick={toggleMenu}>
+            <Link
+              className="flex justify-center items-center gap-2"
+              to="/"
+              onClick={toggleMenu}
+            >
+              <img className="h-[45px] mt-[-5px]" src={logo} alt="" />
               Dhikr Time
             </Link>
           </div>
@@ -116,7 +122,10 @@ const Header = () => {
       >
         {/* Logo */}
         <div ref={logoRef} className="cursor-pointer">
-          <Link to="/">Dhikr Time</Link>
+          <Link className="flex justify-center items-center gap-2" to="/">
+            <img className="h-[45px] mt-[-5px]" src={logo} alt="" />
+            Dhikr Time
+          </Link>
         </div>
 
         {/* Nav Links */}
