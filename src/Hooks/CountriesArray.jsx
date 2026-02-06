@@ -193,7 +193,6 @@ export const countries = [
 ];
 
 const CountriesArray = () => {
-  console.log(countries.length);
   return <div></div>;
 };
 
