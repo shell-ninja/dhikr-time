@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Form from "../Form/Form";
 import PageTransition from "../../Hooks/PageTransition";
+import CountriesArray from "../../Hooks/CountriesArray";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -160,6 +161,7 @@ const Home = () => {
         <div ref={formRef} className="relative">
           <Form />
         </div>
+        <CountriesArray />
       </div>
     </PageTransition>
   );
