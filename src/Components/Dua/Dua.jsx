@@ -1,6 +1,8 @@
+import { usePageTitle } from "../../Hooks/pageName";
 import PageTransition from "../../Hooks/PageTransition";
 
 const Dua = () => {
+  usePageTitle("Dua", " | Dhikr Time");
   return (
     <PageTransition>
       <div className="min-h-screen flex flex-col justify-center items-center px-10">

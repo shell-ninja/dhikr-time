@@ -5,7 +5,7 @@ import "./Header.css";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import logo from "../../assets/logo-dhikr-time.svg";
+import logo from "../../assets/logo-dhikr-time.png";
 
 gsap.registerPlugin(ScrollTrigger);
 

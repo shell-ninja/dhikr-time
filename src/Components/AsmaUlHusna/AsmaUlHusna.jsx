@@ -5,12 +5,14 @@ import Loader from "../../Hooks/Loader";
 import PageTransition from "../../Hooks/PageTransition";
 import "./AsmaUlHusna.css";
 import ErrorGPT from "../../Hooks/ErrorGPT";
+import { usePageTitle } from "../../Hooks/pageName";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const ITEMS_PER_PAGE = 9;
 
 const AsmaUlHusna = () => {
+  usePageTitle("Asma Ul Husna", " | Dhikr Time");
   const [toggled, setToggled] = useState(false);
   const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
   const LANGUAGE = toggled ? "bn" : "en";

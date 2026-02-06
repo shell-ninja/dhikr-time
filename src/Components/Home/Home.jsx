@@ -5,10 +5,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Form from "../Form/Form";
 import PageTransition from "../../Hooks/PageTransition";
 import CountriesArray from "../../Hooks/CountriesArray";
+import { usePageTitle } from "../../Hooks/pageName";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
+  usePageTitle("Home", " | Dhikr Time");
   const heroRef = useRef(null);
   const bgRef = useRef(null);
   const ayahRef = useRef(null);
