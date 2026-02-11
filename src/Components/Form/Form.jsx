@@ -338,56 +338,6 @@ const Form = () => {
     }
   }, [selectedCountryIndex]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //
-  //   if (!city.trim() || !country.trim()) {
-  //     alert("Please enter both city and country");
-  //     return;
-  //   }
-  //
-  //   const schoolNum = selectedSchool === "Hanafi" ? 1 : 2;
-  //
-  //   const URL = "https://nominatim.openstreetmap.org/search";
-  //   const QUERY = `?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&format=json&limit=1`;
-  //
-  //   setIsLoading(true);
-  //
-  //   try {
-  //     const res = await fetch(URL + QUERY, {
-  //       headers: {
-  //         "User-Agent": "prayer-times-app",
-  //       },
-  //     });
-  //
-  //     const data = await res.json();
-  //
-  //     if (!data.length) {
-  //       alert("Location not found. Please check your city and country names.");
-  //       setIsLoading(false);
-  //       return;
-  //     }
-  //
-  //     const lat = data[0].lat;
-  //     const lon = data[0].lon;
-  //
-  //     setFormData({
-  //       City: city,
-  //       Country: country,
-  //       School: selectedSchool,
-  //       Number: schoolNum,
-  //       Method: selectedMethod,
-  //       Latitude: lat,
-  //       Longitude: lon,
-  //     });
-  //   } catch (err) {
-  //     console.error("Geocoding error:", err);
-  //     alert("An error occurred. Please reload the site and try again");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   // HandleSubmit from Claud.ai
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -467,17 +417,6 @@ const Form = () => {
 
   return (
     <>
-      {/* Show custom alert */}
-      {/*
-      {alert && (
-        <CustomAlert
-          message={alert.message}
-          type={alert.type}
-          duration={alert.duration}
-          onClose={hideAlert}
-        />
-      )}
-        */}
       <div className="flex flex-col justify-center items-center mb-20 overflow-x-hidden">
         <h1
           ref={titleRef}
@@ -485,10 +424,8 @@ const Form = () => {
         >
           Prayer Times
         </h1>
-        <div
-          ref={dividerRef}
-          className="h-2 w-[75%] md:w-[40%] bg-[#105A59] rounded-2xl mt-2 mb-8"
-        ></div>
+
+        <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
 
         {/* Mobile Device */}
         <form

@@ -149,8 +149,8 @@ const Times = ({ formData }) => {
 
       <div
         ref={dividerRef}
-        className="h-2 w-[80%] md:w-[800px] bg-[#105A59] rounded-2xl mt-2 mb-8"
-      />
+        className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"
+      ></div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mt-8">
         {Object.entries(prayerTimes).map(([name, time], index) => (

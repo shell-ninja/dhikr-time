@@ -40,7 +40,8 @@ const AsmaUlHusna = () => {
           <h1 className="text-5xl text-[#105A59] font-amiri font-bold mt-20">
             Asma Ul Husna
           </h1>
-          <div className="h-2 w-[75%] md:w-[40%] bg-[#105A59] rounded-2xl mt-2 mb-8"></div>
+
+          <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
         </div>
 
         <div className="relative left-10 bottom-5">
