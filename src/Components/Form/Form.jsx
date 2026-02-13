@@ -8,7 +8,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Loader from "../../Hooks/Loader";
 import { countries } from "../../Hooks/CountriesArray";
 import useAlert from "../../Hooks/useAllert";
-import CustomAlert from "../../Hooks/CustomAlert";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,26 +37,40 @@ const methods = [
   "23",
 ].map(Number);
 
+const STORAGE_KEY = "prayerTimesFormData";
+
 const Form = () => {
-  const [selectedSchool, setSelectedSchool] = useState(schools[0]);
+  const [selectedSchool, setSelectedSchool] = useState(
+    () => localStorage.getItem("prayerSchool") || schools[0],
+  );
   const [schoolOpen, setSchoolOpen] = useState(false);
 
-  const [selectedMethod, setSelectedMethod] = useState(methods[0]);
+  const [selectedMethod, setSelectedMethod] = useState(
+    () => Number(localStorage.getItem("prayerMethod")) || methods[0],
+  );
   const [methodOpen, setMethodOpen] = useState(false);
 
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
+  const [city, setCity] = useState(
+    () => localStorage.getItem("prayerCity") || "",
+  );
+  const [country, setCountry] = useState(
+    () => localStorage.getItem("prayerCountry") || "",
+  );
 
-  // Country autocomplete states
   const [countrySuggestions, setCountrySuggestions] = useState([]);
   const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
   const [selectedCountryIndex, setSelectedCountryIndex] = useState(-1);
 
-  const [formData, setFormData] = useState(null);
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : null;
+  });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Use the custom alert hook
   const { alert, showAlert, hideAlert } = useAlert();
+
+  // Scroll control — only true after a fresh submit
+  const shouldScroll = useRef(false);
 
   // Refs for mobile view
   const titleRef = useRef(null);
@@ -79,14 +92,27 @@ const Form = () => {
   const countrySuggestionsRefMobile = useRef(null);
   const countrySuggestionsRefDesktop = useRef(null);
 
-  // Handle country input changes and filter suggestions
+  // Persist individual field values to localStorage
+  useEffect(() => {
+    localStorage.setItem("prayerCity", city);
+  }, [city]);
+  useEffect(() => {
+    localStorage.setItem("prayerCountry", country);
+  }, [country]);
+  useEffect(() => {
+    localStorage.setItem("prayerSchool", selectedSchool);
+  }, [selectedSchool]);
+  useEffect(() => {
+    localStorage.setItem("prayerMethod", selectedMethod);
+  }, [selectedMethod]);
+
+  // Filter country suggestions
   useEffect(() => {
     if (country.trim() === "") {
       setCountrySuggestions([]);
       setShowCountrySuggestions(false);
       return;
     }
-
     const filtered = countries.filter((c) =>
       c.toLowerCase().includes(country.toLowerCase()),
     );
@@ -95,7 +121,7 @@ const Form = () => {
     setSelectedCountryIndex(-1);
   }, [country]);
 
-  // Handle clicking outside to close suggestions
+  // Close suggestions on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
@@ -109,19 +135,20 @@ const Form = () => {
         setShowCountrySuggestions(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Only scroll when user explicitly submits — not on page load restore
   useEffect(() => {
-    if (formData) {
+    if (formData && shouldScroll.current) {
       const timesSection = document.querySelector(".px-10");
       if (timesSection) {
         setTimeout(() => {
           timesSection.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 100);
       }
+      shouldScroll.current = false;
     }
   }, [formData]);
 
@@ -163,7 +190,6 @@ const Form = () => {
         },
       });
     }
-
     if (countryInputMobileRef.current) {
       gsap.from(countryInputMobileRef.current, {
         x: 100,
@@ -178,7 +204,6 @@ const Form = () => {
         },
       });
     }
-
     if (schoolDropdownMobileRef.current) {
       gsap.from(schoolDropdownMobileRef.current, {
         x: -100,
@@ -193,7 +218,6 @@ const Form = () => {
         },
       });
     }
-
     if (methodDropdownMobileRef.current) {
       gsap.from(methodDropdownMobileRef.current, {
         x: 100,
@@ -208,7 +232,6 @@ const Form = () => {
         },
       });
     }
-
     if (submitBtnMobileRef.current) {
       gsap.from(submitBtnMobileRef.current, {
         y: 50,
@@ -223,7 +246,6 @@ const Form = () => {
         },
       });
     }
-
     if (cityInputDesktopRef.current) {
       gsap.from(cityInputDesktopRef.current, {
         x: -150,
@@ -237,7 +259,6 @@ const Form = () => {
         },
       });
     }
-
     if (countryInputDesktopRef.current) {
       gsap.from(countryInputDesktopRef.current, {
         x: 150,
@@ -251,7 +272,6 @@ const Form = () => {
         },
       });
     }
-
     if (schoolDropdownDesktopRef.current) {
       gsap.from(schoolDropdownDesktopRef.current, {
         x: -150,
@@ -266,7 +286,6 @@ const Form = () => {
         },
       });
     }
-
     if (methodDropdownDesktopRef.current) {
       gsap.from(methodDropdownDesktopRef.current, {
         x: 150,
@@ -281,7 +300,6 @@ const Form = () => {
         },
       });
     }
-
     if (submitBtnDesktopRef.current) {
       gsap.from(submitBtnDesktopRef.current, {
         y: 50,
@@ -306,7 +324,6 @@ const Form = () => {
 
   const handleCountryKeyDown = (e) => {
     if (!showCountrySuggestions) return;
-
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setSelectedCountryIndex((prev) =>
@@ -323,7 +340,6 @@ const Form = () => {
     }
   };
 
-  // Scroll selected suggestion into view
   useEffect(() => {
     if (selectedCountryIndex >= 0) {
       const mobileList = countrySuggestionsRefMobile.current;
@@ -331,14 +347,12 @@ const Form = () => {
       const activeList =
         mobileList?.children[selectedCountryIndex] ||
         desktopList?.children[selectedCountryIndex];
-
       if (activeList) {
         activeList.scrollIntoView({ block: "nearest", behavior: "smooth" });
       }
     }
   }, [selectedCountryIndex]);
 
-  // HandleSubmit from Claud.ai
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -348,8 +362,6 @@ const Form = () => {
     }
 
     const schoolNum = selectedSchool === "Hanafi" ? 1 : 2;
-
-    // Use a more specific search query
     const URL = "https://nominatim.openstreetmap.org/search";
     const QUERY = `?q=${encodeURIComponent(city + ", " + country)}&format=json&limit=5&addressdetails=1`;
 
@@ -357,9 +369,7 @@ const Form = () => {
 
     try {
       const res = await fetch(URL + QUERY, {
-        headers: {
-          "User-Agent": "prayer-times-app",
-        },
+        headers: { "User-Agent": "prayer-times-app" },
       });
 
       const data = await res.json();
@@ -372,14 +382,11 @@ const Form = () => {
         return;
       }
 
-      // Find the result that actually matches the country
       const countryLower = country.toLowerCase().trim();
       const matchingResult = data.find((result) => {
         const address = result.address || {};
         const resultCountry = (address.country || "").toLowerCase();
         const displayName = (result.display_name || "").toLowerCase();
-
-        // Check if country matches in address or display_name
         return (
           resultCountry === countryLower ||
           resultCountry.includes(countryLower) ||
@@ -395,18 +402,19 @@ const Form = () => {
         return;
       }
 
-      const lat = matchingResult.lat;
-      const lon = matchingResult.lon;
-
-      setFormData({
+      const newFormData = {
         City: city,
         Country: country,
         School: selectedSchool,
         Number: schoolNum,
         Method: selectedMethod,
-        Latitude: lat,
-        Longitude: lon,
-      });
+        Latitude: matchingResult.lat,
+        Longitude: matchingResult.lon,
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newFormData));
+      shouldScroll.current = true; // only scroll on fresh submit
+      setFormData(newFormData);
     } catch (err) {
       console.error("Geocoding error:", err);
       showAlert("An error occurred. Please reload the site and try again");
@@ -425,7 +433,10 @@ const Form = () => {
           Prayer Times
         </h1>
 
-        <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
+        <div
+          ref={dividerRef}
+          className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"
+        ></div>
 
         {/* Mobile Device */}
         <form
@@ -455,8 +466,6 @@ const Form = () => {
               onFocus={() => country && setShowCountrySuggestions(true)}
               required
             />
-
-            {/* Country Suggestions - Mobile */}
             {showCountrySuggestions && countrySuggestions.length > 0 && (
               <ul
                 ref={countrySuggestionsRefMobile}
@@ -477,7 +486,6 @@ const Form = () => {
                 ))}
               </ul>
             )}
-
             {showCountrySuggestions &&
               countrySuggestions.length === 0 &&
               country.trim() !== "" && (
@@ -500,7 +508,6 @@ const Form = () => {
                 {selectedSchool}
                 <span className="mr-5">&#9662;</span>
               </div>
-
               {schoolOpen && (
                 <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] overflow-hidden z-50 shadow-lg">
                   {schools.map((school) => (
@@ -533,7 +540,6 @@ const Form = () => {
                 {selectedMethod}
                 <span className="mr-5">&#9662;</span>
               </div>
-
               {methodOpen && (
                 <div className="absolute top-[68px] left-0 w-full bg-[#105A59] max-h-[180px] overflow-y-auto dropdown-scroll rounded-[15px] z-50 shadow-lg">
                   {methods.map((method) => (
@@ -550,7 +556,6 @@ const Form = () => {
                   ))}
                 </div>
               )}
-
               <p className="text-[#105A59] font-medium font-amiri text-xl md:text-2xl mt-2">
                 Learn more about
                 <span className="font-bold">
@@ -597,8 +602,6 @@ const Form = () => {
                 onFocus={() => country && setShowCountrySuggestions(true)}
                 required
               />
-
-              {/* Country Suggestions - Desktop */}
               {showCountrySuggestions && countrySuggestions.length > 0 && (
                 <ul
                   ref={countrySuggestionsRefDesktop}
@@ -619,7 +622,6 @@ const Form = () => {
                   ))}
                 </ul>
               )}
-
               {showCountrySuggestions &&
                 countrySuggestions.length === 0 &&
                 country.trim() !== "" && (
@@ -646,7 +648,6 @@ const Form = () => {
                 {selectedSchool}
                 <span className="mr-5">&#9662;</span>
               </div>
-
               {schoolOpen && (
                 <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] overflow-hidden z-50 shadow-lg">
                   {schools.map((school) => (
@@ -680,7 +681,6 @@ const Form = () => {
                 {selectedMethod}
                 <span className="mr-5">&#9662;</span>
               </div>
-
               {methodOpen && (
                 <div className="absolute top-[68px] left-0 w-full max-h-[180px] overflow-y-auto dropdown-scroll bg-[#105A59] rounded-[15px] z-50 shadow-lg">
                   {methods.map((method) => (
@@ -697,7 +697,6 @@ const Form = () => {
                   ))}
                 </div>
               )}
-
               <p className="text-[#105A59] font-medium font-amiri text-xl md:text-2xl mt-2">
                 Learn more about
                 <span className="font-bold">
@@ -714,14 +713,13 @@ const Form = () => {
             value="Find"
           />
         </form>
+
         <div className="px-10">
           {isLoading ? (
             <Loader />
           ) : formData ? (
             <Times formData={formData} />
-          ) : (
-            <p></p>
-          )}
+          ) : null}
         </div>
       </div>
     </>
