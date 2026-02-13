@@ -35,7 +35,6 @@ const Dua = () => {
     () => {
       const cards = containerRef.current.querySelectorAll(".dua-card");
 
-      // Animate title and line first
       gsap.from(".dua-title", {
         y: -50,
         opacity: 0,
@@ -51,19 +50,17 @@ const Dua = () => {
         ease: "power3.out",
       });
 
-      // Animate cards from different directions
       const directions = [
-        { x: -300, y: 0, rotation: -15 }, // from left
-        { x: 0, y: -300, rotation: 0 }, // from top
-        { x: 300, y: 0, rotation: 15 }, // from right
-        { x: -300, y: 0, rotation: -15 }, // from left
-        { x: 0, y: 300, rotation: 0 }, // from bottom
-        { x: 300, y: 0, rotation: 15 }, // from right
+        { x: -300, y: 0, rotation: -15 },
+        { x: 0, y: -300, rotation: 0 },
+        { x: 300, y: 0, rotation: 15 },
+        { x: -300, y: 0, rotation: -15 },
+        { x: 0, y: 300, rotation: 0 },
+        { x: 300, y: 0, rotation: 15 },
       ];
 
       cards.forEach((card, index) => {
         const direction = directions[index % directions.length];
-
         gsap.from(card, {
           x: direction.x,
           y: direction.y,
@@ -82,7 +79,7 @@ const Dua = () => {
     <PageTransition>
       <div
         ref={containerRef}
-        className="min-h-screen flex flex-col justify-center items-center px-10"
+        className="min-h-screen flex flex-col justify-center items-center px-8 md:px-20"
       >
         <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-20 md:mt-10">
           Dua
@@ -90,7 +87,8 @@ const Dua = () => {
 
         <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
 
-        <div className="relative right-35 md:right-80 lg:right-125 bottom-5">
+        {/* Toggle button — aligned to the grid's left edge */}
+        <div className="w-full max-w-[1150px] flex justify-start pl-2 mb-4 -mt-6">
           <button
             onClick={() => setLan()}
             className={`toggle-btn ${toggled ? "toggled" : ""}`}
@@ -102,13 +100,13 @@ const Dua = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center font-bold text-[#105A59] mb-20">
-          {/* Link for Morning and Evening Dua */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center font-bold text-[#105A59] mb-20 w-full max-w-[1150px]">
+          {/* Morning and Evening */}
           <Link
             to={`/dua/morning-evening?lang=${Language}`}
-            className="dua-card"
+            className="dua-card w-full max-w-[350px]"
           >
-            <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
+            <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
                   src={morningEvening}
@@ -130,9 +128,12 @@ const Dua = () => {
             </div>
           </Link>
 
-          {/* Link for Dua after Salah */}
-          <Link to={`/dua/after-salah?lang=${Language}`} className="dua-card">
-            <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
+          {/* After Salah */}
+          <Link
+            to={`/dua/after-salah?lang=${Language}`}
+            className="dua-card w-full max-w-[350px]"
+          >
+            <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
                   src={salah}
@@ -154,9 +155,12 @@ const Dua = () => {
             </div>
           </Link>
 
-          {/* Link for Quranic Dua */}
-          <Link to={`/dua/quranic?lang=${Language}`} className="dua-card">
-            <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
+          {/* Quranic Dua */}
+          <Link
+            to={`/dua/quranic?lang=${Language}`}
+            className="dua-card w-full max-w-[350px]"
+          >
+            <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
                   src={quran}
@@ -178,9 +182,12 @@ const Dua = () => {
             </div>
           </Link>
 
-          {/* Link for Sunnah Dua */}
-          <Link to={`/dua/sunnah?lang=${Language}`} className="dua-card">
-            <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
+          {/* Sunnah Dua */}
+          <Link
+            to={`/dua/sunnah?lang=${Language}`}
+            className="dua-card w-full max-w-[350px]"
+          >
+            <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
                   src={sunnah}
@@ -202,9 +209,12 @@ const Dua = () => {
             </div>
           </Link>
 
-          {/* Link for salawat upon the Prophet (pbuh) */}
-          <Link to={`/dua/salawat?lang=${Language}`} className="dua-card">
-            <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
+          {/* Salawat / Durood */}
+          <Link
+            to={`/dua/salawat?lang=${Language}`}
+            className="dua-card w-full max-w-[350px]"
+          >
+            <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
                   src={salawat}
@@ -226,9 +236,12 @@ const Dua = () => {
             </div>
           </Link>
 
-          {/* Link for Istigfar */}
-          <Link to={`/dua/istigfar?lang=${Language}`} className="dua-card">
-            <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
+          {/* Istigfar */}
+          <Link
+            to={`/dua/istigfar?lang=${Language}`}
+            className="dua-card w-full max-w-[350px]"
+          >
+            <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
                   src={istigfar}

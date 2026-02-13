@@ -45,6 +45,57 @@ const AsmaUlHusna = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const renderPageNumbers = () => {
+    const pages = [];
+    const delta = 1;
+
+    const addPage = (pageNum) =>
+      pages.push(
+        <button
+          key={pageNum}
+          onClick={() => goToPage(pageNum)}
+          className={`w-9 h-9 rounded-lg font-amiri font-semibold transition-colors cursor-pointer text-sm ${
+            page === pageNum
+              ? "bg-[#105A59] text-white"
+              : "bg-[#E9F7E6] text-[#105A59] hover:bg-[#105A59] hover:text-white"
+          }`}
+        >
+          {pageNum}
+        </button>,
+      );
+
+    const addEllipsis = (key) =>
+      pages.push(
+        <span
+          key={key}
+          className="w-9 h-9 flex items-center justify-center text-[#105A59] font-bold"
+        >
+          …
+        </span>,
+      );
+
+    addPage(1);
+
+    const leftBound = page - delta;
+    const rightBound = page + delta;
+
+    if (leftBound > 2) addEllipsis("left");
+
+    for (
+      let i = Math.max(2, leftBound);
+      i <= Math.min(totalPages - 1, rightBound);
+      i++
+    ) {
+      addPage(i);
+    }
+
+    if (rightBound < totalPages - 1) addEllipsis("right");
+
+    if (totalPages > 1) addPage(totalPages);
+
+    return pages;
+  };
+
   return (
     <>
       <PageTransition>
@@ -78,50 +129,62 @@ const AsmaUlHusna = () => {
           <Card cardData={paginatedData} />
 
           {/* Pagination Controls */}
-          <div className="flex items-center justify-center gap-2 my-8">
+          <div className="flex items-center justify-center gap-1.5 my-8 w-full max-w-sm mx-auto px-4">
             {/* Previous Button */}
             <button
               onClick={() => goToPage(page - 1)}
               disabled={page === 1}
-              className={`px-4 py-2 rounded-lg font-amiri font-semibold transition-colors ${
+              className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
                 page === 1
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                   : "bg-[#105A59] text-white hover:bg-[#0d4544]"
               }`}
+              aria-label="Previous page"
             >
-              {toggled ? "পূর্ববর্তী" : "Previous"}
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
             </button>
 
-            {/* Page Numbers */}
-            <div className="flex gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (pageNum) => (
-                  <button
-                    key={pageNum}
-                    onClick={() => goToPage(pageNum)}
-                    className={`w-10 h-10 rounded-lg font-amiri font-semibold transition-colors ${
-                      page === pageNum
-                        ? "bg-[#105A59] text-white"
-                        : "bg-[#E9F7E6] text-[#105A59] hover:bg-[#105A59] hover:text-white"
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                ),
-              )}
+            {/* Page Numbers with Ellipsis */}
+            <div className="flex items-center gap-1.5">
+              {renderPageNumbers()}
             </div>
 
             {/* Next Button */}
             <button
               onClick={() => goToPage(page + 1)}
               disabled={page === totalPages}
-              className={`px-4 py-2 rounded-lg font-amiri font-semibold transition-colors ${
+              className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
                 page === totalPages
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                   : "bg-[#105A59] text-white hover:bg-[#0d4544]"
               }`}
+              aria-label="Next page"
             >
-              {toggled ? "পরবর্তী" : "Next"}
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
             </button>
           </div>
         </div>
