@@ -11,11 +11,23 @@ import istigfar from "../../assets/images/istigfar.png";
 import { ScrollTrigger } from "gsap/all";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Dua = () => {
+  const [toggled, setToggled] = useState(() => {
+    const saved = localStorage.getItem("language");
+    return saved === "bn";
+  });
+  const Language = toggled ? "bn" : "en";
+
+  const setLan = () => {
+    const newToggled = !toggled;
+    setToggled(newToggled);
+    localStorage.setItem("language", newToggled ? "bn" : "en");
+  };
+
   usePageTitle("Dua", " | Dhikr Time");
   const containerRef = useRef(null);
 
@@ -78,9 +90,24 @@ const Dua = () => {
 
         <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
 
+        <div className="relative right-35 md:right-80 lg:right-125 bottom-5">
+          <button
+            onClick={() => setLan()}
+            className={`toggle-btn ${toggled ? "toggled" : ""}`}
+          >
+            <div className="circle">
+              <p className={`en font-amiri ${toggled ? "en-hide" : ""}`}>en</p>
+              <p className={`bn font-amiri ${toggled ? "bn-hide" : ""}`}>bn</p>
+            </div>
+          </button>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center font-bold text-[#105A59] mb-20">
           {/* Link for Morning and Evening Dua */}
-          <Link to="/dua/morning-evening" className="dua-card">
+          <Link
+            to={`/dua/morning-evening?lang=${Language}`}
+            className="dua-card"
+          >
             <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
@@ -90,15 +117,21 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
-                  Morning And Evening
-                </h2>
+                {toggled ? (
+                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                    সকাল এবং সন্ধ্যা
+                  </h2>
+                ) : (
+                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                    Morning and Evening
+                  </h2>
+                )}
               </div>
             </div>
           </Link>
 
           {/* Link for Dua after Salah */}
-          <Link to="/dua/after-salah" className="dua-card">
+          <Link to={`/dua/after-salah?lang=${Language}`} className="dua-card">
             <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
@@ -108,15 +141,21 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
-                  After Salah
-                </h2>
+                {toggled ? (
+                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                    সালাতের পরে
+                  </h2>
+                ) : (
+                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                    After Salah
+                  </h2>
+                )}
               </div>
             </div>
           </Link>
 
           {/* Link for Quranic Dua */}
-          <Link to="/dua/quranic" className="dua-card">
+          <Link to={`/dua/quranic?lang=${Language}`} className="dua-card">
             <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
@@ -126,15 +165,21 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
-                  Quranic Dua
-                </h2>
+                {toggled ? (
+                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                    কুরানের দুয়া
+                  </h2>
+                ) : (
+                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                    Quranic Dua
+                  </h2>
+                )}
               </div>
             </div>
           </Link>
 
           {/* Link for Sunnah Dua */}
-          <Link to="/dua/sunnah" className="dua-card">
+          <Link to={`/dua/sunnah?lang=${Language}`} className="dua-card">
             <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
@@ -144,15 +189,21 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
-                  Sunnah Dua
-                </h2>
+                {toggled ? (
+                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                    সুন্নাত দুয়া
+                  </h2>
+                ) : (
+                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                    Sunnah Dua
+                  </h2>
+                )}
               </div>
             </div>
           </Link>
 
           {/* Link for salawat upon the Prophet (pbuh) */}
-          <Link to="/dua/salawat" className="dua-card">
+          <Link to={`/dua/salawat?lang=${Language}`} className="dua-card">
             <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
@@ -162,15 +213,21 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
-                  Salawat
-                </h2>
+                {toggled ? (
+                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                    দুরুদ
+                  </h2>
+                ) : (
+                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                    Durood
+                  </h2>
+                )}
               </div>
             </div>
           </Link>
 
           {/* Link for Istigfar */}
-          <Link to="/dua/istigfar" className="dua-card">
+          <Link to={`/dua/istigfar?lang=${Language}`} className="dua-card">
             <div className="w-[350px] max-w-md h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
               <div className="flex-1 overflow-hidden card-image-wrapper">
                 <img
@@ -180,9 +237,15 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
-                  Istigfar
-                </h2>
+                {toggled ? (
+                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                    ইস্তিগফার
+                  </h2>
+                ) : (
+                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                    Istigfar
+                  </h2>
+                )}
               </div>
             </div>
           </Link>

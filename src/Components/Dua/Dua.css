@@ -38,3 +38,53 @@
 .hover-card:hover .card-image-wrapper::after {
   opacity: 1;
 }
+
+.toggle-btn {
+  height: 35px;
+  width: 70px;
+  border-radius: 30px;
+  background-color: transparent;
+  border: 2px solid #105a59;
+  outline: none;
+  transition: background-color 0.3s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.circle {
+  height: 25px;
+  width: 25px;
+  background-color: #105a59;
+  border-radius: 30px;
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: left 0.3s ease;
+}
+
+.en {
+  color: #e4f6d9;
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bn {
+  color: #105a59;
+}
+
+.toggle-btn.toggled {
+  background-color: #105a59;
+}
+
+.toggle-btn.toggled .circle {
+  border: 2px solid #105a59;
+  background-color: #e4f6d9;
+  left: calc(70px - 32px);
+}
+
+.toggle-btn.toggled .en {
+  display: none;
+}
