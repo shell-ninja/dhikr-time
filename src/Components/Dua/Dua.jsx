@@ -17,6 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Dua = () => {
   const [toggled, setToggled] = useState(false);
+  const Language = toggled ? "bn" : "en";
   usePageTitle("Dua", " | Dhikr Time");
   const containerRef = useRef(null);
 
