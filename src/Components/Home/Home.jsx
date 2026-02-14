@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -17,6 +17,30 @@ const Home = () => {
   const translationRef = useRef(null);
   const chapterRef = useRef(null);
   const formRef = useRef(null);
+
+  // Get the Language from the Local Storage \\
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "en";
+  });
+
+  // Listen for language changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newLanguage = localStorage.getItem("language") || "en";
+      setLanguage(newLanguage);
+    };
+
+    // Listen for storage events (works across tabs)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event for same-tab changes
+    window.addEventListener("languageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("languageChange", handleStorageChange);
+    };
+  }, []);
 
   useGSAP(() => {
     if (window.innerWidth < 768) return;
@@ -144,19 +168,38 @@ const Home = () => {
               یٰۤاَیُّهَا الَّذِیۡنَ اٰمَنُوا اسۡتَعِیۡنُوۡا بِالصَّبۡرِ وَ
               الصَّلٰوۃِ ؕ اِنَّ اللّٰهَ مَعَ الصّٰبِرِیۡنَ
             </p>
-            <p
-              ref={translationRef}
-              className="mt-6 text-2xl md:text-5 lg:text-6xl font-amiri font-bold text-[#105A59] px-2 md:px-6"
-            >
-              O believers! Seek comfort in patience and prayer. Allah is truly
-              with those who are patient.
-            </p>
-            <p
-              ref={chapterRef}
-              className="mt-5 md:mt-10 text-xl md:text-3xl font-amiri font-normal text-[#105A59]"
-            >
-              Al-Baqarah 2:153
-            </p>
+            {language === "en" ? (
+              <p
+                ref={translationRef}
+                className="mt-6 text-2xl md:text-3xl lg:text-4xl font-amiri font-bold text-[#105A59] px-2 md:px-6"
+              >
+                O you who have believed, seek help through patience and prayer.
+                Indeed, Allah is with the patient.
+              </p>
+            ) : (
+              <p
+                ref={translationRef}
+                className="mt-6 text-xl md:text-3 lg:text-4xl font-balooDa font-bold text-[#105A59] px-2 md:px-6"
+              >
+                হে ঈমানদারগণ! তোমরা সাহায্য চাও সবর ও সালাতের মাধ্যমে। নিশ্চয়ই
+                আল্লাহ্‌ সবরকারীদের সাথে আছেন।
+              </p>
+            )}
+            {language === "en" ? (
+              <p
+                ref={chapterRef}
+                className="mt-5 md:mt-10 text-xl md:text-3xl font-amiri font-normal text-[#105A59]"
+              >
+                Al-Baqarah 2:153
+              </p>
+            ) : (
+              <p
+                ref={chapterRef}
+                className="mt-5 md:mt-10 text-xl md:text-3xl font-balooDa font-normal text-[#105A59]"
+              >
+                আল-বাকারা ২ঃ১৫৩
+              </p>
+            )}
           </div>
         </div>
         {/* ================= OTHER CONTENT ================= */}

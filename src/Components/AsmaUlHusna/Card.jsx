@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -7,6 +7,29 @@ import "../Form/Form.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const Card = ({ cardData }) => {
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "en";
+  });
+
+  // Listen for language changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newLanguage = localStorage.getItem("language") || "en";
+      setLanguage(newLanguage);
+    };
+
+    // Listen for storage events (works across tabs)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event for same-tab changes
+    window.addEventListener("languageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("languageChange", handleStorageChange);
+    };
+  }, []);
+
   const cardsRef = useRef([]);
 
   useGSAP(() => {
@@ -37,18 +60,32 @@ const Card = ({ cardData }) => {
         <div
           key={name}
           ref={(el) => (cardsRef.current[index] = el)}
-          className="w-full max-w-md flex flex-col justify-center items-center border-2 px-10 py-10 rounded-2xl text-center md:text-start form-style"
+          className="asma-card w-full max-w-md flex flex-col justify-center items-center border-2 px-10 py-10 rounded-2xl text-center md:text-start form-style"
         >
           <h2 className="font-normal text-6xl mb-3 font-lateef tracking-wider">
             {info.name}
           </h2>
-          <h2 className="font-bold text-3xl md:text-4xl mb-3 tracking-wider font-amiri">
+          <h2
+            className={`font-bold text-3xl md:text-4xl mb-3 tracking-wider ${
+              language === "en" ? "font-amiri" : "font-balooDa"
+            }`}
+          >
             {info.transliteration}
           </h2>
-          <p className="font-normal text-3xl my-2 font-amiri">
+          <p
+            className={`font-normal text-3xl my-2 ${
+              language === "en" ? "font-amiri" : "font-balooDa"
+            }`}
+          >
             {info.translation}
           </p>
-          <p className="font-normal text-xl mt-10 font-amiri">{info.meaning}</p>
+          <p
+            className={`font-normal text-xl mt-10 ${
+              language === "en" ? "font-amiri" : "font-balooDa"
+            }`}
+          >
+            {info.meaning}
+          </p>
         </div>
       ))}
     </div>

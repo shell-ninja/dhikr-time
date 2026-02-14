@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "./Form.css";
-import { Link } from "react-router-dom";
+import { Link, Links } from "react-router-dom";
 import Times from "../Times/Times";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -40,6 +40,31 @@ const methods = [
 const STORAGE_KEY = "prayerTimesFormData";
 
 const Form = () => {
+  
+  // Get the Language from the Local Storage
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "en";
+  });
+
+  // Listen for language changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newLanguage = localStorage.getItem("language") || "en";
+      setLanguage(newLanguage);
+    };
+
+    // Listen for storage events (works across tabs)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event for same-tab changes
+    window.addEventListener("languageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("languageChange", handleStorageChange);
+    };
+  }, []);
+
   const [selectedSchool, setSelectedSchool] = useState(
     () => localStorage.getItem("prayerSchool") || schools[0],
   );
@@ -428,9 +453,9 @@ const Form = () => {
       <div className="flex flex-col justify-center items-center mb-20 overflow-x-hidden">
         <h1
           ref={titleRef}
-          className="text-5xl text-[#105A59] font-amiri font-bold"
+          className={`text-5xl text-[#105A59] ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold`}
         >
-          Prayer Times
+          {language === "en" ? "Prayer Times" : "সালাতের সময়"}
         </h1>
 
         <div
@@ -445,9 +470,9 @@ const Form = () => {
         >
           <input
             ref={cityInputMobileRef}
-            className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-2xl md:text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
+            className={`h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-2xl md:text-3xl ${language === "en" ? "font-amiri input-en" : "font-balooDa input-bn"} font-bold text-[#105A59] outline-none input-style`}
             type="text"
-            placeholder="City"
+            placeholder={language === "en" ? "City" : <span className="font-balooDa" >শহর</span>}
             value={city}
             onChange={(e) => setCity(e.target.value)}
             required
@@ -457,9 +482,9 @@ const Form = () => {
           <div className="relative w-[274px] z-40">
             <input
               ref={countryInputMobileRef}
-              className="h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-2xl md:text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
+              className={`h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-2xl md:text-3xl ${language === "en" ? "font-amiri input-en" : "font-balooDa input-bn"} font-bold text-[#105A59] outline-none input-style`}
               type="text"
-              placeholder="Country"
+              placeholder={language === "en" ? "Country" : "দেশ"}
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               onKeyDown={handleCountryKeyDown}
@@ -490,7 +515,9 @@ const Form = () => {
               countrySuggestions.length === 0 &&
               country.trim() !== "" && (
                 <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] p-4 text-[#E4F6D9] text-center text-xl font-amiri z-50 shadow-lg">
-                  No countries found
+                  {language === "en"
+                    ? "No countries found"
+                    : (<span className="font-balooDa" >কোন দেশ পাওয়া যায়নি</span>)}
                 </div>
               )}
           </div>
@@ -498,7 +525,11 @@ const Form = () => {
           {/* School Dropdown */}
           <div ref={schoolDropdownMobileRef} className="w-[274px] z-30">
             <label className="mt-5 text-xl font-amiri font-bold text-[#105A59] text-start w-[274px]">
-              Select a School
+              {language === "en" ? (
+                "Select a School"
+              ) : (
+                <span className="font-balooDa font-normal">মাজহাব</span>
+              )}
             </label>
             <div className="relative w-[274px]">
               <div
@@ -530,7 +561,13 @@ const Form = () => {
           {/* Method Dropdown */}
           <div ref={methodDropdownMobileRef} className="w-[274px] z-20">
             <label className="mt-5 text-xl font-amiri font-bold text-[#105A59] text-start w-[274px]">
-              Select a Method
+              {language === "en" ? (
+                "Select a Method"
+              ) : (
+                <Link className="font-bold" to="/methods">
+                  গণনা পদ্ধতি
+                </Link>
+              )}
             </label>
             <div className="relative w-[274px]">
               <div
@@ -556,20 +593,14 @@ const Form = () => {
                   ))}
                 </div>
               )}
-              <p className="text-[#105A59] font-medium font-amiri text-xl md:text-2xl mt-2">
-                Learn more about
-                <span className="font-bold">
-                  <Link to="/methods"> Methods</Link>
-                </span>
-              </p>
             </div>
           </div>
 
           <input
             ref={submitBtnMobileRef}
-            className="h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl font-amiri font-bold mt-6 cursor-pointer btn-submit"
+            className={`h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold mt-6 cursor-pointer btn-submit`}
             type="submit"
-            value="Find"
+            value={language === "en" ? "Find" : "খুঁজুন"}
           />
         </form>
 
@@ -581,9 +612,9 @@ const Form = () => {
           <div className="flex justify-center items-start gap-5">
             <input
               ref={cityInputDesktopRef}
-              className="h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
+              className={`h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style ${language === "en" ? "input-en" : "input-bn" }`}
               type="text"
-              placeholder="City"
+              placeholder={language === "en" ? "City" : "শহর"}
               value={city}
               onChange={(e) => setCity(e.target.value)}
               required
@@ -593,9 +624,9 @@ const Form = () => {
             <div className="relative w-[350px] z-40">
               <input
                 ref={countryInputDesktopRef}
-                className="h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style"
+                className={`h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style ${language === "en" ? "input-en" : "input-bn" }`}
                 type="text"
-                placeholder="Country"
+                placeholder={language === "en" ? "Country" : "দেশ"}
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 onKeyDown={handleCountryKeyDown}
@@ -626,7 +657,13 @@ const Form = () => {
                 countrySuggestions.length === 0 &&
                 country.trim() !== "" && (
                   <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] p-4 text-[#E4F6D9] text-center text-xl font-amiri z-50 shadow-lg">
-                    No countries found
+                    {language === "en" ? (
+                      "No countries found"
+                    ) : (
+                      <span className="font-balooDa">
+                        কোন দেশ পাওয়া যায়নি
+                      </span>
+                    )}
                   </div>
                 )}
             </div>
@@ -639,7 +676,11 @@ const Form = () => {
               className="relative w-[350px] z-30"
             >
               <label className="text-xl font-amiri font-bold text-[#105A59] text-start w-full mb-2">
-                Select a School
+                {language === "en" ? (
+                  "Select a School"
+                ) : (
+                  <span className="font-balooDa font-normal">মাজহাব</span>
+                )}
               </label>
               <div
                 className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
@@ -671,8 +712,14 @@ const Form = () => {
               ref={methodDropdownDesktopRef}
               className="relative w-[350px] z-20"
             >
-              <label className="text-xl font-amiri font-bold text-[#105A59] text-start w-full mb-2">
-                Select a Method
+              <label className="text-xl font-balooDa font-normal text-[#105A59] text-start w-full mb-2">
+                {language === "en" ? (
+                  "Select a Method"
+                ) : (
+                  <Link className="font-bold" to="/methods">
+                    গণনা পদ্ধতি
+                  </Link>
+                )}
               </label>
               <div
                 className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
@@ -697,20 +744,14 @@ const Form = () => {
                   ))}
                 </div>
               )}
-              <p className="text-[#105A59] font-medium font-amiri text-xl md:text-2xl mt-2">
-                Learn more about
-                <span className="font-bold">
-                  <Link to="/methods"> Methods</Link>
-                </span>
-              </p>
             </div>
           </div>
 
           <input
             ref={submitBtnDesktopRef}
-            className="h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl font-amiri font-bold mt-6 cursor-pointer btn-submit"
+            className={`h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl ${language === "en" ? "font-amiri" : "font-balooDa"}  font-bold mt-6 cursor-pointer btn-submit`}
             type="submit"
-            value="Find"
+            value={language === "en" ? "Find" : "খুঁজুন"}
           />
         </form>
 
