@@ -40,7 +40,6 @@ const methods = [
 const STORAGE_KEY = "prayerTimesFormData";
 
 const Form = () => {
-  
   // Get the Language from the Local Storage
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem("language") || "en";
@@ -472,7 +471,7 @@ const Form = () => {
             ref={cityInputMobileRef}
             className={`h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-2xl md:text-3xl ${language === "en" ? "font-amiri input-en" : "font-balooDa input-bn"} font-bold text-[#105A59] outline-none input-style`}
             type="text"
-            placeholder={language === "en" ? "City" : <span className="font-balooDa" >শহর</span>}
+            placeholder={language === "en" ? "City" : "শহর"}
             value={city}
             onChange={(e) => setCity(e.target.value)}
             required
@@ -515,9 +514,11 @@ const Form = () => {
               countrySuggestions.length === 0 &&
               country.trim() !== "" && (
                 <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] p-4 text-[#E4F6D9] text-center text-xl font-amiri z-50 shadow-lg">
-                  {language === "en"
-                    ? "No countries found"
-                    : (<span className="font-balooDa" >কোন দেশ পাওয়া যায়নি</span>)}
+                  {language === "en" ? (
+                    "No countries found"
+                  ) : (
+                    <span className="font-balooDa">কোন দেশ পাওয়া যায়নি</span>
+                  )}
                 </div>
               )}
           </div>
@@ -612,7 +613,7 @@ const Form = () => {
           <div className="flex justify-center items-start gap-5">
             <input
               ref={cityInputDesktopRef}
-              className={`h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style ${language === "en" ? "input-en" : "input-bn" }`}
+              className={`h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style ${language === "en" ? "input-en" : "input-bn"}`}
               type="text"
               placeholder={language === "en" ? "City" : "শহর"}
               value={city}
@@ -624,7 +625,7 @@ const Form = () => {
             <div className="relative w-[350px] z-40">
               <input
                 ref={countryInputDesktopRef}
-                className={`h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style ${language === "en" ? "input-en" : "input-bn" }`}
+                className={`h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style ${language === "en" ? "input-en" : "input-bn"}`}
                 type="text"
                 placeholder={language === "en" ? "Country" : "দেশ"}
                 value={country}
