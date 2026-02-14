@@ -81,9 +81,15 @@ const Dua = () => {
         ref={containerRef}
         className="min-h-screen flex flex-col justify-center items-center px-8 md:px-20"
       >
-        <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-20 md:mt-10">
-          Dua
-        </h1>
+        {toggled ? (
+          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-20 md:mt-10">
+            দু'আ
+          </h1>
+        ) : (
+          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-20 md:mt-10">
+            Dua
+          </h1>
+        )}
 
         <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
 
@@ -95,7 +101,11 @@ const Dua = () => {
           >
             <div className="circle">
               <p className={`en font-amiri ${toggled ? "en-hide" : ""}`}>en</p>
-              <p className={`bn font-amiri ${toggled ? "bn-hide" : ""}`}>bn</p>
+              <p
+                className={`bn font-balooDa text-sm ${toggled ? "bn-hide" : ""}`}
+              >
+                বাং
+              </p>
             </div>
           </button>
         </div>
@@ -116,11 +126,11 @@ const Dua = () => {
               </div>
               <div className="py-3 px-4 bg-transparent">
                 {toggled ? (
-                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal font-balooDa text-xl text-center tracking-wider">
                     সকাল এবং সন্ধ্যা
                   </h2>
                 ) : (
-                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-2xl text-center font-amiri tracking-wider">
                     Morning and Evening
                   </h2>
                 )}
@@ -143,11 +153,11 @@ const Dua = () => {
               </div>
               <div className="py-3 px-4 bg-transparent">
                 {toggled ? (
-                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     সালাতের পরে
                   </h2>
                 ) : (
-                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-2xl text-center font-amiri tracking-wider">
                     After Salah
                   </h2>
                 )}
@@ -170,11 +180,11 @@ const Dua = () => {
               </div>
               <div className="py-3 px-4 bg-transparent">
                 {toggled ? (
-                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     কুরানের দুয়া
                   </h2>
                 ) : (
-                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-2xl text-center font-amiri tracking-wider">
                     Quranic Dua
                   </h2>
                 )}
@@ -197,11 +207,11 @@ const Dua = () => {
               </div>
               <div className="py-3 px-4 bg-transparent">
                 {toggled ? (
-                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     সুন্নাত দুয়া
                   </h2>
                 ) : (
-                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-2xl text-center font-amiri tracking-wider">
                     Sunnah Dua
                   </h2>
                 )}
@@ -224,11 +234,11 @@ const Dua = () => {
               </div>
               <div className="py-3 px-4 bg-transparent">
                 {toggled ? (
-                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     দুরুদ
                   </h2>
                 ) : (
-                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-2xl text-center font-amiri tracking-wider">
                     Durood
                   </h2>
                 )}
@@ -251,11 +261,11 @@ const Dua = () => {
               </div>
               <div className="py-3 px-4 bg-transparent">
                 {toggled ? (
-                  <h2 className="font-normal text-xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     ইস্তিগফার
                   </h2>
                 ) : (
-                  <h2 className="font-normal text-2xl text-center font-lateef tracking-wider">
+                  <h2 className="font-normal text-2xl text-center font-amiri tracking-wider">
                     Istigfar
                   </h2>
                 )}

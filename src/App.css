@@ -5,6 +5,7 @@
 @theme {
   --font-amiri: "Amiri", sans-serif;
   --font-lateef: "Lateef", sans-serif;
+  --font-balooDa: "Baloo Da 2", sans-serif;
 }
 
 * {
@@ -30,4 +31,3 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-
