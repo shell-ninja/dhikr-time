@@ -1,5 +1,5 @@
 import PageTransition from "../../../Hooks/PageTransition";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../Pages.css";
 import { usePageTitle } from "../../../Hooks/pageName";
 import useSWR from "swr";
@@ -17,12 +17,33 @@ const MorningEvening = () => {
   usePageTitle("Morning and Evening | Dua", " | Dhikr Time");
 
   // Getting the Language from "Dua" component
-  const Language = localStorage.getItem("language") || "en";
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "en";
+  });
+
+  // Listen for language changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newLanguage = localStorage.getItem("language") || "en";
+      setLanguage(newLanguage);
+    };
+
+    // Listen for storage events (works across tabs)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event for same-tab changes
+    window.addEventListener("languageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("languageChange", handleStorageChange);
+    };
+  }, []);
 
   // const url = `https://dua-and-dhikr.onrender.com/${Language}/morning-evening`; // renrer
-  const url = `https://dua-and-dhikr.vercel.app/${Language}/morning-evening`; // vercel
+  const url = `https://dua-and-dhikr.vercel.app/${language}/morning-evening`; // vercel
   // const url = `http://localhost:3000/${Language}/morning-evening`; // to test the app (api)
-  
+
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   if (isLoading) return <Loader />;
@@ -103,15 +124,19 @@ const MorningEvening = () => {
         className="min-h-screen flex flex-col items-center px-6 md:px-10 py-20"
       >
         {/* Title Section */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-amiri font-bold text-[#105A59] text-center mt-10 md:mt-0 px-4">
+        <h1
+          className={`text-4xl md:text-5xl lg:text-6xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-[#105A59] text-center mt-10 md:mt-0 px-4`}
+        >
           {data?.name || "Morning and Evening Duas"}
         </h1>
 
         <div className="h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
 
         {/* Page Info */}
-        <p className="text-sm text-[#105A59] mb-6 font-amiri">
-          {Language === "bn"
+        <p
+          className={`text-xl text-[#105A59] mb-6 ${language === "en" ? "font-amiri" : "font-balooDa"}`}
+        >
+          {language === "bn"
             ? `পৃষ্ঠা ${currentPage} / ${totalPages}`
             : `Page ${currentPage} of ${totalPages}`}
         </p>
@@ -129,10 +154,14 @@ const MorningEvening = () => {
                 className="w-full px-6 py-5 flex items-center justify-between hover:bg-[#E9F7E6] transition-colors duration-200"
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-2xl font-amiri font-bold text-[#105A59] bg-[#E9F7E6] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span
+                    className={`text-2xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-[#105A59] bg-[#E9F7E6] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0`}
+                  >
                     {dua.id}
                   </span>
-                  <h3 className="text-xl md:text-2xl font-amiri font-semibold text-[#105A59] text-left">
+                  <h3
+                    className={`text-xl md:text-2xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] text-left`}
+                  >
                     {dua.name}
                   </h3>
                 </div>
@@ -166,8 +195,10 @@ const MorningEvening = () => {
                 <div className="px-6 pb-6 space-y-6 border-t-2 border-[#105A59] bg-transparent">
                   {/* Arabic Dua */}
                   <div className="pt-6">
-                    <h4 className="text-xl font-amiri font-semibold text-[#105A59] mb-3">
-                      {Language === "bn" ? "দু'আ:" : "Dua:"}
+                    <h4
+                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-3`}
+                    >
+                      {language === "bn" ? "দু'আ:" : "Dua:"}
                     </h4>
                     <p className="text-3xl md:text-5xl font-lateef text-[#105A59] leading-loose text-right">
                       {dua.dua}
@@ -177,8 +208,10 @@ const MorningEvening = () => {
                   {/* Note */}
                   {dua.note ? (
                     <div>
-                      <h4 className="text-xl font-amiri font-semibold text-[#105A59]">
-                        {Language === "bn" ? "নোট:" : "Note:"}
+                      <h4
+                        className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"}  font-semibold text-[#105A59]`}
+                      >
+                        {language === "bn" ? "নোট:" : "Note:"}
                       </h4>
                       <p className="text-xl md:text-2xl font-lateef text-[#105A59] leading-relaxed">
                         {dua.note}
@@ -190,11 +223,13 @@ const MorningEvening = () => {
 
                   {/* Translation */}
                   <div>
-                    <h4 className="text-xl font-amiri font-semibold text-[#105A59] mb-3">
-                      {Language === "bn" ? "অনুবাদ:" : "Translation:"}
+                    <h4
+                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-3`}
+                    >
+                      {language === "bn" ? "অনুবাদ:" : "Translation:"}
                     </h4>
                     <p
-                      className={`text-2xl {${Language === "bn" ? "md:text-3xl" : "md:text-4xl"}}  font-lateef text-[#105A59] leading-relaxed`}
+                      className={`text-2xl {${language === "bn" ? "md:text-3xl" : "md:text-4xl"}} ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] leading-relaxed`}
                     >
                       {dua.translation}
                     </p>
@@ -223,16 +258,20 @@ const MorningEvening = () => {
                           <circle cx="16" cy="18" r="1.5" />
                         </svg>
                         <div>
-                          <h4 className="text-base font-amiri font-semibold text-[#105A59] mb-1">
-                            {Language === "bn" ? "তিলাওয়াত:" : "Recite:"}
+                          <h4
+                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-1`}
+                          >
+                            {language === "bn" ? "তিলাওয়াত:" : "Recite:"}
                           </h4>
-                          <p className="text-xl font-amiri text-[#105A59] font-bold">
+                          <p
+                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] font-bold`}
+                          >
                             {dua.times}{" "}
                             {dua.times === "1" || dua.times === 1
-                              ? Language === "bn"
+                              ? language === "bn"
                                 ? "বার"
                                 : "time"
-                              : Language === "bn"
+                              : language === "bn"
                                 ? "বার"
                                 : "times"}
                           </p>
@@ -257,10 +296,14 @@ const MorningEvening = () => {
                           />
                         </svg>
                         <div>
-                          <h4 className="text-base font-amiri font-semibold text-[#105A59] mb-1">
-                            {Language === "bn" ? "রেফারেন্স:" : "Reference:"}
+                          <h4
+                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-1`}
+                          >
+                            {language === "bn" ? "রেফারেন্স:" : "Reference:"}
                           </h4>
-                          <p className="text-xl font-amiri text-[#105A59] italic">
+                          <p
+                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] italic`}
+                          >
                             {dua.reference}
                           </p>
                         </div>
