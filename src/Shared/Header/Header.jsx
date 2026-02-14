@@ -66,10 +66,21 @@ const Header = () => {
     return saved === "bn";
   });
 
+  // const handleToggle = useCallback(() => {
+  //   setToggled((prev) => {
+  //     const next = !prev;
+  //     localStorage.setItem("language", next ? "bn" : "en");
+  //     return next;
+  //   });
+  // }, []);
   const handleToggle = useCallback(() => {
     setToggled((prev) => {
       const next = !prev;
       localStorage.setItem("language", next ? "bn" : "en");
+
+      // Dispatch custom event for same-tab updates
+      window.dispatchEvent(new Event("languageChange"));
+
       return next;
     });
   }, []);

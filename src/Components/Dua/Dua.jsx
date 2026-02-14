@@ -11,25 +11,36 @@ import istigfar from "../../assets/images/istigfar.png";
 import { ScrollTrigger } from "gsap/all";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Dua = () => {
-  const [toggled, setToggled] = useState(() => {
-    const saved = localStorage.getItem("language");
-    return saved === "bn";
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "en";
   });
-  const Language = toggled ? "bn" : "en";
-
-  const setLan = () => {
-    const newToggled = !toggled;
-    setToggled(newToggled);
-    localStorage.setItem("language", newToggled ? "bn" : "en");
-  };
 
   usePageTitle("Dua", " | Dhikr Time");
   const containerRef = useRef(null);
+
+  // Listen for language changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newLanguage = localStorage.getItem("language") || "en";
+      setLanguage(newLanguage);
+    };
+
+    // Listen for storage events (works across tabs)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event for same-tab changes
+    window.addEventListener("languageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("languageChange", handleStorageChange);
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -81,7 +92,7 @@ const Dua = () => {
         ref={containerRef}
         className="min-h-screen flex flex-col justify-center items-center px-8 md:px-20"
       >
-        {toggled ? (
+        {language === "bn" ? (
           <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-20 md:mt-10">
             দু'আ
           </h1>
@@ -93,27 +104,10 @@ const Dua = () => {
 
         <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
 
-        {/* Toggle button — aligned to the grid's left edge */}
-        <div className="w-full max-w-[1150px] flex justify-start pl-2 mb-4 -mt-6">
-          <button
-            onClick={() => setLan()}
-            className={`toggle-btn ${toggled ? "toggled" : ""}`}
-          >
-            <div className="circle">
-              <p className={`en font-amiri ${toggled ? "en-hide" : ""}`}>en</p>
-              <p
-                className={`bn font-balooDa text-sm ${toggled ? "bn-hide" : ""}`}
-              >
-                বাং
-              </p>
-            </div>
-          </button>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center font-bold text-[#105A59] mb-20 w-full max-w-[1150px]">
           {/* Morning and Evening */}
           <Link
-            to={`/dua/morning-evening?lang=${Language}`}
+            to={`/dua/morning-evening?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
           >
             <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
@@ -125,7 +119,7 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                {toggled ? (
+                {language === "bn" ? (
                   <h2 className="font-normal font-balooDa text-xl text-center tracking-wider">
                     সকাল এবং সন্ধ্যা
                   </h2>
@@ -140,7 +134,7 @@ const Dua = () => {
 
           {/* After Salah */}
           <Link
-            to={`/dua/after-salah?lang=${Language}`}
+            to={`/dua/after-salah?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
           >
             <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
@@ -152,7 +146,7 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                {toggled ? (
+                {language === "bn" ? (
                   <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     সালাতের পরে
                   </h2>
@@ -167,7 +161,7 @@ const Dua = () => {
 
           {/* Quranic Dua */}
           <Link
-            to={`/dua/quranic?lang=${Language}`}
+            to={`/dua/quranic?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
           >
             <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
@@ -179,7 +173,7 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                {toggled ? (
+                {language === "bn" ? (
                   <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     কুরানের দুয়া
                   </h2>
@@ -194,7 +188,7 @@ const Dua = () => {
 
           {/* Sunnah Dua */}
           <Link
-            to={`/dua/sunnah?lang=${Language}`}
+            to={`/dua/sunnah?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
           >
             <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
@@ -206,7 +200,7 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                {toggled ? (
+                {language === "bn" ? (
                   <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     সুন্নাত দুয়া
                   </h2>
@@ -221,7 +215,7 @@ const Dua = () => {
 
           {/* Salawat / Durood */}
           <Link
-            to={`/dua/salawat?lang=${Language}`}
+            to={`/dua/salawat?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
           >
             <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
@@ -233,7 +227,7 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                {toggled ? (
+                {language === "bn" ? (
                   <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     দুরুদ
                   </h2>
@@ -248,7 +242,7 @@ const Dua = () => {
 
           {/* Istigfar */}
           <Link
-            to={`/dua/istigfar?lang=${Language}`}
+            to={`/dua/istigfar?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
           >
             <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
@@ -260,7 +254,7 @@ const Dua = () => {
                 />
               </div>
               <div className="py-3 px-4 bg-transparent">
-                {toggled ? (
+                {language === "bn" ? (
                   <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
                     ইস্তিগফার
                   </h2>

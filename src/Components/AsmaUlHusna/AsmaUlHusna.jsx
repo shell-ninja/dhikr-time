@@ -1,34 +1,79 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import useSWR from "swr";
 import Card from "./Card";
 import Loader from "../../Hooks/Loader";
 import PageTransition from "../../Hooks/PageTransition";
-import "./AsmaUlHusna.css";
 import ErrorGPT from "../../Hooks/ErrorGPT";
 import { usePageTitle } from "../../Hooks/pageName";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const ITEMS_PER_PAGE = 9;
 
 const AsmaUlHusna = () => {
   usePageTitle("Asma Ul Husna", " | Dhikr Time");
-  const [toggled, setToggled] = useState(
-    () => localStorage.getItem("language") === "bn",
-  );
+
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "en";
+  });
+
   const [page, setPage] = useState(1);
+  const containerRef = useRef(null);
 
   const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
-  const LANGUAGE = toggled ? "bn" : "en";
 
-  const setLan = () => {
-    const newToggled = !toggled;
-    setToggled(newToggled);
-    localStorage.setItem("language", newToggled ? "bn" : "en");
-  };
+  // Listen for language changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newLanguage = localStorage.getItem("language") || "en";
+      setLanguage(newLanguage);
+    };
 
-  const url = `https://islamicapi.com/api/v1/asma-ul-husna/?language=${LANGUAGE}&api_key=${API_KEY}`;
+    // Listen for storage events (works across tabs)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event for same-tab changes
+    window.addEventListener("languageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("languageChange", handleStorageChange);
+    };
+  }, []);
+
+  const url = `https://islamicapi.com/api/v1/asma-ul-husna/?language=${language}&api_key=${API_KEY}`;
 
   const { data, error, isLoading } = useSWR(url, fetcher);
+
+  // GSAP Animations
+  useGSAP(
+    () => {
+      gsap.from(".asma-title", {
+        y: -50,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+
+      gsap.from(".asma-line", {
+        scaleX: 0,
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.3,
+        ease: "power3.out",
+      });
+
+      gsap.from(".page-info", {
+        y: 20,
+        opacity: 0,
+        duration: 0.6,
+        delay: 0.5,
+        ease: "power3.out",
+      });
+    },
+    { scope: containerRef, dependencies: [language] },
+  );
 
   if (isLoading) return <Loader />;
   if (error) return <ErrorGPT />;
@@ -99,31 +144,22 @@ const AsmaUlHusna = () => {
   return (
     <>
       <PageTransition>
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="text-5xl text-[#105A59] font-amiri font-bold mt-20">
-            {LANGUAGE == "en" ? "Asma Ul Husna" : "আসমা উল হুসনা"}
+        <div
+          ref={containerRef}
+          className="flex flex-col justify-center items-center"
+        >
+          <h1 className={`asma-title text-5xl text-[#105A59] ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold mt-20`}>
+            {language === "en" ? "Asma Ul Husna" : "আসমা উল হুসনা"}
           </h1>
-          <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
-        </div>
+          <div className="asma-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
 
-        <div className="relative left-10 bottom-5">
-          <button
-            onClick={() => setLan()}
-            className={`toggle-btn ${toggled ? "toggled" : ""}`}
-          >
-            <div className="circle">
-              <p className={`en font-amiri ${toggled ? "en-hide" : ""}`}>en</p>
-              <p className={`bn font-amiri ${toggled ? "bn-hide" : ""}`}>bn</p>
-            </div>
-          </button>
+          {/* Page Info */}
+          <p className={`page-info text-xl text-[#105A59] mb-6 ${language === "en" ? "font-amiri" : "font-balooDa"} text-center`}>
+            {language === "bn"
+              ? `পৃষ্ঠা ${page} / ${totalPages}`
+              : `Page ${page} of ${totalPages}`}
+          </p>
         </div>
-
-        {/* Page Info */}
-        <p className="text-sm text-[#105A59] mb-6 font-amiri text-center">
-          {toggled
-            ? `পৃষ্ঠা ${page} / ${totalPages}`
-            : `Page ${page} of ${totalPages}`}
-        </p>
 
         <div className="px-10">
           <Card cardData={paginatedData} />

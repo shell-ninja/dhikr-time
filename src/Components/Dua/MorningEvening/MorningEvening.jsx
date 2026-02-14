@@ -19,8 +19,10 @@ const MorningEvening = () => {
   // Getting the Language from "Dua" component
   const Language = localStorage.getItem("language") || "en";
 
-  const url = `https://dua-and-dhikr.onrender.com/${Language}/morning-evening`;
-
+  // const url = `https://dua-and-dhikr.onrender.com/${Language}/morning-evening`; // renrer
+  const url = `https://dua-and-dhikr.vercel.app/${Language}/morning-evening`; // vercel
+  // const url = `http://localhost:3000/${Language}/morning-evening`; // to test the app (api)
+  
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   if (isLoading) return <Loader />;
@@ -167,17 +169,33 @@ const MorningEvening = () => {
                     <h4 className="text-xl font-amiri font-semibold text-[#105A59] mb-3">
                       {Language === "bn" ? "দু'আ:" : "Dua:"}
                     </h4>
-                    <p className="text-2xl md:text-4xl font-lateef text-[#105A59] leading-loose text-right">
+                    <p className="text-3xl md:text-5xl font-lateef text-[#105A59] leading-loose text-right">
                       {dua.dua}
                     </p>
                   </div>
+
+                  {/* Note */}
+                  {dua.note ? (
+                    <div>
+                      <h4 className="text-xl font-amiri font-semibold text-[#105A59]">
+                        {Language === "bn" ? "নোট:" : "Note:"}
+                      </h4>
+                      <p className="text-xl md:text-2xl font-lateef text-[#105A59] leading-relaxed">
+                        {dua.note}
+                      </p>
+                    </div>
+                  ) : (
+                    ""
+                  )}
 
                   {/* Translation */}
                   <div>
                     <h4 className="text-xl font-amiri font-semibold text-[#105A59] mb-3">
                       {Language === "bn" ? "অনুবাদ:" : "Translation:"}
                     </h4>
-                    <p className="text-xl md:text-2xl font-lateef text-[#105A59] leading-relaxed">
+                    <p
+                      className={`text-2xl {${Language === "bn" ? "md:text-3xl" : "md:text-4xl"}}  font-lateef text-[#105A59] leading-relaxed`}
+                    >
                       {dua.translation}
                     </p>
                   </div>

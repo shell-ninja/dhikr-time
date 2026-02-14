@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import useSWR from "swr";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -22,6 +22,29 @@ const fetcher = async (url) => {
 };
 
 const Times = ({ formData }) => {
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "en";
+  });
+
+  // Listen for language changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newLanguage = localStorage.getItem("language") || "en";
+      setLanguage(newLanguage);
+    };
+
+    // Listen for storage events (works across tabs)
+    window.addEventListener("storage", handleStorageChange);
+
+    // Custom event for same-tab changes
+    window.addEventListener("languageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("languageChange", handleStorageChange);
+    };
+  }, []);
+
   const {
     City: city,
     Country: country,
@@ -114,6 +137,28 @@ const Times = ({ formData }) => {
 
   if (!date || !times) return <ErrorGPT />;
 
+  // Prayer names translations
+  const prayerNames = {
+    en: {
+      Fajr: "Fajr",
+      Sunrise: "Sunrise",
+      Dhuhr: "Dhuhr",
+      Asr: "Asr",
+      Maghrib: "Maghrib",
+      Isha: "Isha",
+      Tahajjud: "Tahajjud",
+    },
+    bn: {
+      Fajr: "ফজর",
+      Sunrise: "সূর্যোদয়",
+      Dhuhr: "যুহর",
+      Asr: "আসর",
+      Maghrib: "মাগরিব",
+      Isha: "ইশা",
+      Tahajjud: "তাহাজ্জুদ",
+    },
+  };
+
   const prayerTimes = {
     Fajr: times.Fajr,
     Sunrise: times.Sunrise,
@@ -124,10 +169,46 @@ const Times = ({ formData }) => {
     Tahajjud: times.Lastthird,
   };
 
+  // Convert English numerals to Bengali numerals
+  const toBengaliNumber = (num) => {
+    const bengaliNumerals = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+    return num.toString().split("").map(d => bengaliNumerals[parseInt(d)]).join("");
+  };
+
+  // Format date based on language
+  const formatDate = (dateObj) => {
+    if (language === "bn") {
+      // Bengali month names
+      const monthsBn = [
+        "জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
+        "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"
+      ];
+      
+      // Parse the readable date (e.g., "14 February, 2026")
+      const parts = dateObj.readable.split(" ");
+      const day = toBengaliNumber(parseInt(parts[0]));
+      const monthIndex = new Date(Date.parse(parts[1] + " 1, 2000")).getMonth();
+      const month = monthsBn[monthIndex];
+      const year = toBengaliNumber(parts[2].replace(",", ""));
+      
+      return `${day} ${month}, ${year}`;
+    }
+    
+    return dateObj.readable;
+  };
+
   const formatTime = (time) => {
     const [h, m] = time.split(":").map(Number);
     const hour = h % 12 || 12;
     const period = h >= 12 ? "PM" : "AM";
+    const periodBn = h >= 12 ? "অপরাহ্ন" : "পূর্বাহ্ন";
+    
+    if (language === "bn") {
+      const hourBn = toBengaliNumber(hour);
+      const minuteBn = toBengaliNumber(m.toString().padStart(2, "0"));
+      return `${hourBn}:${minuteBn} ${periodBn}`;
+    }
+    
     return `${hour}:${m.toString().padStart(2, "0")} ${period}`;
   };
 
@@ -135,14 +216,18 @@ const Times = ({ formData }) => {
     <div className="flex flex-col justify-center items-center my-20 px-4">
       <h1
         ref={dateRef}
-        className="text-4xl md:text-5xl font-amiri font-bold text-[#105A59]"
+        className={`text-4xl md:text-5xl font-bold text-[#105A59] ${
+          language === "bn" ? "font-balooDa" : "font-amiri"
+        }`}
       >
-        {date.readable}
+        {formatDate(date)}
       </h1>
 
       <h3
         ref={locationRef}
-        className="text-2xl md:text-3xl font-amiri font-bold text-[#105A59] mt-3"
+        className={`text-2xl md:text-3xl font-bold text-[#105A59] mt-3 ${
+          language === "bn" ? "font-balooDa" : "font-amiri"
+        }`}
       >
         {city}, {country}
       </h3>
@@ -161,11 +246,19 @@ const Times = ({ formData }) => {
               index === 6 ? "md:col-span-2 lg:col-span-3" : ""
             }`}
           >
-            <h4 className="text-2xl md:text-3xl font-amiri font-bold text-[#105A59] mb-4">
-              {name}
+            <h4
+              className={`text-2xl md:text-3xl font-bold text-[#105A59] mb-4 ${
+                language === "bn" ? "font-balooDa" : "font-amiri"
+              }`}
+            >
+              {prayerNames[language][name]}
             </h4>
 
-            <p className="text-3xl md:text-4xl font-amiri font-bold text-[#105A59]">
+            <p
+              className={`text-3xl md:text-4xl font-bold text-[#105A59] ${
+                language === "bn" ? "font-balooDa" : "font-amiri"
+              }`}
+            >
               {formatTime(time)}
             </p>
           </div>
