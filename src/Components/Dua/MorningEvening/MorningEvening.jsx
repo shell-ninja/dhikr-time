@@ -5,6 +5,7 @@ import { usePageTitle } from "../../../Hooks/pageName";
 import useSWR from "swr";
 import Loader from "../../../Hooks/Loader";
 import ErrorGPT from "../../../Hooks/ErrorGPT";
+import "./MorningEvening.css";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -42,7 +43,7 @@ const MorningEvening = () => {
 
   // const url = `https://dua-and-dhikr.onrender.com/${Language}/morning-evening`; // renrer
   const url = `https://dua-and-dhikr.vercel.app/${language}/morning-evening`; // vercel
-  // const url = `http://localhost:3000/${Language}/morning-evening`; // to test the app (api)
+  // const url = `http://localhost:3000/${language}/morning-evening`; // to test the app (api)
 
   const { data, error, isLoading } = useSWR(url, fetcher);
 
@@ -213,9 +214,10 @@ const MorningEvening = () => {
                       >
                         {language === "bn" ? "নোট:" : "Note:"}
                       </h4>
-                      <p className="text-xl md:text-2xl font-lateef text-[#105A59] leading-relaxed">
-                        {dua.note}
-                      </p>
+                      <p
+                        dangerouslySetInnerHTML={{ __html: dua.note }}
+                        className="text-xl md:text-2xl font-lateef text-[#105A59] leading-relaxed"
+                      />
                     </div>
                   ) : (
                     ""
