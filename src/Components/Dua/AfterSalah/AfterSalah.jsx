@@ -1,158 +1,379 @@
 import PageTransition from "../../../Hooks/PageTransition";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../Pages.css";
 import { usePageTitle } from "../../../Hooks/pageName";
+import useSWR from "swr";
+import Loader from "../../../Hooks/Loader";
+import ErrorGPT from "../../../Hooks/ErrorGPT";
+import "./AfterSalah.css";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const AfterSalah = () => {
   const containerRef = useRef(null);
-  usePageTitle("After salah | Dua", " | Dhikr Time");
+  const [expandedCard, setExpandedCard] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-  useGSAP(
-    () => {
-      // Animate title
-      gsap.from(".dua-title", {
-        y: -50,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      });
+  usePageTitle("Morning and Evening | Dua", " | Dhikr Time");
 
-      // Animate line
-      gsap.from(".dua-line", {
-        scaleX: 0,
-        opacity: 0,
-        duration: 0.8,
-        delay: 0.3,
-        ease: "power3.out",
-      });
+  // Getting the Language from "Dua" component
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "en";
+  });
 
-      // Animate content card
-      gsap.from(".content-card", {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        delay: 0.6,
-        ease: "back.out(1.7)",
-      });
+  // Listen for language changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newLanguage = localStorage.getItem("language") || "en";
+      setLanguage(newLanguage);
+    };
 
-      // Animate decorative elements
-      gsap.from(".deco-circle", {
-        scale: 0,
-        opacity: 0,
-        duration: 1,
-        delay: 0.9,
-        stagger: 0.1,
-        ease: "elastic.out(1, 0.5)",
-      });
+    // Listen for storage events (works across tabs)
+    window.addEventListener("storage", handleStorageChange);
 
-      // Floating animation for decorative elements
-      gsap.to(".deco-circle", {
-        y: -10,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        stagger: 0.2,
-      });
-    },
-    { scope: containerRef },
-  );
+    // Custom event for same-tab changes
+    window.addEventListener("languageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("languageChange", handleStorageChange);
+    };
+  }, []);
+
+  // const url = `https://dua-and-dhikr.onrender.com/${Language}/morning-evening`; // renrer
+  const url = `https://dua-and-dhikr.vercel.app/${language}/morning-evening`; // vercel
+  // const url = `http://localhost:3000/${language}/after-salah`; // to test the app (api)
+
+  const { data, error, isLoading } = useSWR(url, fetcher);
+
+  if (isLoading) return <Loader />;
+  if (error) return <ErrorGPT />;
+  if (!data?.duas) return <div>No duas found</div>;
+
+  // Pagination calculations
+  const totalPages = Math.ceil(data.duas.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentDuas = data.duas.slice(startIndex, endIndex);
+
+  const toggleCard = (id) => {
+    setExpandedCard(expandedCard === id ? null : id);
+  };
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+    setExpandedCard(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const delta = 1;
+
+    const addPage = (page) =>
+      pages.push(
+        <button
+          key={page}
+          onClick={() => goToPage(page)}
+          className={`w-9 h-9 rounded-lg font-amiri font-semibold transition-colors cursor-pointer text-sm ${
+            currentPage === page
+              ? "bg-[#105A59] text-white"
+              : "bg-[#E9F7E6] text-[#105A59] hover:bg-[#105A59] hover:text-white"
+          }`}
+        >
+          {page}
+        </button>,
+      );
+
+    const addEllipsis = (key) =>
+      pages.push(
+        <span
+          key={key}
+          className="w-9 h-9 flex items-center justify-center text-[#105A59] font-bold"
+        >
+          …
+        </span>,
+      );
+
+    addPage(1);
+
+    const leftBound = currentPage - delta;
+    const rightBound = currentPage + delta;
+
+    if (leftBound > 2) addEllipsis("left");
+
+    for (
+      let i = Math.max(2, leftBound);
+      i <= Math.min(totalPages - 1, rightBound);
+      i++
+    ) {
+      addPage(i);
+    }
+
+    if (rightBound < totalPages - 1) addEllipsis("right");
+
+    if (totalPages > 1) addPage(totalPages);
+
+    return pages;
+  };
 
   return (
     <PageTransition>
       <div
         ref={containerRef}
-        className="min-h-screen flex flex-col justify-center items-center px-6 md:px-10 py-20 relative overflow-hidden"
+        className="min-h-screen flex flex-col items-center px-6 md:px-10 py-20"
       >
-        {/* Decorative Background Elements */}
-        <div className="deco-circle absolute top-20 left-10 w-32 h-32 bg-[#105A59] opacity-5 rounded-full blur-2xl"></div>
-        <div className="deco-circle absolute bottom-32 right-20 w-40 h-40 bg-[#105A59] opacity-5 rounded-full blur-2xl"></div>
-        <div className="deco-circle absolute top-1/2 left-1/4 w-24 h-24 bg-[#105A59] opacity-5 rounded-full blur-2xl"></div>
-
         {/* Title Section */}
-        <h1 className="dua-title text-4xl md:text-5xl lg:text-6xl font-amiri font-bold text-[#105A59] text-center mt-10 md:mt-0 px-4">
-          Duas After Finishing Salah
+        <h1
+          className={`text-4xl md:text-5xl lg:text-6xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-[#105A59] text-center mt-10 md:mt-0 px-4`}
+        >
+          {data?.name || "Dhikr After Salah"}
         </h1>
 
-        <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
+        <div className="h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
 
-        {/* Main Content Card */}
-        <div className="content-card max-w-3xl w-full mx-auto mb-10">
-          {/* Beautiful Card Container */}
-          <div className="relative bg-transparent rounded-3xl shadow-2xl overflow-hidden border border-[#105A59]/10">
-            {/* Decorative Top Border */}
-            <div className="h-1.5 bg-gradient-to-r from-[#105A59] via-[#1a8a88] to-[#105A59]"></div>
+        {/* Page Info */}
+        <p
+          className={`text-xl text-[#105A59] mb-6 ${language === "en" ? "font-amiri" : "font-balooDa"}`}
+        >
+          {language === "bn"
+            ? `পৃষ্ঠা ${currentPage} / ${totalPages}`
+            : `Page ${currentPage} of ${totalPages}`}
+        </p>
 
-            {/* Card Content */}
-            <div className="p-8 md:p-12">
-              {/* Icon/Illustration Area */}
-              <div className="flex justify-center mb-8">
-                <div className="relative">
-                  {/* Circular Background */}
-                  <div className="w-32 h-32 bg-gradient-to-br from-[#105A59]/10 to-[#1a8a88]/5 rounded-full flex items-center justify-center">
-                    {/* Islamic Pattern or Icon */}
-                    <svg
-                      className="w-16 h-16 text-[#105A59]"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                      />
-                    </svg>
-                  </div>
-                  {/* Decorative Rings */}
-                  <div className="absolute inset-0 rounded-full border-2 border-[#105A59]/20 animate-ping-slow"></div>
-                </div>
-              </div>
-
-              {/* Message Section */}
-              <div className="text-center space-y-6">
-                <h2 className="text-2xl md:text-3xl font-amiri font-semibold text-[#105A59] leading-relaxed">
-                  Content Coming Soon
-                </h2>
-
-                <div className="w-20 h-1 bg-gradient-to-r from-[#105A59] to-[#1a8a88] mx-auto rounded-full"></div>
-
-                <p className="text-lg md:text-xl text-gray-700 leading-relaxed font-lateef">
-                  The REST API for duas are being prepared by the developer.
-                </p>
-
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed font-lateef italic">
-                  Have patience, it will be released soon{" "}
-                  <span className="font-amiri font-semibold text-[#105A59] not-italic">
-                    إِنْ شَاءَ ٱللَّٰهُ
+        {/* Duas Container */}
+        <div className="w-full max-w-4xl space-y-4 mb-8">
+          {currentDuas.map((dua) => (
+            <div
+              key={dua.id}
+              className="bg-transparent border-2 border-[#105A59] rounded-2xl overflow-hidden transition-all duration-300 form-style"
+            >
+              {/* Card Header - Always Visible */}
+              <button
+                onClick={() => toggleCard(dua.id)}
+                className="w-full px-6 py-5 flex items-center justify-between hover:bg-[#E9F7E6] transition-colors duration-200"
+              >
+                <div className="flex items-center gap-4">
+                  <span
+                    className={`text-2xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-[#105A59] bg-[#E9F7E6] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0`}
+                  >
+                    {dua.id}
                   </span>
-                </p>
+                  <h3
+                    className={`text-xl md:text-2xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] text-left`}
+                  >
+                    {dua.name}
+                  </h3>
+                </div>
 
-                {/* Progress Indicator */}
-                <div className="pt-6">
-                  <div className="flex items-center justify-center space-x-2">
-                    <div className="w-3 h-3 bg-[#105A59] rounded-full animate-bounce"></div>
-                    <div className="w-3 h-3 bg-[#105A59] rounded-full animate-bounce delay-100"></div>
-                    <div className="w-3 h-3 bg-[#105A59] rounded-full animate-bounce delay-200"></div>
+                {/* Expand/Collapse Icon */}
+                <svg
+                  className={`w-6 h-6 text-[#105A59] transition-transform duration-300 flex-shrink-0 ${
+                    expandedCard === dua.id ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+
+              {/* Card Content - Expandable */}
+              <div
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                  expandedCard === dua.id
+                    ? "max-h-[3000px] opacity-100"
+                    : "max-h-0 opacity-0"
+                }`}
+              >
+                <div className="px-6 pb-6 space-y-6 border-t-2 border-[#105A59] bg-transparent">
+                  {/* Arabic Dua */}
+                  <div className="pt-6">
+                    <h4
+                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-3`}
+                    >
+                      {language === "bn" ? "দু'আ:" : "Dua:"}
+                    </h4>
+                    <p className="text-3xl md:text-5xl font-lateef text-[#105A59] leading-loose text-right">
+                      {dua.dua}
+                    </p>
+                  </div>
+
+                  {/* Note */}
+                  {dua.note ? (
+                    <div>
+                      <h4
+                        className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"}  font-semibold text-[#105A59]`}
+                      >
+                        {language === "bn" ? "নোট:" : "Note:"}
+                      </h4>
+                      <p
+                        dangerouslySetInnerHTML={{ __html: dua.note }}
+                        className="text-xl md:text-2xl font-lateef text-[#105A59] leading-relaxed"
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
+                  {/* Translation */}
+                  <div>
+                    <h4
+                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-3`}
+                    >
+                      {language === "bn" ? "অনুবাদ:" : "Translation:"}
+                    </h4>
+                    <p
+                      className={`text-2xl {${language === "bn" ? "md:text-3xl" : "md:text-4xl"}} ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] leading-relaxed`}
+                    >
+                      {dua.translation}
+                    </p>
+                  </div>
+
+                  {/* Times and Reference Row */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t-2 border-[#105A59]">
+                    {/* Times */}
+                    {dua.times && (
+                      <div className="flex items-start gap-3">
+                        <svg
+                          className="w-6 h-6 text-[#105A59] mt-1 flex-shrink-0"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle cx="12" cy="4" r="2" />
+                          <circle cx="12" cy="12" r="2" />
+                          <circle cx="12" cy="20" r="2" />
+                          <circle cx="4" cy="8" r="1.5" />
+                          <circle cx="20" cy="8" r="1.5" />
+                          <circle cx="4" cy="16" r="1.5" />
+                          <circle cx="20" cy="16" r="1.5" />
+                          <circle cx="8" cy="6" r="1.5" />
+                          <circle cx="16" cy="6" r="1.5" />
+                          <circle cx="8" cy="18" r="1.5" />
+                          <circle cx="16" cy="18" r="1.5" />
+                        </svg>
+                        <div>
+                          <h4
+                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-1`}
+                          >
+                            {language === "bn" ? "তিলাওয়াত:" : "Recite:"}
+                          </h4>
+                          <p
+                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] font-bold`}
+                          >
+                            {dua.times}{" "}
+                            {dua.times === "1" || dua.times === 1
+                              ? language === "bn"
+                                ? "বার"
+                                : "time"
+                              : language === "bn"
+                                ? "বার"
+                                : "times"}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Reference */}
+                    {dua.reference && (
+                      <div className="flex items-start gap-3">
+                        <svg
+                          className="w-6 h-6 text-[#105A59] mt-1 flex-shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                          />
+                        </svg>
+                        <div>
+                          <h4
+                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-1`}
+                          >
+                            {language === "bn" ? "রেফারেন্স:" : "Reference:"}
+                          </h4>
+                          <p
+                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] italic`}
+                          >
+                            {dua.reference}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* Decorative Bottom Pattern */}
-            <div className="h-2 bg-gradient-to-r from-[#105A59]/5 via-[#1a8a88]/10 to-[#105A59]/5"></div>
-          </div>
+        {/* Pagination Controls */}
+        <div className="flex items-center justify-center gap-1.5 mb-20 w-full max-w-sm px-4">
+          {/* Previous Button */}
+          <button
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
+              currentPage === 1
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                : "bg-[#105A59] text-white hover:bg-[#0d4544]"
+            }`}
+            aria-label="Previous page"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
 
-          {/* Additional Info Card */}
-          <div className="mt-8 bg-transparent backdrop-blur-sm rounded-2xl p-6 border border-[#105A59]/10 shadow-lg">
-            <p className="text-center text-gray-600 text-sm md:text-base font-lateef">
-              Stay tuned for authentic duas from the Sunnah to recite after
-              completing your prayers
-            </p>
-          </div>
+          {/* Page Numbers with Ellipsis */}
+          <div className="flex items-center gap-1.5">{renderPageNumbers()}</div>
+
+          {/* Next Button */}
+          <button
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
+              currentPage === totalPages
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                : "bg-[#105A59] text-white hover:bg-[#0d4544]"
+            }`}
+            aria-label="Next page"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </PageTransition>
