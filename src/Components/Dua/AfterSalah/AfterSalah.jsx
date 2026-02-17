@@ -12,10 +12,11 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 const AfterSalah = () => {
   const containerRef = useRef(null);
   const [expandedCard, setExpandedCard] = useState(null);
+  const [expandedTranslation, setExpandedTranslation] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  usePageTitle("Morning and Evening | Dua", " | Dhikr Time");
+  usePageTitle("Dhikr After Salah | Dua", " | Dhikr Time");
 
   // Getting the Language from "Dua" component
   const [language, setLanguage] = useState(() => {
@@ -41,8 +42,7 @@ const AfterSalah = () => {
     };
   }, []);
 
-  // const url = `https://dua-and-dhikr.onrender.com/${Language}/morning-evening`; // renrer
-  const url = `https://dua-and-dhikr.vercel.app/${language}/morning-evening`; // vercel
+  const url = `https://dua-and-dhikr.vercel.app/${language}/after-salah`; // vercel
   // const url = `http://localhost:3000/${language}/after-salah`; // to test the app (api)
 
   const { data, error, isLoading } = useSWR(url, fetcher);
@@ -59,11 +59,20 @@ const AfterSalah = () => {
 
   const toggleCard = (id) => {
     setExpandedCard(expandedCard === id ? null : id);
+    // Close translation dropdown when main card closes
+    if (expandedCard === id) {
+      setExpandedTranslation(null);
+    }
+  };
+
+  const toggleTranslation = (id) => {
+    setExpandedTranslation(expandedTranslation === id ? null : id);
   };
 
   const goToPage = (page) => {
     setCurrentPage(page);
     setExpandedCard(null);
+    setExpandedTranslation(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -201,7 +210,7 @@ const AfterSalah = () => {
                     >
                       {language === "bn" ? "দু'আ:" : "Dua:"}
                     </h4>
-                    <p className="text-3xl md:text-5xl font-lateef text-[#105A59] leading-loose text-right">
+                    <p className="text-4xl md:text-6xl font-lateef text-[#105A59] leading-loose text-right">
                       {dua.dua}
                     </p>
                   </div>
@@ -223,18 +232,89 @@ const AfterSalah = () => {
                     ""
                   )}
 
-                  {/* Translation */}
+                  {/* Pronunciation - Always visible in expanded card */}
                   <div>
                     <h4
                       className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-3`}
                     >
-                      {language === "bn" ? "অনুবাদ:" : "Translation:"}
+                      {language === "bn" ? "উচ্চারণ:" : "Pronunciation:"}
                     </h4>
                     <p
-                      className={`text-2xl {${language === "bn" ? "md:text-3xl" : "md:text-4xl"}} ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] leading-relaxed`}
+                      className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] leading-relaxed`}
                     >
-                      {dua.translation}
+                      {dua.pronunciation}
                     </p>
+                  </div>
+
+                  {/* Translation - Nested Dropdown */}
+                  <div>
+                    <button
+                      onClick={() => toggleTranslation(dua.id)}
+                      className="w-full py-3 flex items-center justify-start gap-2 hover:opacity-70 cursor-pointer transition-opacity duration-200"
+                    >
+                      <div className="flex items-center gap-2">
+                        {/* Book icon — filled when collapsed, outlined when expanded */}
+                        {expandedTranslation === dua.id ? (
+                          <svg
+                            className="w-5 h-5 text-[#105A59] flex-shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                            />
+                          </svg>
+                        ) : (
+                          <svg
+                            className="w-5 h-5 text-[#105A59] flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c.966 0 1.89.166 2.75.47a.75.75 0 001-.708V4.262a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z" />
+                          </svg>
+                        )}
+                        <h4
+                          className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59]`}
+                        >
+                          {language === "bn" ? "অনুবাদ" : "Translation"}
+                        </h4>
+                      </div>
+                      <svg
+                        className={`w-5 h-5 text-[#105A59] transition-transform duration-300 flex-shrink-0 ${
+                          expandedTranslation === dua.id ? "rotate-180" : ""
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </button>
+
+                    <div
+                      className={`overflow-hidden transition-all duration-400 ease-in-out ${
+                        expandedTranslation === dua.id
+                          ? "max-h-[1000px] opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      <div className="pb-4">
+                        <p
+                          className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] leading-relaxed`}
+                        >
+                          {dua.translation}
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Times and Reference Row */}
