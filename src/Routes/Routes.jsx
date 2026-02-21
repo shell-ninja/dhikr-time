@@ -8,10 +8,10 @@ import Methods from "../Components/Form/Methods";
 
 import MorningEvening from "../Components/Dua/MorningEvening/MorningEvening";
 import AfterSalah from "../Components/Dua/AfterSalah/AfterSalah";
-import QuranicDua from "../Components/Dua/Quranic/QuranicDua";
-import SunnahDua from "../Components/Dua/Sunnah/SunnahDua";
+// import SunnahDua from "../Components/Dua/Sunnah/SunnahDua";
 import Salawat from "../Components/Dua/Salawat/Salawat";
 import Istigfar from "../Components/Dua/Istigfar/Istigfar";
+import QuranAndSunnah from "../Components/Dua/QuranAndSunnah/QuranAndSunnah";
 
 export const routes = createBrowserRouter([
   {
@@ -35,12 +35,8 @@ export const routes = createBrowserRouter([
         Component: AfterSalah,
       },
       {
-        path: "dua/quranic",
-        Component: QuranicDua,
-      },
-      {
-        path: "dua/sunnah",
-        Component: SunnahDua,
+        path: "dua/quran-sunnah",
+        Component: QuranAndSunnah,
       },
       {
         path: "dua/salawat",
