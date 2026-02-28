@@ -5,9 +5,9 @@ import { useRef } from "react";
 import "../Pages.css";
 import { usePageTitle } from "../../../Hooks/pageName";
 
-const QuranicDua = () => {
+const QuranAndSunnah = () => {
   const containerRef = useRef(null);
-  usePageTitle("Quranic Duas | Dua", " | Dhikr Time");
+  usePageTitle("Other Duas | Dua", " | Dhikr Time");
 
   useGSAP(
     () => {
@@ -73,7 +73,7 @@ const QuranicDua = () => {
 
         {/* Title Section */}
         <h1 className="dua-title text-4xl md:text-5xl lg:text-6xl font-amiri font-bold text-[#105A59] text-center mt-10 md:mt-0 px-4">
-          Duas from the Quran
+          Duas from the Quran and Sunnah
         </h1>
 
         <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
@@ -149,7 +149,7 @@ const QuranicDua = () => {
           {/* Additional Info Card */}
           <div className="mt-8 bg-transparent backdrop-blur-sm rounded-2xl p-6 border border-[#105A59]/10 shadow-lg">
             <p className="text-center text-gray-600 text-sm md:text-base font-lateef">
-              Stay tuned for authentic duas from the Quran
+              Stay tuned for authentic duas from the Quran and the Sunnah
             </p>
           </div>
         </div>
@@ -158,4 +158,4 @@ const QuranicDua = () => {
   );
 };
 
-export default QuranicDua;
+export default QuranAndSunnah;

@@ -1,12 +1,12 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Dua.css";
 import { usePageTitle } from "../../Hooks/pageName";
 import PageTransition from "../../Hooks/PageTransition";
 import morningEvening from "../../assets/images/morning-evening.png";
 import salah from "../../assets/images/salah.png";
 import quran from "../../assets/images/quran.png";
-import sunnah from "../../assets/images/sunnah.png";
-import salawat from "../../assets/images/durood.png";
+// import sunnah from "../../assets/images/sunnah.png";
+// import salawat from "../../assets/images/durood.png";
 import istigfar from "../../assets/images/istigfar.png";
 import { ScrollTrigger } from "gsap/all";
 import gsap from "gsap";
@@ -90,21 +90,21 @@ const Dua = () => {
     <PageTransition>
       <div
         ref={containerRef}
-        className="min-h-screen flex flex-col justify-center items-center px-8 md:px-20"
+        className="min-h-screen flex flex-col justify-start items-center px-8 md:px-20 relative"
       >
         {language === "bn" ? (
-          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-20 md:mt-10">
+          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-30 md:mt-10">
             দু'আ
           </h1>
         ) : (
-          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-20 md:mt-10">
+          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-30 md:mt-10">
             Dua
           </h1>
         )}
 
         <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center font-bold text-[#105A59] mb-20 w-full max-w-[1150px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center font-bold text-[#105A59] mb-20 w-full max-w-[1150px]">
           {/* Morning and Evening */}
           <Link
             to={`/dua/morning-evening?lang=${language}`}
@@ -159,9 +159,8 @@ const Dua = () => {
             </div>
           </Link>
 
-          {/* Quranic Dua */}
           <Link
-            to={`/dua/quranic?lang=${language}`}
+            to={`/dua/quran-sunnah?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
           >
             <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
@@ -175,18 +174,18 @@ const Dua = () => {
               <div className="py-3 px-4 bg-transparent">
                 {language === "bn" ? (
                   <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
-                    কুরানের দুয়া
+                    কুরানে এবং সুন্নাহ সম্মত দু'আ
                   </h2>
                 ) : (
                   <h2 className="font-normal text-2xl text-center font-amiri tracking-wider">
-                    Quranic Dua
+                    Quran And Sunnah
                   </h2>
                 )}
               </div>
             </div>
           </Link>
 
-          {/* Sunnah Dua */}
+          {/*
           <Link
             to={`/dua/sunnah?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
@@ -212,8 +211,10 @@ const Dua = () => {
               </div>
             </div>
           </Link>
+                    */}
 
           {/* Salawat / Durood */}
+          {/*
           <Link
             to={`/dua/salawat?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
@@ -239,6 +240,7 @@ const Dua = () => {
               </div>
             </div>
           </Link>
+    */}
 
           {/* Istigfar */}
           <Link

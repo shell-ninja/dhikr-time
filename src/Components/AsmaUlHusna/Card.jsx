@@ -3,7 +3,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../Form/Form.css";
-
 gsap.registerPlugin(ScrollTrigger);
 
 const Card = ({ cardData }) => {
@@ -11,19 +10,13 @@ const Card = ({ cardData }) => {
     return localStorage.getItem("language") || "en";
   });
 
-  // Listen for language changes in localStorage
   useEffect(() => {
     const handleStorageChange = () => {
       const newLanguage = localStorage.getItem("language") || "en";
       setLanguage(newLanguage);
     };
-
-    // Listen for storage events (works across tabs)
     window.addEventListener("storage", handleStorageChange);
-
-    // Custom event for same-tab changes
     window.addEventListener("languageChange", handleStorageChange);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("languageChange", handleStorageChange);
@@ -35,18 +28,16 @@ const Card = ({ cardData }) => {
   useGSAP(() => {
     cardsRef.current.forEach((card, index) => {
       if (card) {
-        // Determine animation direction based on position
         const direction = index % 3 === 0 ? -100 : index % 3 === 1 ? 0 : 100;
-
         gsap.from(card, {
           x: direction,
           y: direction === 0 ? 100 : 0,
           opacity: 0,
-          duration: 0.8,
+          duration: 0.3,
           ease: "power3.out",
           scrollTrigger: {
             trigger: card,
-            start: "top 85%",
+            start: "top 90%",
             toggleActions: "play none none reverse",
           },
         });
@@ -55,41 +46,138 @@ const Card = ({ cardData }) => {
   }, [cardData]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center font-bold text-[#105A59]">
+    <div className="grid grid-cols-1 gap-6 justify-items-center font-bold text-[#105A59]">
       {cardData.map(([name, info], index) => (
-        <div
+        <CardItem
           key={name}
-          ref={(el) => (cardsRef.current[index] = el)}
-          className="asma-card w-full max-w-md flex flex-col justify-center items-center border-2 px-10 py-10 rounded-2xl text-center md:text-start form-style"
-        >
-          <h2 className="font-normal text-6xl mb-3 font-lateef tracking-wider">
-            {info.name}
-          </h2>
-          <h2
-            className={`font-bold text-3xl md:text-4xl mb-3 tracking-wider ${
-              language === "en" ? "font-amiri" : "font-balooDa"
-            }`}
-          >
-            {info.transliteration}
-          </h2>
-          <p
-            className={`font-normal text-3xl my-2 ${
-              language === "en" ? "font-amiri" : "font-balooDa"
-            }`}
-          >
-            {info.translation}
-          </p>
-          <p
-            className={`font-normal text-xl mt-10 ${
-              language === "en" ? "font-amiri" : "font-balooDa"
-            }`}
-          >
-            {info.meaning}
-          </p>
-        </div>
+          info={info}
+          index={index}
+          language={language}
+          cardRef={(el) => (cardsRef.current[index] = el)}
+        />
       ))}
     </div>
   );
 };
 
+const CardItem = ({ info, index, language, cardRef }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div
+      ref={cardRef}
+      className="asma-card w-full max-w-md bg-transparent border-2 border-[#105A59] rounded-2xl overflow-hidden transition-all duration-300 form-style"
+    >
+      {/* Card Header — Always Visible */}
+      <button
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="w-full px-6 py-5 flex items-center justify-between hover:bg-[#E9F7E6] transition-colors duration-200"
+      >
+        <div className="flex items-center gap-4">
+          {/* Number Badge */}
+          <span
+            className={`text-lg ${
+              language === "en" ? "font-amiri" : "font-balooDa"
+            } font-bold text-[#105A59] bg-[#E9F7E6] w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0`}
+          >
+            {index + 1}.
+          </span>
+
+          {/* Arabic Name */}
+          <h2 className="font-normal text-5xl font-lateef tracking-wider text-[#105A59] text-right ml-5">
+            {info.name}
+          </h2>
+        </div>
+
+        {/* Chevron Icon */}
+        <svg
+          className={`w-6 h-6 text-[#105A59] transition-transform duration-300 flex-shrink-0 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      {/* Expandable Content */}
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${
+          isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-6 pb-6 space-y-4 border-t-2 border-[#105A59]">
+          {/* Transliteration */}
+          <div className="pt-4">
+            <h4
+              className={`text-base ${
+                language === "en" ? "font-amiri" : "font-balooDa"
+              } font-semibold text-[#105A59] mb-1`}
+            >
+              {language === "bn" ? "উচ্চারণ:" : "Transliteration:"}
+            </h4>
+            <p
+              className={`text-2xl md:text-3xl ${
+                language === "en" ? "font-amiri" : "font-balooDa"
+              } font-bold tracking-wider text-[#105A59]`}
+            >
+              {info.transliteration}
+            </p>
+          </div>
+
+          {/* Divider */}
+          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-full"></div>
+
+          {/* Translation */}
+          <div>
+            <h4
+              className={`text-base ${
+                language === "en" ? "font-amiri" : "font-balooDa"
+              } font-semibold text-[#105A59] mb-1`}
+            >
+              {language === "bn" ? "অনুবাদ:" : "Translation:"}
+            </h4>
+            <p
+              className={`text-xl md:text-2xl ${
+                language === "en" ? "font-amiri" : "font-balooDa"
+              } font-semibold text-[#105A59]`}
+            >
+              {info.translation}
+            </p>
+          </div>
+
+          {/* Divider */}
+          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-full"></div>
+
+          {/* Meaning */}
+          <div>
+            <h4
+              className={`text-base ${
+                language === "en" ? "font-amiri" : "font-balooDa"
+              } font-semibold text-[#105A59] mb-1`}
+            >
+              {language === "bn" ? "অর্থ:" : "Meaning:"}
+            </h4>
+            <p
+              className={`text-lg ${
+                language === "en" ? "font-amiri" : "font-balooDa"
+              } font-normal leading-relaxed text-[#105A59]`}
+            >
+              {info.meaning}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default Card;
+
