@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Dua.css";
 import { usePageTitle } from "../../Hooks/pageName";
 import PageTransition from "../../Hooks/PageTransition";
@@ -6,7 +6,7 @@ import morningEvening from "../../assets/images/morning-evening.png";
 import salah from "../../assets/images/salah.png";
 import quran from "../../assets/images/quran.png";
 // import sunnah from "../../assets/images/sunnah.png";
-import salawat from "../../assets/images/durood.png";
+// import salawat from "../../assets/images/durood.png";
 import istigfar from "../../assets/images/istigfar.png";
 import { ScrollTrigger } from "gsap/all";
 import gsap from "gsap";
@@ -90,14 +90,14 @@ const Dua = () => {
     <PageTransition>
       <div
         ref={containerRef}
-        className="min-h-screen flex flex-col justify-center items-center px-8 md:px-20"
+        className="min-h-screen flex flex-col justify-start items-center px-8 md:px-20 relative"
       >
         {language === "bn" ? (
-          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-20 md:mt-10">
+          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-30 md:mt-10">
             দু'আ
           </h1>
         ) : (
-          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-20 md:mt-10">
+          <h1 className="dua-title text-5xl font-amiri font-bold text-[#105A59] mt-30 md:mt-10">
             Dua
           </h1>
         )}
@@ -214,6 +214,7 @@ const Dua = () => {
                     */}
 
           {/* Salawat / Durood */}
+          {/*
           <Link
             to={`/dua/salawat?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
@@ -239,6 +240,7 @@ const Dua = () => {
               </div>
             </div>
           </Link>
+    */}
 
           {/* Istigfar */}
           <Link
