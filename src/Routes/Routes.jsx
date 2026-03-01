@@ -10,7 +10,7 @@ import MorningEvening from "../Components/Dua/MorningEvening/MorningEvening";
 import AfterSalah from "../Components/Dua/AfterSalah/AfterSalah";
 // import SunnahDua from "../Components/Dua/Sunnah/SunnahDua";
 import Salawat from "../Components/Dua/Salawat/Salawat";
-import Istigfar from "../Components/Dua/Istigfar/Istigfar";
+import Istighfar from "../Components/Dua/Istighfar/Istighfar";
 import QuranAndSunnah from "../Components/Dua/QuranAndSunnah/QuranAndSunnah";
 
 export const routes = createBrowserRouter([
@@ -43,8 +43,8 @@ export const routes = createBrowserRouter([
         Component: Salawat,
       },
       {
-        path: "dua/istigfar",
-        Component: Istigfar,
+        path: "dua/istighfar",
+        Component: Istighfar,
       },
       {
         path: "asma-ul-husna",
