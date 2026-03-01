@@ -242,9 +242,9 @@ const Dua = () => {
           </Link>
     */}
 
-          {/* Istigfar */}
+          {/* Istighfar */}
           <Link
-            to={`/dua/istigfar?lang=${language}`}
+            to={`/dua/istighfar?lang=${language}`}
             className="dua-card w-full max-w-[350px]"
           >
             <div className="w-full h-[300px] flex flex-col border-2 rounded-2xl overflow-hidden form-style hover-card">
@@ -258,7 +258,7 @@ const Dua = () => {
               <div className="py-3 px-4 bg-transparent">
                 {language === "bn" ? (
                   <h2 className="font-normal text-xl text-center font-balooDa tracking-wider">
-                    ইস্তিগফার
+                    ইসতিগফার
                   </h2>
                 ) : (
                   <h2 className="font-normal text-2xl text-center font-amiri tracking-wider">
