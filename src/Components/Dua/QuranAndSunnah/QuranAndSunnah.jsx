@@ -67,23 +67,23 @@ const QuranAndSunnah = () => {
         className="min-h-screen flex flex-col justify-center items-center px-6 md:px-10 py-20 relative overflow-hidden"
       >
         {/* Decorative Background Elements */}
-        <div className="deco-circle absolute top-20 left-10 w-32 h-32 bg-text opacity-5 rounded-full blur-2xl"></div>
-        <div className="deco-circle absolute bottom-32 right-20 w-40 h-40 bg-text opacity-5 rounded-full blur-2xl"></div>
-        <div className="deco-circle absolute top-1/2 left-1/4 w-24 h-24 bg-text opacity-5 rounded-full blur-2xl"></div>
+        <div className="deco-circle absolute top-20 left-10 w-32 h-32 bg-text-light opacity-5 rounded-full blur-2xl"></div>
+        <div className="deco-circle absolute bottom-32 right-20 w-40 h-40 bg-text-light opacity-5 rounded-full blur-2xl"></div>
+        <div className="deco-circle absolute top-1/2 left-1/4 w-24 h-24 bg-text-light opacity-5 rounded-full blur-2xl"></div>
 
         {/* Title Section */}
-        <h1 className="dua-title text-4xl md:text-5xl lg:text-6xl font-amiri font-bold text-text text-center mt-10 md:mt-0 px-4">
+        <h1 className="dua-title text-4xl md:text-5xl lg:text-6xl font-amiri font-bold text-text-light text-center mt-10 md:mt-0 px-4">
           Duas from the Quran and Sunnah
         </h1>
 
-        <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text to-transparent rounded-2xl mt-4 mb-12"></div>
+        <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text-light to-transparent rounded-2xl mt-4 mb-12"></div>
 
         {/* Main Content Card */}
         <div className="content-card max-w-3xl w-full mx-auto mb-10">
           {/* Beautiful Card Container */}
-          <div className="relative bg-transparent rounded-3xl shadow-2xl overflow-hidden border border-text/10">
+          <div className="relative bg-transparent rounded-3xl shadow-2xl overflow-hidden border border-text-light/10">
             {/* Decorative Top Border */}
-            <div className="h-1.5 bg-gradient-to-r from-text via-[#1a8a88] to-text"></div>
+            <div className="h-1.5 bg-gradient-to-r from-text-light via-[#1a8a88] to-text-light"></div>
 
             {/* Card Content */}
             <div className="p-8 md:p-12">
@@ -91,10 +91,10 @@ const QuranAndSunnah = () => {
               <div className="flex justify-center mb-8">
                 <div className="relative">
                   {/* Circular Background */}
-                  <div className="w-32 h-32 bg-gradient-to-br from-text/10 to-[#1a8a88]/5 rounded-full flex items-center justify-center">
+                  <div className="w-32 h-32 bg-gradient-to-br from-text-light/10 to-[#1a8a88]/5 rounded-full flex items-center justify-center">
                     {/* Islamic Pattern or Icon */}
                     <svg
-                      className="w-16 h-16 text-text"
+                      className="w-16 h-16 text-text-light"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -108,17 +108,17 @@ const QuranAndSunnah = () => {
                     </svg>
                   </div>
                   {/* Decorative Rings */}
-                  <div className="absolute inset-0 rounded-full border-2 border-text/20 animate-ping-slow"></div>
+                  <div className="absolute inset-0 rounded-full border-2 border-text-light/20 animate-ping-slow"></div>
                 </div>
               </div>
 
               {/* Message Section */}
               <div className="text-center space-y-6">
-                <h2 className="text-2xl md:text-3xl font-amiri font-semibold text-text leading-relaxed">
+                <h2 className="text-2xl md:text-3xl font-amiri font-semibold text-text-light leading-relaxed">
                   Content Coming Soon
                 </h2>
 
-                <div className="w-20 h-1 bg-gradient-to-r from-text to-[#1a8a88] mx-auto rounded-full"></div>
+                <div className="w-20 h-1 bg-gradient-to-r from-text-light to-[#1a8a88] mx-auto rounded-full"></div>
 
                 <p className="text-lg md:text-xl text-gray-700 leading-relaxed font-lateef">
                   The REST API for duas are being prepared by the developer.
@@ -126,7 +126,7 @@ const QuranAndSunnah = () => {
 
                 <p className="text-base md:text-lg text-gray-600 leading-relaxed font-lateef italic">
                   Have patience, it will be released soon{" "}
-                  <span className="font-amiri font-semibold text-text not-italic">
+                  <span className="font-amiri font-semibold text-text-light not-italic">
                     إِنْ شَاءَ ٱللَّٰهُ
                   </span>
                 </p>
@@ -134,20 +134,20 @@ const QuranAndSunnah = () => {
                 {/* Progress Indicator */}
                 <div className="pt-6">
                   <div className="flex items-center justify-center space-x-2">
-                    <div className="w-3 h-3 bg-text rounded-full animate-bounce"></div>
-                    <div className="w-3 h-3 bg-text rounded-full animate-bounce delay-100"></div>
-                    <div className="w-3 h-3 bg-text rounded-full animate-bounce delay-200"></div>
+                    <div className="w-3 h-3 bg-text-light rounded-full animate-bounce"></div>
+                    <div className="w-3 h-3 bg-text-light rounded-full animate-bounce delay-100"></div>
+                    <div className="w-3 h-3 bg-text-light rounded-full animate-bounce delay-200"></div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Decorative Bottom Pattern */}
-            <div className="h-2 bg-gradient-to-r from-text/5 via-[#1a8a88]/10 to-text/5"></div>
+            <div className="h-2 bg-gradient-to-r from-text-light/5 via-[#1a8a88]/10 to-text-light/5"></div>
           </div>
 
           {/* Additional Info Card */}
-          <div className="mt-8 bg-transparent backdrop-blur-sm rounded-2xl p-6 border border-text/10 shadow-lg">
+          <div className="mt-8 bg-transparent backdrop-blur-sm rounded-2xl p-6 border border-text-light/10 shadow-lg">
             <p className="text-center text-gray-600 text-sm md:text-base font-lateef">
               Stay tuned for authentic duas from the Quran and the Sunnah
             </p>

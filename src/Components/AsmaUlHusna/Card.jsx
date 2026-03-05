@@ -46,7 +46,7 @@ const Card = ({ cardData }) => {
   }, [cardData]);
 
   return (
-    <div className="grid grid-cols-1 gap-6 justify-items-center font-bold text-text">
+    <div className="grid grid-cols-1 gap-6 justify-items-center font-bold text-text-light">
       {cardData.map(([name, info], index) => (
         <CardItem
           key={name}
@@ -66,7 +66,7 @@ const CardItem = ({ info, index, language, cardRef }) => {
   return (
     <div
       ref={cardRef}
-      className="asma-card w-full max-w-md bg-transparent border-2 border-text rounded-2xl overflow-hidden transition-all duration-300 form-style"
+      className="asma-card w-full max-w-md bg-transparent border-2 border-text-light rounded-2xl overflow-hidden transition-all duration-300 form-style"
     >
       {/* Card Header — Always Visible */}
       <button
@@ -78,20 +78,20 @@ const CardItem = ({ info, index, language, cardRef }) => {
           <span
             className={`text-lg ${
               language === "en" ? "font-amiri" : "font-balooDa"
-            } font-bold text-text bg-[#E9F7E6] w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0`}
+            } font-bold text-text-light bg-[#E9F7E6] w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0`}
           >
             {index + 1}.
           </span>
 
           {/* Arabic Name */}
-          <h2 className="font-normal text-5xl font-lateef tracking-wider text-text text-right ml-5">
+          <h2 className="font-normal text-5xl font-lateef tracking-wider text-text-light text-right ml-5">
             {info.name}
           </h2>
         </div>
 
         {/* Chevron Icon */}
         <svg
-          className={`w-6 h-6 text-text transition-transform duration-300 flex-shrink-0 ${
+          className={`w-6 h-6 text-text-light transition-transform duration-300 flex-shrink-0 ${
             isOpen ? "rotate-180" : ""
           }`}
           fill="none"
@@ -113,62 +113,62 @@ const CardItem = ({ info, index, language, cardRef }) => {
           isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-6 pb-6 space-y-4 border-t-2 border-text">
+        <div className="px-6 pb-6 space-y-4 border-t-2 border-text-light">
           {/* Transliteration */}
           <div className="pt-4">
             <h4
               className={`text-base ${
                 language === "en" ? "font-amiri" : "font-balooDa"
-              } font-semibold text-text mb-1`}
+              } font-semibold text-text-light mb-1`}
             >
               {language === "bn" ? "উচ্চারণ:" : "Transliteration:"}
             </h4>
             <p
               className={`text-2xl md:text-3xl ${
                 language === "en" ? "font-amiri" : "font-balooDa"
-              } font-bold tracking-wider text-text`}
+              } font-bold tracking-wider text-text-light`}
             >
               {info.transliteration}
             </p>
           </div>
 
           {/* Divider */}
-          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-text to-transparent rounded-full"></div>
+          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-text-light to-transparent rounded-full"></div>
 
           {/* Translation */}
           <div>
             <h4
               className={`text-base ${
                 language === "en" ? "font-amiri" : "font-balooDa"
-              } font-semibold text-text mb-1`}
+              } font-semibold text-text-light mb-1`}
             >
               {language === "bn" ? "অনুবাদ:" : "Translation:"}
             </h4>
             <p
               className={`text-xl md:text-2xl ${
                 language === "en" ? "font-amiri" : "font-balooDa"
-              } font-semibold text-text`}
+              } font-semibold text-text-light`}
             >
               {info.translation}
             </p>
           </div>
 
           {/* Divider */}
-          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-text to-transparent rounded-full"></div>
+          <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-text-light to-transparent rounded-full"></div>
 
           {/* Meaning */}
           <div>
             <h4
               className={`text-base ${
                 language === "en" ? "font-amiri" : "font-balooDa"
-              } font-semibold text-text mb-1`}
+              } font-semibold text-text-light mb-1`}
             >
               {language === "bn" ? "অর্থ:" : "Meaning:"}
             </h4>
             <p
               className={`text-lg ${
                 language === "en" ? "font-amiri" : "font-balooDa"
-              } font-normal leading-relaxed text-text`}
+              } font-normal leading-relaxed text-text-light`}
             >
               {info.meaning}
             </p>

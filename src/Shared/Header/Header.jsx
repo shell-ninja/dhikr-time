@@ -81,12 +81,8 @@ const DarkModeToggle = ({ isDark, onToggle }) => {
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
-      {/* Ripple ring (reuses same pattern as lang-toggle) */}
       <div className="dark-toggle-ripple" />
-
-      {/* Sliding knob with icon */}
       <div className="dark-toggle-knob">
-        {/* Sun rays */}
         <svg
           className="dark-toggle-icon dark-toggle-sun"
           viewBox="0 0 24 24"
@@ -106,7 +102,6 @@ const DarkModeToggle = ({ isDark, onToggle }) => {
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
         </svg>
-        {/* Moon */}
         <svg
           className="dark-toggle-icon dark-toggle-moon"
           viewBox="0 0 24 24"
@@ -115,8 +110,6 @@ const DarkModeToggle = ({ isDark, onToggle }) => {
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       </div>
-
-      {/* Ghost hints on opposite side */}
       <span className="dark-toggle-hint dark-toggle-hint-moon">🌙</span>
       <span className="dark-toggle-hint dark-toggle-hint-sun">☀️</span>
     </button>
@@ -136,25 +129,18 @@ const Header = () => {
 
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem("theme");
-    // Default to dark if no preference saved, or honour saved value
     if (saved) return saved === "dark";
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
   // Apply / remove `dark` class on <html> whenever isDark changes
   useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", isDark);
     localStorage.setItem("theme", isDark ? "dark" : "light");
     window.dispatchEvent(new Event("themeChange"));
   }, [isDark]);
 
-  const handleThemeToggle = useCallback(() => {
-    setIsDark((prev) => !prev);
-  }, []);
+  const handleThemeToggle = useCallback(() => setIsDark((prev) => !prev), []);
 
   const handleToggle = useCallback(() => {
     setToggled((prev) => {
@@ -165,12 +151,14 @@ const Header = () => {
     });
   }, []);
 
-  // Desktop refs
-  const navbarRef = useRef(null);
-  const logoRef = useRef(null);
-  const linksRef = useRef([]);
+  // ── Theme-aware class shorthands ──
+  const navBg   = isDark ? "bg-bg-dark ifDark"  : "bg-text-light";
+  const navText = isDark ? "text-text-dark"  : "text-bg-light";
 
-  // Hamburger icon ref for GSAP animation
+  // Desktop refs
+  const navbarRef        = useRef(null);
+  const logoRef          = useRef(null);
+  const linksRef         = useRef([]);
   const hamburgerIconRef = useRef(null);
 
   // Animate hamburger icon on every open/close toggle
@@ -179,50 +167,21 @@ const Header = () => {
       gsap.fromTo(
         hamburgerIconRef.current,
         { rotate: isOpen ? -90 : 90, opacity: 0, scale: 0.5 },
-        {
-          rotate: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.28,
-          ease: "back.out(2)",
-        },
+        { rotate: 0, opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" },
       );
     }
   }, [isOpen]);
 
   const handleToggleMenu = () => setIsOpen((prev) => !prev);
-  const handleLinkClick = () => setIsOpen(false);
+  const handleLinkClick  = () => setIsOpen(false);
 
   useGSAP(() => {
     if (window.innerWidth < 768) return;
 
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-    tl.from(navbarRef.current, {
-      y: -80,
-      opacity: 0,
-      duration: 0.8,
-    })
-      .from(
-        logoRef.current,
-        {
-          y: 20,
-          rotate: -3,
-          opacity: 0,
-          duration: 0.6,
-        },
-        "-=0.4",
-      )
-      .from(
-        linksRef.current,
-        {
-          y: 20,
-          opacity: 0,
-          stagger: 0.15,
-          duration: 0.5,
-        },
-        "-=0.4",
-      );
+    tl.from(navbarRef.current, { y: -80, opacity: 0, duration: 0.8 })
+      .from(logoRef.current,   { y: 20, rotate: -3, opacity: 0, duration: 0.6 }, "-=0.4")
+      .from(linksRef.current,  { y: 20, opacity: 0, stagger: 0.15, duration: 0.5 }, "-=0.4");
 
     ScrollTrigger.create({
       start: "top -80",
@@ -247,16 +206,18 @@ const Header = () => {
     });
   }, []);
 
+  const theme = isDark ? "dark" : "light"
+  console.log(theme)
+
   return (
     <>
       {/* ================= MOBILE NAVBAR ================= */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50">
-        {/* Top bar — logo LEFT, hamburger RIGHT */}
-        <div className="bg-text flex justify-between items-center px-5 py-4">
-          {/* Dhikr Time Logo */}
+        {/* Top bar */}
+        <div className={`${navBg} flex justify-between items-center px-5 py-4`}>
           <div ref={logoRef} className="cursor-pointer">
             <Link
-              className="flex justify-center items-center gap-2 font-amiri font-bold text-xl text-[#E4F6D9]"
+              className={`flex justify-center items-center gap-2 font-amiri font-bold text-xl ${navText}`}
               to="/"
             >
               <img className="h-[45px] mt-[-5px]" src={logo} alt="" />
@@ -264,45 +225,31 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Hamburger / Close — GSAP animated */}
           <button
             onClick={handleToggleMenu}
-            className="text-3xl text-[#E4F6D9] w-9 h-9 flex items-center justify-center"
+            className={`text-3xl ${navText} w-9 h-9 flex items-center justify-center`}
             aria-label="Toggle menu"
           >
-            <span
-              ref={hamburgerIconRef}
-              className="flex items-center justify-center"
-            >
+            <span ref={hamburgerIconRef} className="flex items-center justify-center">
               {isOpen ? <FiX /> : <FiMenu />}
             </span>
           </button>
         </div>
 
-        {/* Dropdown — nav links + toggles */}
+        {/* Dropdown */}
         <div
-          className={`absolute top-full left-0 w-full bg-text font-amiri font-bold text-xl text-[#E4F6D9] tracking-wide transition-all duration-300 ease-in-out overflow-hidden ${
-            isOpen
-              ? "max-h-72 opacity-100"
-              : "max-h-0 opacity-0 pointer-events-none"
+          className={`absolute top-full left-0 w-full ${navBg} font-amiri font-bold text-xl ${navText} tracking-wide transition-all duration-300 ease-in-out overflow-hidden ${
+            isOpen ? "max-h-72 opacity-100" : "max-h-0 opacity-0 pointer-events-none"
           }`}
         >
           <div className="flex flex-col items-center space-y-5 py-7">
-            <Link to="/dua" onClick={handleLinkClick}>
-              Dua
-            </Link>
-            <Link to="/asma-ul-husna" onClick={handleLinkClick}>
-              Asma Ul Husna
-            </Link>
+            <Link to="/dua" onClick={handleLinkClick}>Dua</Link>
+            <Link to="/asma-ul-husna" onClick={handleLinkClick}>Asma Ul Husna</Link>
 
-            {/* Toggles row */}
             <div className="flex flex-col justify-center items-center gap-4">
-              {/* Language Toggle */}
               <div ref={(el) => (linksRef.current[2] = el)}>
                 <ToggleBtn toggled={toggled} onToggle={handleToggle} />
               </div>
-
-              {/* Dark Mode Toggle */}
               <div ref={(el) => (linksRef.current[3] = el)}>
                 <DarkModeToggle isDark={isDark} onToggle={handleThemeToggle} />
               </div>
@@ -314,9 +261,8 @@ const Header = () => {
       {/* ================= DESKTOP NAVBAR ================= */}
       <div
         ref={navbarRef}
-        className="bg-text py-7 hidden md:flex justify-around items-center font-amiri font-bold text-3xl text-[#E4F6D9] tracking-wide fixed top-0 left-0 right-0 z-[100]"
+        className={`${navBg} py-7 hidden md:flex justify-around items-center font-amiri font-bold text-3xl ${navText} tracking-wide fixed top-0 left-0 right-0 z-[100]`}
       >
-        {/* Logo — desktop only */}
         <div ref={logoRef} className="cursor-pointer">
           <Link className="flex justify-center items-center gap-2" to="/">
             <img className="h-[45px] mt-[-5px]" src={logo} alt="" />
@@ -324,7 +270,6 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Nav Links + Toggles */}
         <div className="flex items-center gap-10 text-2xl">
           <Link
             ref={(el) => (linksRef.current[0] = el)}
@@ -332,24 +277,19 @@ const Header = () => {
             className="relative nav-link"
           >
             Dua
-            <span className="nav-underline" />
+            <span className={`nav-underline-${theme}`} />
           </Link>
-
           <Link
             ref={(el) => (linksRef.current[1] = el)}
             to="/asma-ul-husna"
             className="relative nav-link"
           >
             Asma Ul Husna
-            <span className="nav-underline" />
+            <span className={`nav-underline-${theme}`} />
           </Link>
-
-          {/* Language Toggle */}
           <div ref={(el) => (linksRef.current[2] = el)}>
             <ToggleBtn toggled={toggled} onToggle={handleToggle} />
           </div>
-
-          {/* Dark Mode Toggle */}
           <div ref={(el) => (linksRef.current[3] = el)}>
             <DarkModeToggle isDark={isDark} onToggle={handleThemeToggle} />
           </div>

@@ -11,10 +11,10 @@ const CustomAlert = ({ message, type = "error", onClose }) => {
   if (!isVisible) return null;
 
   const typeStyles = {
-    error: "bg-[#E4F6D9] border-text text-text",
-    success: "bg-[#E4F6D9] border-text text-text",
-    warning: "bg-[#E4F6D9] border-text text-text",
-    info: "bg-[#E4F6D9] border-text text-text",
+    error: "bg-bg-light border-text-light text-text-light",
+    success: "bg-bg-light border-text-light text-text-light",
+    warning: "bg-bg-light border-text-light text-text-light",
+    info: "bg-bg-light border-text-light text-text-light",
   };
 
   return (

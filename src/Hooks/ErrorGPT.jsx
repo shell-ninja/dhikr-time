@@ -29,7 +29,7 @@ const ErrorGPT = () => {
 
         {/* Arabic Phrase */}
         <p
-          className="text-2xl md:text-3xl tracking-widest text-text mb-4 opacity-0 animate-[fadeUp_0.9s_ease_forwards]"
+          className="text-2xl md:text-3xl tracking-widest text-text-light mb-4 opacity-0 animate-[fadeUp_0.9s_ease_forwards]"
           style={{
             animationDelay: "0.2s",
           }}

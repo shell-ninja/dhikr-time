@@ -17,13 +17,22 @@
   left: 0;
 }
 
+.ifDark {
+  box-shadow: 0 5px 5px -2px #c2ebfa;
+}
+
+.dark .nav-underline {
+  background-color: #c2ebfa;
+}
+
 .nav-link:hover .nav-underline {
   width: 100%;
 }
 
 /* ============================================================
-   TOGGLE BUTTON
+   TOGGLE BUTTON — lang-toggle
    ============================================================ */
+
 /* ── Track ── */
 .lang-toggle {
   position: relative;
@@ -41,6 +50,9 @@
     box-shadow 0.35s ease,
     background 0.35s ease;
 }
+.dark .lang-toggle {
+  border-color: rgba(194, 235, 250, 0.55);
+}
 
 .lang-toggle:hover {
   border-color: rgba(228, 246, 217, 0.9);
@@ -48,8 +60,14 @@
     0 0 0 4px rgba(228, 246, 217, 0.08),
     0 0 18px rgba(228, 246, 217, 0.12);
 }
+.dark .lang-toggle:hover {
+  border-color: rgba(194, 235, 250, 0.9);
+  box-shadow:
+    0 0 0 4px rgba(194, 235, 250, 0.08),
+    0 0 18px rgba(194, 235, 250, 0.12);
+}
 
-/* Knob stretches slightly on press for tactile feel */
+/* Knob stretches slightly on press */
 .lang-toggle:active .lang-toggle-knob {
   width: 30px;
 }
@@ -59,6 +77,11 @@
   border-color: rgba(228, 246, 217, 0.9);
   background: rgba(228, 246, 217, 0.1);
   box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
+}
+.dark .lang-toggle.on {
+  border-color: rgba(194, 235, 250, 0.9);
+  background: rgba(194, 235, 250, 0.1);
+  box-shadow: inset 0 0 12px rgba(194, 235, 250, 0.08);
 }
 
 /* ── Ripple ring ── */
@@ -73,18 +96,17 @@
 .lang-toggle.firing .lang-toggle-ripple {
   animation: toggleRipple 0.5s ease-out forwards;
 }
+.dark .lang-toggle.firing .lang-toggle-ripple {
+  animation: toggleRippleDark 0.5s ease-out forwards;
+}
 
 @keyframes toggleRipple {
-  0% {
-    inset: -2px;
-    border-color: rgba(228, 246, 217, 0.6);
-    border-radius: 18px;
-  }
-  100% {
-    inset: -10px;
-    border-color: rgba(228, 246, 217, 0);
-    border-radius: 26px;
-  }
+  0%   { inset: -2px;  border-color: rgba(228, 246, 217, 0.6); border-radius: 18px; }
+  100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
+}
+@keyframes toggleRippleDark {
+  0%   { inset: -2px;  border-color: rgba(194, 235, 250, 0.6); border-radius: 18px; }
+  100% { inset: -10px; border-color: rgba(194, 235, 250, 0);   border-radius: 26px; }
 }
 
 /* ── Knob ── */
@@ -107,12 +129,20 @@
     width 0.15s ease,
     box-shadow 0.35s ease;
 }
+.dark .lang-toggle-knob {
+  background: #c2ebfa;
+}
 
 .lang-toggle.on .lang-toggle-knob {
   left: calc(74px - 32px);
   box-shadow:
     0 2px 12px rgba(228, 246, 217, 0.35),
     0 0 0 3px rgba(228, 246, 217, 0.12);
+}
+.dark .lang-toggle.on .lang-toggle-knob {
+  box-shadow:
+    0 2px 12px rgba(194, 235, 250, 0.35),
+    0 0 0 3px rgba(194, 235, 250, 0.12);
 }
 
 /* ── Labels inside knob ── */
@@ -167,8 +197,10 @@
   user-select: none;
   transition: opacity 0.3s ease;
 }
+.dark .lang-toggle-hint {
+  color: rgba(194, 235, 250, 0.35);
+}
 
-/* Hint for the language NOT currently active shows on the opposite side */
 .lang-toggle-hint-bn {
   right: 6px;
 }
@@ -186,7 +218,6 @@
 
 /* ============================================================
    DARK MODE TOGGLE
-   Mirrors lang-toggle patterns exactly
    ============================================================ */
 
 /* ── Track ── */
@@ -206,21 +237,36 @@
     box-shadow 0.35s ease,
     background 0.35s ease;
 }
+.dark .dark-mode-toggle {
+  border-color: rgba(194, 235, 250, 0.55);
+}
+
 .dark-mode-toggle:hover {
   border-color: rgba(228, 246, 217, 0.9);
   box-shadow:
     0 0 0 4px rgba(228, 246, 217, 0.08),
     0 0 18px rgba(228, 246, 217, 0.12);
 }
-/* Knob stretches slightly on press for tactile feel */
+.dark .dark-mode-toggle:hover {
+  border-color: rgba(194, 235, 250, 0.9);
+  box-shadow:
+    0 0 0 4px rgba(194, 235, 250, 0.08),
+    0 0 18px rgba(194, 235, 250, 0.12);
+}
+
 .dark-mode-toggle:active .dark-toggle-knob {
   width: 30px;
 }
-/* Toggled track — dark mode active */
+
 .dark-mode-toggle.on {
   border-color: rgba(228, 246, 217, 0.9);
   background: rgba(228, 246, 217, 0.1);
   box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
+}
+.dark .dark-mode-toggle.on {
+  border-color: rgba(194, 235, 250, 0.9);
+  background: rgba(194, 235, 250, 0.1);
+  box-shadow: inset 0 0 12px rgba(194, 235, 250, 0.08);
 }
 
 /* ── Ripple ring ── */
@@ -231,20 +277,21 @@
   border: 2px solid rgba(228, 246, 217, 0);
   pointer-events: none;
 }
+
 .dark-mode-toggle.firing .dark-toggle-ripple {
   animation: darkToggleRipple 0.5s ease-out forwards;
 }
+.dark .dark-mode-toggle.firing .dark-toggle-ripple {
+  animation: darkToggleRippleDark 0.5s ease-out forwards;
+}
+
 @keyframes darkToggleRipple {
-  0% {
-    inset: -2px;
-    border-color: rgba(228, 246, 217, 0.6);
-    border-radius: 18px;
-  }
-  100% {
-    inset: -10px;
-    border-color: rgba(228, 246, 217, 0);
-    border-radius: 26px;
-  }
+  0%   { inset: -2px;  border-color: rgba(228, 246, 217, 0.6); border-radius: 18px; }
+  100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
+}
+@keyframes darkToggleRippleDark {
+  0%   { inset: -2px;  border-color: rgba(194, 235, 250, 0.6); border-radius: 18px; }
+  100% { inset: -10px; border-color: rgba(194, 235, 250, 0);   border-radius: 26px; }
 }
 
 /* ── Knob ── */
@@ -267,14 +314,23 @@
     width 0.15s ease,
     box-shadow 0.35s ease;
 }
+.dark .dark-toggle-knob {
+  background: #c2ebfa;
+}
+
 .dark-mode-toggle.on .dark-toggle-knob {
   left: calc(74px - 32px);
   box-shadow:
     0 2px 12px rgba(228, 246, 217, 0.35),
     0 0 0 3px rgba(228, 246, 217, 0.12);
 }
+.dark .dark-mode-toggle.on .dark-toggle-knob {
+  box-shadow:
+    0 2px 12px rgba(194, 235, 250, 0.35),
+    0 0 0 3px rgba(194, 235, 250, 0.12);
+}
 
-/* ── Icons inside knob (mirror of lang labels) ── */
+/* ── Icons inside knob ── */
 .dark-toggle-icon {
   position: absolute;
   top: 50%;
@@ -289,7 +345,6 @@
   user-select: none;
 }
 
-/* Sun — visible in light mode (toggle OFF) */
 .dark-toggle-sun {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
@@ -300,7 +355,6 @@
   transform: translate(-50%, -50%) scale(0.5);
 }
 
-/* Moon — visible in dark mode (toggle ON) */
 .dark-toggle-moon {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.5);
@@ -323,8 +377,10 @@
   transition: opacity 0.3s ease;
   line-height: 1;
 }
+.dark .dark-toggle-hint {
+  color: rgba(194, 235, 250, 0.35);
+}
 
-/* Moon hint on the right — visible in light mode, hinting at dark */
 .dark-toggle-hint-moon {
   right: 6px;
 }
@@ -332,7 +388,6 @@
   opacity: 0;
 }
 
-/* Sun hint on the left — visible in dark mode, hinting at light */
 .dark-toggle-hint-sun {
   left: 6px;
   opacity: 0;

@@ -92,8 +92,8 @@ const AsmaUlHusna = () => {
           onClick={() => goToPage(pageNum)}
           className={`w-9 h-9 rounded-lg font-amiri font-semibold transition-colors cursor-pointer text-sm ${
             page === pageNum
-              ? "bg-text text-white"
-              : "bg-[#E9F7E6] text-text hover:bg-text hover:text-white"
+              ? "bg-text-light text-white"
+              : "bg-[#E9F7E6] text-text-light hover:bg-text-light hover:text-white"
           }`}
         >
           {pageNum}
@@ -104,7 +104,7 @@ const AsmaUlHusna = () => {
       pages.push(
         <span
           key={key}
-          className="w-9 h-9 flex items-center justify-center text-text font-bold"
+          className="w-9 h-9 flex items-center justify-center text-text-light font-bold"
         >
           …
         </span>,
@@ -137,16 +137,16 @@ const AsmaUlHusna = () => {
         <h1
           className={`asma-title text-4xl md:text-5xl lg:text-6xl ${
             language === "en" ? "font-amiri" : "font-balooDa"
-          } font-bold text-text text-center mt-10 md:mt-0 px-4`}
+          } font-bold text-text-light text-center mt-10 md:mt-0 px-4`}
         >
           {language === "en" ? "Asma Ul Husna" : "আসমা উল হুসনা"}
         </h1>
 
-        <div className="asma-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text to-transparent rounded-2xl mt-4 mb-12"></div>
+        <div className="asma-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text-light to-transparent rounded-2xl mt-4 mb-12"></div>
 
         {/* Page Info */}
         <p
-          className={`page-info text-xl text-text mb-6 ${
+          className={`page-info text-xl text-text-light mb-6 ${
             language === "en" ? "font-amiri" : "font-balooDa"
           }`}
         >
@@ -168,7 +168,7 @@ const AsmaUlHusna = () => {
             className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
               page === 1
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-text text-white hover:bg-[#0d4544]"
+                : "bg-text-light text-white hover:bg-[#0d4544]"
             }`}
             aria-label="Previous page"
           >
@@ -195,7 +195,7 @@ const AsmaUlHusna = () => {
             className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
               page === totalPages
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-text text-white hover:bg-[#0d4544]"
+                : "bg-text-light text-white hover:bg-[#0d4544]"
             }`}
             aria-label="Next page"
           >
