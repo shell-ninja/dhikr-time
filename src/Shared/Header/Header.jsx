@@ -170,7 +170,7 @@ const Header = () => {
   return (
     <>
       {/* ================= MOBILE NAVBAR ================= */}
-      <div className="md:hidden sticky top-0 z-50">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50">
         {/* Top bar — logo LEFT, hamburger RIGHT */}
         <div className="bg-[#105A59] flex justify-between items-center px-5 py-4">
           {/* Dhikr Time Logo */}
@@ -226,7 +226,7 @@ const Header = () => {
       {/* ================= DESKTOP NAVBAR ================= */}
       <div
         ref={navbarRef}
-        className="bg-[#105A59] py-7 hidden md:flex justify-around items-center font-amiri font-bold text-3xl text-[#E4F6D9] tracking-wide sticky top-0 z-[100]"
+        className="bg-[#105A59] py-7 hidden md:flex justify-around items-center font-amiri font-bold text-3xl text-[#E4F6D9] tracking-wide fixed top-0 left-0 right-0 z-[100]"
       >
         {/* Logo — desktop only */}
         <div ref={logoRef} className="cursor-pointer">

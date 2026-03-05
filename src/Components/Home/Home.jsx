@@ -43,19 +43,22 @@ const Home = () => {
   }, []);
 
   useGSAP(() => {
-    if (window.innerWidth < 768) return;
+    const isMobile = window.innerWidth < 768;
 
-    // Background slow zoom
-    gsap.fromTo(
-      bgRef.current,
-      { scale: 1.05 },
-      { scale: 1, duration: 2.5, ease: "power2.out" },
-    );
+    // Background slow zoom — desktop only
+    if (!isMobile) {
+      gsap.fromTo(
+        bgRef.current,
+        { scale: 1.05 },
+        { scale: 1, duration: 2.5, ease: "power2.out" },
+      );
+    }
 
-    // Entrance animation
+    // Entrance animations — ALL devices
     const tl = gsap.timeline({ delay: 0.3 });
     tl.from(ayahRef.current, {
-      x: 40,
+      y: isMobile ? 30 : 0,
+      x: isMobile ? 0 : 40,
       opacity: 0,
       duration: 1,
       ease: "power3.out",
@@ -63,7 +66,8 @@ const Home = () => {
       .from(
         translationRef.current,
         {
-          x: 25,
+          y: isMobile ? 30 : 0,
+          x: isMobile ? 0 : 25,
           opacity: 0,
           duration: 0.8,
           ease: "power3.out",
@@ -73,16 +77,19 @@ const Home = () => {
       .from(
         chapterRef.current,
         {
-          x: 25,
+          y: isMobile ? 20 : 0,
+          x: isMobile ? 0 : 25,
           opacity: 0,
           duration: 0.8,
           ease: "power3.out",
         },
         "-=0.6",
       )
-      // Scroll-out animations run AFTER entrance finishes
+
+      // Scroll-out animations — desktop only
       .add(() => {
-        // Arabic ayah
+        if (isMobile) return;
+
         gsap.to(ayahRef.current, {
           x: 200,
           opacity: 0,
@@ -94,7 +101,7 @@ const Home = () => {
             scrub: 0.4,
           },
         });
-        // English translation
+
         gsap.to(translationRef.current, {
           x: -200,
           opacity: 0,
@@ -106,7 +113,7 @@ const Home = () => {
             scrub: 0.4,
           },
         });
-        // Surah reference
+
         gsap.to(chapterRef.current, {
           x: 50,
           opacity: 0,
@@ -119,16 +126,14 @@ const Home = () => {
           },
         });
       });
-    //
-    // Form slide-in from left animation
+
+    // Form slide-in — ALL devices
     gsap.fromTo(
       formRef.current,
-      {
-        x: -100,
-        opacity: 0,
-      },
+      { x: isMobile ? 0 : -100, y: isMobile ? 40 : 0, opacity: 0 },
       {
         x: 0,
+        y: 0,
         opacity: 1,
         duration: 1,
         ease: "power3.out",
@@ -141,7 +146,6 @@ const Home = () => {
       },
     );
   }, []);
-
   return (
     <PageTransition>
       <div>
@@ -160,7 +164,7 @@ const Home = () => {
             }}
           />
           {/* Ayah Content */}
-          <div className="absolute md:top-[250px] flex flex-col items-center justify-center text-center px-6">
+          <div className="absolute md:top-[350px] flex flex-col items-center justify-center text-center px-6">
             <p
               ref={ayahRef}
               className="text-4xl md:text-6xl lg:text-8xl font-lateef leading-relaxed text-[#105A59]"
