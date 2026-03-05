@@ -18,10 +18,17 @@ const Home = () => {
   const chapterRef = useRef(null);
   const formRef = useRef(null);
 
-  // Get the Language from the Local Storage \\
+  // Get the Language from the Local Storage
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem("language") || "en";
   });
+
+  // Get the theme from the Local Storage
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light",
+  );
+
+  const isDark = theme === "dark";
 
   // Listen for language changes in localStorage
   useEffect(() => {
@@ -29,16 +36,24 @@ const Home = () => {
       const newLanguage = localStorage.getItem("language") || "en";
       setLanguage(newLanguage);
     };
-
-    // Listen for storage events (works across tabs)
     window.addEventListener("storage", handleStorageChange);
-
-    // Custom event for same-tab changes
     window.addEventListener("languageChange", handleStorageChange);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("languageChange", handleStorageChange);
+    };
+  }, []);
+
+  // Listen for theme changes in localStorage
+  useEffect(() => {
+    const handleThemeChange = () => {
+      setTheme(localStorage.getItem("theme") || "light");
+    };
+    window.addEventListener("storage", handleThemeChange);
+    window.addEventListener("themeChange", handleThemeChange);
+    return () => {
+      window.removeEventListener("storage", handleThemeChange);
+      window.removeEventListener("themeChange", handleThemeChange);
     };
   }, []);
 
@@ -146,6 +161,7 @@ const Home = () => {
       },
     );
   }, []);
+
   return (
     <PageTransition>
       <div>
@@ -154,28 +170,34 @@ const Home = () => {
           ref={heroRef}
           className="relative min-h-screen flex items-center justify-center px-[50px] overflow-hidden"
         >
-          {/* Background image */}
+          {/* Background image — swapped via inline style, not dynamic Tailwind class */}
           <div
             ref={bgRef}
             className="absolute inset-0 bg-no-repeat bg-cover bg-center"
             style={{
-              backgroundImage: "url('/images/BG.png')",
+              backgroundImage: `url('/images/BG-${isDark ? "dark" : "light"}.png')`,
               opacity: 0.45,
             }}
           />
+
           {/* Ayah Content */}
           <div className="absolute md:top-[350px] flex flex-col items-center justify-center text-center px-6">
             <p
               ref={ayahRef}
-              className="text-4xl md:text-6xl lg:text-8xl font-lateef leading-relaxed text-[#105A59]"
+              className={`text-4xl md:text-6xl lg:text-8xl font-lateef leading-relaxed ${
+                isDark ? "text-text-dark" : "text-text-light"
+              }`}
             >
               یٰۤاَیُّهَا الَّذِیۡنَ اٰمَنُوا اسۡتَعِیۡنُوۡا بِالصَّبۡرِ وَ
               الصَّلٰوۃِ ؕ اِنَّ اللّٰهَ مَعَ الصّٰبِرِیۡنَ
             </p>
+
             {language === "en" ? (
               <p
                 ref={translationRef}
-                className="mt-6 text-2xl md:text-3xl lg:text-4xl font-amiri font-bold text-[#105A59] px-2 md:px-6"
+                className={`mt-6 text-2xl md:text-3xl lg:text-4xl font-amiri font-bold px-2 md:px-6 ${
+                  isDark ? "text-text-dark" : "text-text-light"
+                }`}
               >
                 O you who have believed, seek help through patience and prayer.
                 Indeed, Allah is with the patient.
@@ -183,29 +205,37 @@ const Home = () => {
             ) : (
               <p
                 ref={translationRef}
-                className="mt-6 text-xl md:text-3 lg:text-4xl font-balooDa font-bold text-[#105A59] px-2 md:px-6"
+                className={`mt-6 text-xl md:text-3xl lg:text-4xl font-balooDa font-bold px-2 md:px-6 ${
+                  isDark ? "text-text-dark" : "text-text-light"
+                }`}
               >
                 হে ঈমানদারগণ! তোমরা সাহায্য চাও সবর ও সালাতের মাধ্যমে। নিশ্চয়ই
                 আল্লাহ্‌ সবরকারীদের সাথে আছেন।
               </p>
             )}
+
             {language === "en" ? (
               <p
                 ref={chapterRef}
-                className="mt-5 md:mt-10 text-xl md:text-3xl font-amiri font-normal text-[#105A59]"
+                className={`mt-5 md:mt-10 text-xl md:text-3xl font-amiri font-normal ${
+                  isDark ? "text-text-dark" : "text-text-light"
+                }`}
               >
                 Al-Baqarah 2:153
               </p>
             ) : (
               <p
                 ref={chapterRef}
-                className="mt-5 md:mt-10 text-xl md:text-3xl font-balooDa font-normal text-[#105A59]"
+                className={`mt-5 md:mt-10 text-xl md:text-3xl font-balooDa font-normal ${
+                  isDark ? "text-text-dark" : "text-text-light"
+                }`}
               >
                 আল-বাকারা ২ঃ১৫৩
               </p>
             )}
           </div>
         </div>
+
         {/* ================= OTHER CONTENT ================= */}
         <div ref={formRef} className="relative">
           <Form />

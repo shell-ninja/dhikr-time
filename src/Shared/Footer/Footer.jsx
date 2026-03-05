@@ -1,17 +1,38 @@
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import "./Footer.css";
+import { useEffect, useState } from "react";
 
 const Footer = () => {
+
+  // Get the theme from the Local Storage
+    const [theme, setTheme] = useState(
+      () => localStorage.getItem("theme") || "light",
+    );
+
+      // Listen for theme changes in localStorage
+      useEffect(() => {
+        const handleThemeChange = () => {
+          setTheme(localStorage.getItem("theme") || "light");
+        };
+        window.addEventListener("storage", handleThemeChange);
+        window.addEventListener("themeChange", handleThemeChange);
+        return () => {
+          window.removeEventListener("storage", handleThemeChange);
+          window.removeEventListener("themeChange", handleThemeChange);
+        };
+      }, []);
+  
   return (
-    <div className="bg-[#105A59]">
+    // <div className="bg-text-light">
+    <div className={`${theme == "light" ? "bg-text-light" : "bg-bg-dark isDark"}`}>
       <div className="flex justify-between items-center min-h-44 px-[50px] md:px-[100px] py-10">
-        <div className="font-amiri font-normal text-xl md:text-2xl text-[#E9F7E6]">
+        <div className={`font-amiri font-normal text-xl md:text-2xl ${theme == "light" ? "text-bg-light": "text-text-dark"}`}>
           <h1>A Sadaqah E Jariyah</h1>
           <p>By,</p>
           <h3 className="font-bold">Shell Ninja</h3>
         </div>
 
-        <div className="flex flex-col justify-evenly items-center gap-2 text-2xl md:text-3xl text-[#E9F7E6]">
+        <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 text-2xl md:text-3xl ${theme == "light" ? "text-bg-light" : "text-text-dark"}`}>
           <a target="_blank" href="https://github.com/shell-ninja">
             <FaGithub className="link-style" />
           </a>
@@ -29,7 +50,7 @@ const Footer = () => {
           </a>
         </div>
       </div>
-      <div className="text-[#E9F7E6] font-amiri text-xl pb-4 px-5 flex flex-col justify-center items-center text-center">
+      <div className={`${theme == "light" ? "text-bg-light" : "text-text-dark"} font-amiri text-xl pb-4 px-5 flex flex-col justify-center items-center text-center`}>
         <p className="tracking-wider">Prayer Times and Asma Ul Husna API</p>
         <p>
           <a className="font-bold tracking-wide" href="https://islamicapi.com/">

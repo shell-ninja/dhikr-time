@@ -3,12 +3,12 @@ import PageTransition from "../../Hooks/PageTransition";
 const Methods = () => {
   return (
     <PageTransition>
-      <div className="flex flex-col justify-center items-center min-h-screen font-amiri text-[#105A59] px-5 md:px-20 text-start">
-        <h1 className="text-5xl font-bold font-amiri text-[#105A59] mt-30">
+      <div className="flex flex-col justify-center items-center min-h-screen font-amiri text-text-light px-5 md:px-20 text-start">
+        <h1 className="text-5xl font-bold font-amiri text-text-light mt-30">
           Methods
         </h1>
 
-        <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
+        <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text-light to-transparent rounded-2xl mt-4 mb-12"></div>
 
         <h1 className="text-2xl font-normal my-5">
           Method for calculating prayer times based on geographical location and

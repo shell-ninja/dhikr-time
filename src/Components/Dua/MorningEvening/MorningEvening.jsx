@@ -87,8 +87,8 @@ const MorningEvening = () => {
           onClick={() => goToPage(page)}
           className={`w-9 h-9 rounded-lg font-amiri font-semibold transition-colors cursor-pointer text-sm ${
             currentPage === page
-              ? "bg-[#105A59] text-white"
-              : "bg-[#E9F7E6] text-[#105A59] hover:bg-[#105A59] hover:text-white"
+              ? "bg-text-light text-white"
+              : "bg-[#E9F7E6] text-text-light hover:bg-text-light hover:text-white"
           }`}
         >
           {page}
@@ -99,7 +99,7 @@ const MorningEvening = () => {
       pages.push(
         <span
           key={key}
-          className="w-9 h-9 flex items-center justify-center text-[#105A59] font-bold"
+          className="w-9 h-9 flex items-center justify-center text-text-light font-bold"
         >
           …
         </span>,
@@ -135,16 +135,16 @@ const MorningEvening = () => {
       >
         {/* Title Section */}
         <h1
-          className={`text-4xl md:text-5xl lg:text-6xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-[#105A59] text-center mt-10 md:mt-0 px-4`}
+          className={`text-4xl md:text-5xl lg:text-6xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-text-light text-center mt-10 md:mt-20 px-4`}
         >
           {data?.name || "Morning And Evening Dua"}
         </h1>
 
-        <div className="h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"></div>
+        <div className="h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text-light to-transparent rounded-2xl mt-4 mb-12"></div>
 
         {/* Page Info */}
         <p
-          className={`text-xl text-[#105A59] mb-6 ${language === "en" ? "font-amiri" : "font-balooDa"}`}
+          className={`text-xl text-text-light mb-6 ${language === "en" ? "font-amiri" : "font-balooDa"}`}
         >
           {language === "bn"
             ? `পৃষ্ঠা ${currentPage} / ${totalPages}`
@@ -156,29 +156,44 @@ const MorningEvening = () => {
           {currentDuas.map((dua) => (
             <div
               key={dua.id}
-              className="bg-transparent border-2 border-[#105A59] rounded-2xl overflow-hidden transition-all duration-300 form-style"
+              className="bg-transparent border-2 border-text-light rounded-2xl overflow-hidden transition-all duration-300 form-style"
             >
               {/* Card Header - Always Visible */}
               <button
                 onClick={() => toggleCard(dua.id)}
                 className="w-full px-6 py-5 flex items-center justify-between hover:bg-[#E9F7E6] transition-colors duration-200"
               >
-                <div className="flex items-center gap-4">
+                <div className="flex justify-center items-center gap-4">
                   <span
-                    className={`text-2xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-[#105A59] bg-[#E9F7E6] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0`}
+                    className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-text-light bg-[#E9F7E6] rounded-full flex items-center justify-center`}
                   >
-                    {dua.id}
+                    {dua.id}.
                   </span>
-                  <h3
-                    className={`text-xl md:text-2xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] text-left`}
-                  >
-                    {dua.name}
-                  </h3>
+                  <div className="flex flex-col md:flex-row w-full justify-center items-center">
+                    <h3
+                      className={`text-xl md:text-2xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light text-left`}
+                    >
+                      {dua.name}
+                    </h3>
+
+                    <p
+                      className={`text-sm md:text-xl md:ml-10 ${language === "en" ? "font-amiri" : "font-balooDa"} text-text-light font-bold text-center`}
+                    >
+                      {dua.times}{" "}
+                      {dua.times === "1" || dua.times === 1
+                        ? language === "bn"
+                          ? "বার"
+                          : "time"
+                        : language === "bn"
+                          ? "বার"
+                          : "times"}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Expand/Collapse Icon */}
                 <svg
-                  className={`w-6 h-6 text-[#105A59] transition-transform duration-300 flex-shrink-0 ${
+                  className={`w-6 h-6 text-text-light transition-transform duration-300 flex-shrink-0 ${
                     expandedCard === dua.id ? "rotate-180" : ""
                   }`}
                   fill="none"
@@ -202,15 +217,15 @@ const MorningEvening = () => {
                     : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="px-6 pb-6 space-y-6 border-t-2 border-[#105A59] bg-transparent">
+                <div className="px-6 pb-6 space-y-6 border-t-2 border-text-light bg-transparent">
                   {/* Arabic Dua */}
                   <div className="pt-6">
                     <h4
-                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-3`}
+                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light mb-3`}
                     >
                       {language === "bn" ? "দু'আ:" : "Dua:"}
                     </h4>
-                    <p className="text-4xl md:text-6xl font-lateef text-[#105A59] leading-loose text-right">
+                    <p className="text-4xl md:text-6xl font-lateef text-text-light leading-loose text-right">
                       {dua.dua}
                     </p>
                   </div>
@@ -219,13 +234,13 @@ const MorningEvening = () => {
                   {dua.note ? (
                     <div>
                       <h4
-                        className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"}  font-semibold text-[#105A59]`}
+                        className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"}  font-semibold text-text-light`}
                       >
                         {language === "bn" ? "নোট:" : "Note:"}
                       </h4>
                       <p
                         dangerouslySetInnerHTML={{ __html: dua.note }}
-                        className="text-xl md:text-2xl font-lateef text-[#105A59] leading-relaxed"
+                        className="text-xl md:text-2xl font-lateef text-text-light leading-relaxed"
                       />
                     </div>
                   ) : (
@@ -235,12 +250,12 @@ const MorningEvening = () => {
                   {/* Pronunciation - Always visible in expanded card */}
                   <div>
                     <h4
-                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-3`}
+                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light mb-3`}
                     >
                       {language === "bn" ? "উচ্চারণ:" : "Pronunciation:"}
                     </h4>
                     <p
-                      className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] leading-relaxed`}
+                      className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${language === "en" ? "font-amiri" : "font-balooDa"} text-text-light leading-relaxed`}
                     >
                       {dua.pronunciation}
                     </p>
@@ -256,7 +271,7 @@ const MorningEvening = () => {
                         {/* Book icon — filled when collapsed, outlined when expanded */}
                         {expandedTranslation === dua.id ? (
                           <svg
-                            className="w-5 h-5 text-[#105A59] flex-shrink-0"
+                            className="w-5 h-5 text-text-light flex-shrink-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -270,7 +285,7 @@ const MorningEvening = () => {
                           </svg>
                         ) : (
                           <svg
-                            className="w-5 h-5 text-[#105A59] flex-shrink-0"
+                            className="w-5 h-5 text-text-light flex-shrink-0"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                           >
@@ -278,13 +293,13 @@ const MorningEvening = () => {
                           </svg>
                         )}
                         <h4
-                          className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59]`}
+                          className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light`}
                         >
                           {language === "bn" ? "অনুবাদ" : "Translation"}
                         </h4>
                       </div>
                       <svg
-                        className={`w-5 h-5 text-[#105A59] transition-transform duration-300 flex-shrink-0 ${
+                        className={`w-5 h-5 text-text-light transition-transform duration-300 flex-shrink-0 ${
                           expandedTranslation === dua.id ? "rotate-180" : ""
                         }`}
                         fill="none"
@@ -309,7 +324,7 @@ const MorningEvening = () => {
                     >
                       <div className="pb-4">
                         <p
-                          className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] leading-relaxed`}
+                          className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${language === "en" ? "font-amiri" : "font-balooDa"} text-text-light leading-relaxed`}
                         >
                           {dua.translation}
                         </p>
@@ -318,12 +333,12 @@ const MorningEvening = () => {
                   </div>
 
                   {/* Times and Reference Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t-2 border-[#105A59]">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t-2 border-text-light">
                     {/* Times */}
                     {dua.times && (
                       <div className="flex items-start gap-3">
                         <svg
-                          className="w-6 h-6 text-[#105A59] mt-1 flex-shrink-0"
+                          className="w-6 h-6 text-text-light mt-1 flex-shrink-0"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -341,12 +356,12 @@ const MorningEvening = () => {
                         </svg>
                         <div>
                           <h4
-                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-1`}
+                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light mb-1`}
                           >
                             {language === "bn" ? "তিলাওয়াত:" : "Recite:"}
                           </h4>
                           <p
-                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] font-bold`}
+                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-text-light font-bold`}
                           >
                             {dua.times}{" "}
                             {dua.times === "1" || dua.times === 1
@@ -365,7 +380,7 @@ const MorningEvening = () => {
                     {dua.reference && (
                       <div className="flex items-start gap-3">
                         <svg
-                          className="w-6 h-6 text-[#105A59] mt-1 flex-shrink-0"
+                          className="w-6 h-6 text-text-light mt-1 flex-shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -379,12 +394,12 @@ const MorningEvening = () => {
                         </svg>
                         <div>
                           <h4
-                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-[#105A59] mb-1`}
+                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light mb-1`}
                           >
                             {language === "bn" ? "রেফারেন্স:" : "Reference:"}
                           </h4>
                           <p
-                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-[#105A59] italic`}
+                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-text-light italic`}
                           >
                             {dua.reference}
                           </p>
@@ -407,7 +422,7 @@ const MorningEvening = () => {
             className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
               currentPage === 1
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-[#105A59] text-white hover:bg-[#0d4544]"
+                : "bg-text-light text-white hover:bg-[#0d4544]"
             }`}
             aria-label="Previous page"
           >
@@ -436,7 +451,7 @@ const MorningEvening = () => {
             className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
               currentPage === totalPages
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-[#105A59] text-white hover:bg-[#0d4544]"
+                : "bg-text-light text-white hover:bg-[#0d4544]"
             }`}
             aria-label="Next page"
           >

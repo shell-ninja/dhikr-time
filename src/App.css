@@ -1,11 +1,19 @@
 @import "tailwindcss";
-/* @import url("https://fonts.googleapis.com/css2?family=Amiri&display=swap"); */
-/* @import url("https://fonts.googleapis.com/css2?family=Lateef:wght@200;300;400;500;600;700;800&display=swap"); */
 
 @theme {
   --font-amiri: "Amiri", sans-serif;
   --font-lateef: "Lateef", sans-serif;
   --font-balooDa: "Baloo Da 2", sans-serif;
+
+  /* Colors */
+
+  /* Light Mode */
+  --color-text-light: #105a59;
+  --color-bg-light: #e4f6d9;
+
+  /* Dark Mode */
+  --color-text-dark: #c2ebfa;
+  --color-bg-dark: #061429;
 }
 
 * {
