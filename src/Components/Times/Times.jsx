@@ -172,7 +172,11 @@ const Times = ({ formData }) => {
   // Convert English numerals to Bengali numerals
   const toBengaliNumber = (num) => {
     const bengaliNumerals = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
-    return num.toString().split("").map(d => bengaliNumerals[parseInt(d)]).join("");
+    return num
+      .toString()
+      .split("")
+      .map((d) => bengaliNumerals[parseInt(d)])
+      .join("");
   };
 
   // Format date based on language
@@ -180,20 +184,30 @@ const Times = ({ formData }) => {
     if (language === "bn") {
       // Bengali month names
       const monthsBn = [
-        "জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
-        "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"
+        "জানুয়ারি",
+        "ফেব্রুয়ারি",
+        "মার্চ",
+        "এপ্রিল",
+        "মে",
+        "জুন",
+        "জুলাই",
+        "আগস্ট",
+        "সেপ্টেম্বর",
+        "অক্টোবর",
+        "নভেম্বর",
+        "ডিসেম্বর",
       ];
-      
+
       // Parse the readable date (e.g., "14 February, 2026")
       const parts = dateObj.readable.split(" ");
       const day = toBengaliNumber(parseInt(parts[0]));
       const monthIndex = new Date(Date.parse(parts[1] + " 1, 2000")).getMonth();
       const month = monthsBn[monthIndex];
       const year = toBengaliNumber(parts[2].replace(",", ""));
-      
+
       return `${day} ${month}, ${year}`;
     }
-    
+
     return dateObj.readable;
   };
 
@@ -201,14 +215,14 @@ const Times = ({ formData }) => {
     const [h, m] = time.split(":").map(Number);
     const hour = h % 12 || 12;
     const period = h >= 12 ? "PM" : "AM";
-    const periodBn = h >= 12 ? "অপরাহ্ন" : "পূর্বাহ্ন";
-    
+    const periodBn = h >= 12 ? "PM" : "AM";
+
     if (language === "bn") {
       const hourBn = toBengaliNumber(hour);
       const minuteBn = toBengaliNumber(m.toString().padStart(2, "0"));
       return `${hourBn}:${minuteBn} ${periodBn}`;
     }
-    
+
     return `${hour}:${m.toString().padStart(2, "0")} ${period}`;
   };
 
@@ -227,7 +241,7 @@ const Times = ({ formData }) => {
         ref={locationRef}
         className={`text-2xl md:text-3xl font-bold text-[#105A59] mt-3 ${
           language === "bn" ? "font-balooDa" : "font-amiri"
-        }`}
+        } text-center`}
       >
         {city}, {country}
       </h3>
@@ -242,7 +256,7 @@ const Times = ({ formData }) => {
           <div
             key={name}
             ref={(el) => (prayerCardsRef.current[index] = el)}
-            className={`flex flex-col justify-between items-center bg-transparent border-2 border-[#105A59] rounded-[20px] px-15 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style ${
+            className={`flex flex-col justify-center items-center bg-transparent border-2 border-[#105A59] rounded-[20px] px-15 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style ${
               index === 6 ? "md:col-span-2 lg:col-span-3" : ""
             }`}
           >
@@ -269,3 +283,4 @@ const Times = ({ formData }) => {
 };
 
 export default Times;
+
