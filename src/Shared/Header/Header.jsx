@@ -5,7 +5,8 @@ import "./Header.css";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import logo from "../../assets/logo-dhikr-time.png";
+import logoDark from "../../assets/logo-dhikr-time-dark.png";
+import logoLight from "../../assets/logo-dhikr-time-light.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -152,13 +153,13 @@ const Header = () => {
   }, []);
 
   // ── Theme-aware class shorthands ──
-  const navBg   = isDark ? "bg-bg-dark ifDark"  : "bg-text-light";
-  const navText = isDark ? "text-text-dark"  : "text-bg-light";
+  const navBg = isDark ? "bg-bg-dark ifDark" : "bg-text-light";
+  const navText = isDark ? "text-text-dark" : "text-bg-light";
 
   // Desktop refs
-  const navbarRef        = useRef(null);
-  const logoRef          = useRef(null);
-  const linksRef         = useRef([]);
+  const navbarRef = useRef(null);
+  const logoRef = useRef(null);
+  const linksRef = useRef([]);
   const hamburgerIconRef = useRef(null);
 
   // Animate hamburger icon on every open/close toggle
@@ -167,21 +168,35 @@ const Header = () => {
       gsap.fromTo(
         hamburgerIconRef.current,
         { rotate: isOpen ? -90 : 90, opacity: 0, scale: 0.5 },
-        { rotate: 0, opacity: 1, scale: 1, duration: 0.28, ease: "back.out(2)" },
+        {
+          rotate: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.28,
+          ease: "back.out(2)",
+        },
       );
     }
   }, [isOpen]);
 
   const handleToggleMenu = () => setIsOpen((prev) => !prev);
-  const handleLinkClick  = () => setIsOpen(false);
+  const handleLinkClick = () => setIsOpen(false);
 
   useGSAP(() => {
     if (window.innerWidth < 768) return;
 
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.from(navbarRef.current, { y: -80, opacity: 0, duration: 0.8 })
-      .from(logoRef.current,   { y: 20, rotate: -3, opacity: 0, duration: 0.6 }, "-=0.4")
-      .from(linksRef.current,  { y: 20, opacity: 0, stagger: 0.15, duration: 0.5 }, "-=0.4");
+      .from(
+        logoRef.current,
+        { y: 20, rotate: -3, opacity: 0, duration: 0.6 },
+        "-=0.4",
+      )
+      .from(
+        linksRef.current,
+        { y: 20, opacity: 0, stagger: 0.15, duration: 0.5 },
+        "-=0.4",
+      );
 
     ScrollTrigger.create({
       start: "top -80",
@@ -206,8 +221,9 @@ const Header = () => {
     });
   }, []);
 
-  const theme = isDark ? "dark" : "light"
-  console.log(theme)
+  const theme = isDark ? "dark" : "light";
+  const logo = isDark ? logoDark : logoLight; // used in both navbars
+  console.log(theme);
 
   return (
     <>
@@ -230,7 +246,10 @@ const Header = () => {
             className={`text-3xl ${navText} w-9 h-9 flex items-center justify-center`}
             aria-label="Toggle menu"
           >
-            <span ref={hamburgerIconRef} className="flex items-center justify-center">
+            <span
+              ref={hamburgerIconRef}
+              className="flex items-center justify-center"
+            >
               {isOpen ? <FiX /> : <FiMenu />}
             </span>
           </button>
@@ -239,12 +258,18 @@ const Header = () => {
         {/* Dropdown */}
         <div
           className={`absolute top-full left-0 w-full ${navBg} font-amiri font-bold text-xl ${navText} tracking-wide transition-all duration-300 ease-in-out overflow-hidden ${
-            isOpen ? "max-h-72 opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+            isOpen
+              ? "max-h-72 opacity-100"
+              : "max-h-0 opacity-0 pointer-events-none"
           }`}
         >
           <div className="flex flex-col items-center space-y-5 py-7">
-            <Link to="/dua" onClick={handleLinkClick}>Dua</Link>
-            <Link to="/asma-ul-husna" onClick={handleLinkClick}>Asma Ul Husna</Link>
+            <Link to="/dua" onClick={handleLinkClick}>
+              Dua
+            </Link>
+            <Link to="/asma-ul-husna" onClick={handleLinkClick}>
+              Asma Ul Husna
+            </Link>
 
             <div className="flex flex-col justify-center items-center gap-4">
               <div ref={(el) => (linksRef.current[2] = el)}>
@@ -300,3 +325,4 @@ const Header = () => {
 };
 
 export default Header;
+
