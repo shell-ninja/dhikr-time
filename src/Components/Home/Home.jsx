@@ -23,6 +23,11 @@ const Home = () => {
     return localStorage.getItem("language") || "en";
   });
 
+  // Get the theme from the Local Storate \\
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light",
+  );
+
   // Listen for language changes in localStorage
   useEffect(() => {
     const handleStorageChange = () => {
@@ -41,6 +46,23 @@ const Home = () => {
       window.removeEventListener("languageChange", handleStorageChange);
     };
   }, []);
+
+  // Listen for theme change in localStorage
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const newTheme = localStorage.getItem("theme") || "light";
+      setTheme(newTheme); // "light" or "dark"
+    };
+
+    window.addEventListener("storage", handleThemeChange);
+    window.addEventListener("themeChange", handleThemeChange);
+    return () => {
+      window.removeEventListener("storage", handleThemeChange);
+      window.removeEventListener("themeChange", handleThemeChange);
+    };
+  }, []);
+
+  console.log(theme);
 
   useGSAP(() => {
     const isMobile = window.innerWidth < 768;
@@ -160,7 +182,7 @@ const Home = () => {
             ref={bgRef}
             className="absolute inset-0 bg-no-repeat bg-cover bg-center"
             style={{
-              backgroundImage: "url('/images/BG.png')",
+              backgroundImage: `url('/images/BG-${theme}.png')`,
               opacity: 0.45,
             }}
           />

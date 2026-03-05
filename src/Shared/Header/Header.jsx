@@ -19,7 +19,7 @@ const ToggleBtn = ({ toggled, onToggle }) => {
     const btn = btnRef.current;
     if (!btn) return;
     btn.classList.remove("firing");
-    void btn.offsetWidth; // force reflow to restart animation
+    void btn.offsetWidth;
     btn.classList.add("firing");
     onToggle();
   };
@@ -39,18 +39,86 @@ const ToggleBtn = ({ toggled, onToggle }) => {
       className={`lang-toggle ${toggled ? "on" : ""}`}
       aria-label={`Switch to ${toggled ? "English" : "Bengali"}`}
     >
-      {/* Ripple ring */}
       <div className="lang-toggle-ripple" />
-
-      {/* Sliding knob with crossfading labels */}
       <div className="lang-toggle-knob">
         <span className="lang-toggle-label lang-toggle-label-en">en</span>
         <span className="lang-toggle-label lang-toggle-label-bn">বাং</span>
       </div>
-
-      {/* Ghost hint — shows the inactive language on the opposite side */}
       <span className="lang-toggle-hint lang-toggle-hint-bn">বাং</span>
       <span className="lang-toggle-hint lang-toggle-hint-en">en</span>
+    </button>
+  );
+};
+
+/* ─────────────────────────────────────────────────────────────
+   DarkModeToggle — animated sun / moon pill toggle
+───────────────────────────────────────────────────────────── */
+const DarkModeToggle = ({ isDark, onToggle }) => {
+  const btnRef = useRef(null);
+
+  const handleClick = () => {
+    const btn = btnRef.current;
+    if (!btn) return;
+    btn.classList.remove("firing");
+    void btn.offsetWidth;
+    btn.classList.add("firing");
+    onToggle();
+  };
+
+  useEffect(() => {
+    const btn = btnRef.current;
+    if (!btn) return;
+    const cleanup = () => btn.classList.remove("firing");
+    btn.addEventListener("animationend", cleanup);
+    return () => btn.removeEventListener("animationend", cleanup);
+  }, []);
+
+  return (
+    <button
+      ref={btnRef}
+      onClick={handleClick}
+      className={`dark-mode-toggle ${isDark ? "on" : ""}`}
+      aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      {/* Ripple ring (reuses same pattern as lang-toggle) */}
+      <div className="dark-toggle-ripple" />
+
+      {/* Sliding knob with icon */}
+      <div className="dark-toggle-knob">
+        {/* Sun rays */}
+        <svg
+          className="dark-toggle-icon dark-toggle-sun"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+        {/* Moon */}
+        <svg
+          className="dark-toggle-icon dark-toggle-moon"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      </div>
+
+      {/* Ghost hints on opposite side */}
+      <span className="dark-toggle-hint dark-toggle-hint-moon">🌙</span>
+      <span className="dark-toggle-hint dark-toggle-hint-sun">☀️</span>
     </button>
   );
 };
@@ -66,21 +134,33 @@ const Header = () => {
     return saved === "bn";
   });
 
-  // const handleToggle = useCallback(() => {
-  //   setToggled((prev) => {
-  //     const next = !prev;
-  //     localStorage.setItem("language", next ? "bn" : "en");
-  //     return next;
-  //   });
-  // }, []);
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    // Default to dark if no preference saved, or honour saved value
+    if (saved) return saved === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
+
+  // Apply / remove `dark` class on <html> whenever isDark changes
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    window.dispatchEvent(new Event("themeChange"));
+  }, [isDark]);
+
+  const handleThemeToggle = useCallback(() => {
+    setIsDark((prev) => !prev);
+  }, []);
+
   const handleToggle = useCallback(() => {
     setToggled((prev) => {
       const next = !prev;
       localStorage.setItem("language", next ? "bn" : "en");
-
-      // Dispatch custom event for same-tab updates
       window.dispatchEvent(new Event("languageChange"));
-
       return next;
     });
   }, []);
@@ -199,11 +279,11 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Dropdown — nav links + toggle */}
+        {/* Dropdown — nav links + toggles */}
         <div
           className={`absolute top-full left-0 w-full bg-text font-amiri font-bold text-xl text-[#E4F6D9] tracking-wide transition-all duration-300 ease-in-out overflow-hidden ${
             isOpen
-              ? "max-h-60 opacity-100"
+              ? "max-h-72 opacity-100"
               : "max-h-0 opacity-0 pointer-events-none"
           }`}
         >
@@ -215,9 +295,17 @@ const Header = () => {
               Asma Ul Husna
             </Link>
 
-            {/* Language Toggle */}
-            <div ref={(el) => (linksRef.current[2] = el)}>
-              <ToggleBtn toggled={toggled} onToggle={handleToggle} />
+            {/* Toggles row */}
+            <div className="flex flex-col justify-center items-center gap-4">
+              {/* Language Toggle */}
+              <div ref={(el) => (linksRef.current[2] = el)}>
+                <ToggleBtn toggled={toggled} onToggle={handleToggle} />
+              </div>
+
+              {/* Dark Mode Toggle */}
+              <div ref={(el) => (linksRef.current[3] = el)}>
+                <DarkModeToggle isDark={isDark} onToggle={handleThemeToggle} />
+              </div>
             </div>
           </div>
         </div>
@@ -236,7 +324,7 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Nav Links + Toggle */}
+        {/* Nav Links + Toggles */}
         <div className="flex items-center gap-10 text-2xl">
           <Link
             ref={(el) => (linksRef.current[0] = el)}
@@ -256,9 +344,14 @@ const Header = () => {
             <span className="nav-underline" />
           </Link>
 
-          {/* Language Toggle — inline with nav links */}
+          {/* Language Toggle */}
           <div ref={(el) => (linksRef.current[2] = el)}>
             <ToggleBtn toggled={toggled} onToggle={handleToggle} />
+          </div>
+
+          {/* Dark Mode Toggle */}
+          <div ref={(el) => (linksRef.current[3] = el)}>
+            <DarkModeToggle isDark={isDark} onToggle={handleThemeToggle} />
           </div>
         </div>
       </div>

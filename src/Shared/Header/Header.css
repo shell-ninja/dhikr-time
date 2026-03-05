@@ -183,3 +183,160 @@
 .lang-toggle.on .lang-toggle-hint-en {
   opacity: 1;
 }
+
+/* ============================================================
+   DARK MODE TOGGLE
+   Mirrors lang-toggle patterns exactly
+   ============================================================ */
+
+/* ── Track ── */
+.dark-mode-toggle {
+  position: relative;
+  width: 74px;
+  height: 36px;
+  border-radius: 18px;
+  background: transparent;
+  border: 2px solid rgba(228, 246, 217, 0.55);
+  cursor: pointer;
+  outline: none;
+  overflow: visible;
+  flex-shrink: 0;
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
+}
+.dark-mode-toggle:hover {
+  border-color: rgba(228, 246, 217, 0.9);
+  box-shadow:
+    0 0 0 4px rgba(228, 246, 217, 0.08),
+    0 0 18px rgba(228, 246, 217, 0.12);
+}
+/* Knob stretches slightly on press for tactile feel */
+.dark-mode-toggle:active .dark-toggle-knob {
+  width: 30px;
+}
+/* Toggled track — dark mode active */
+.dark-mode-toggle.on {
+  border-color: rgba(228, 246, 217, 0.9);
+  background: rgba(228, 246, 217, 0.1);
+  box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
+}
+
+/* ── Ripple ring ── */
+.dark-toggle-ripple {
+  position: absolute;
+  inset: -2px;
+  border-radius: 18px;
+  border: 2px solid rgba(228, 246, 217, 0);
+  pointer-events: none;
+}
+.dark-mode-toggle.firing .dark-toggle-ripple {
+  animation: darkToggleRipple 0.5s ease-out forwards;
+}
+@keyframes darkToggleRipple {
+  0% {
+    inset: -2px;
+    border-color: rgba(228, 246, 217, 0.6);
+    border-radius: 18px;
+  }
+  100% {
+    inset: -10px;
+    border-color: rgba(228, 246, 217, 0);
+    border-radius: 26px;
+  }
+}
+
+/* ── Knob ── */
+.dark-toggle-knob {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #e4f6d9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition:
+    left 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+    width 0.15s ease,
+    box-shadow 0.35s ease;
+}
+.dark-mode-toggle.on .dark-toggle-knob {
+  left: calc(74px - 32px);
+  box-shadow:
+    0 2px 12px rgba(228, 246, 217, 0.35),
+    0 0 0 3px rgba(228, 246, 217, 0.12);
+}
+
+/* ── Icons inside knob (mirror of lang labels) ── */
+.dark-toggle-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Sun — visible in light mode (toggle OFF) */
+.dark-toggle-sun {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  color: #105a59;
+}
+.dark-mode-toggle.on .dark-toggle-sun {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+/* Moon — visible in dark mode (toggle ON) */
+.dark-toggle-moon {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  color: #105a59;
+}
+.dark-mode-toggle.on .dark-toggle-moon {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ── Ghost hints outside the knob ── */
+.dark-toggle-hint {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.65rem;
+  color: rgba(228, 246, 217, 0.35);
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.3s ease;
+  line-height: 1;
+}
+
+/* Moon hint on the right — visible in light mode, hinting at dark */
+.dark-toggle-hint-moon {
+  right: 6px;
+}
+.dark-mode-toggle.on .dark-toggle-hint-moon {
+  opacity: 0;
+}
+
+/* Sun hint on the left — visible in dark mode, hinting at light */
+.dark-toggle-hint-sun {
+  left: 6px;
+  opacity: 0;
+}
+.dark-mode-toggle.on .dark-toggle-hint-sun {
+  opacity: 1;
+}
