@@ -11,7 +11,7 @@ const Footer = () => {
           <h3 className="font-bold">Shell Ninja</h3>
         </div>
 
-        <div className="flex flex-col justify-evenly items-center gap-2 text-2xl md:text-3xl text-[#E9F7E6]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-2xl md:text-3xl text-[#E9F7E6]">
           <a target="_blank" href="https://github.com/shell-ninja">
             <FaGithub className="link-style" />
           </a>

@@ -146,6 +146,7 @@ const Home = () => {
       },
     );
   }, []);
+
   return (
     <PageTransition>
       <div>
