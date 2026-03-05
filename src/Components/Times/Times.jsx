@@ -227,7 +227,7 @@ const Times = ({ formData }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center my-20 px-4">
+    <div className="flex flex-col justify-center items-center my-20">
       <h1
         ref={dateRef}
         className={`text-4xl md:text-5xl font-bold text-[#105A59] ${
@@ -256,18 +256,29 @@ const Times = ({ formData }) => {
           <div
             key={name}
             ref={(el) => (prayerCardsRef.current[index] = el)}
-            className={`flex flex-col justify-center items-center bg-transparent border-2 border-[#105A59] rounded-[20px] px-15 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style ${
+            className={`flex flex-col justify-center items-center bg-transparent border-2 border-[#105A59] rounded-[20px] px-10 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style ${
               index === 6 ? "md:col-span-2 lg:col-span-3" : ""
             }`}
           >
-            <h4
-              className={`text-2xl md:text-3xl font-bold text-[#105A59] mb-4 ${
-                language === "bn" ? "font-balooDa" : "font-amiri"
-              }`}
-            >
-              {prayerNames[language][name]}
-            </h4>
+            <div className="flex justify-center items-center gap-3 mb-2">
+              <h4
+                className={`text-2xl md:text-3xl font-bold text-[#105A59] ${
+                  language === "bn" ? "font-balooDa" : "font-amiri"
+                }`}
+              >
+                {prayerNames[language][name]}
+              </h4>
 
+              <img
+                src={`/icons/${name}.svg`}
+                alt={name}
+                className="w-8 h-8 mb-2"
+                style={{
+                  filter:
+                    "invert(27%) sepia(49%) saturate(712%) hue-rotate(137deg) brightness(95%) contrast(97%)",
+                }}
+              />
+            </div>
             <p
               className={`text-3xl md:text-4xl font-bold text-[#105A59] ${
                 language === "bn" ? "font-balooDa" : "font-amiri"
