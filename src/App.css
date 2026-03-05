@@ -1,11 +1,10 @@
 @import "tailwindcss";
-/* @import url("https://fonts.googleapis.com/css2?family=Amiri&display=swap"); */
-/* @import url("https://fonts.googleapis.com/css2?family=Lateef:wght@200;300;400;500;600;700;800&display=swap"); */
 
 @theme {
   --font-amiri: "Amiri", sans-serif;
   --font-lateef: "Lateef", sans-serif;
   --font-balooDa: "Baloo Da 2", sans-serif;
+  --color-text: #105a59;
 }
 
 * {

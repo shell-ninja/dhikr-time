@@ -452,24 +452,24 @@ const Form = () => {
       <div className="flex flex-col justify-center items-center mb-20 overflow-x-hidden">
         <h1
           ref={titleRef}
-          className={`text-5xl text-[#105A59] ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold`}
+          className={`text-5xl text-text ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold`}
         >
           {language === "en" ? "Prayer Times" : "সালাতের সময়"}
         </h1>
 
         <div
           ref={dividerRef}
-          className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"
+          className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text to-transparent rounded-2xl mt-4 mb-12"
         ></div>
 
         {/* Mobile Device */}
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[85%] px-[50px] py-[50px] rounded-[20px] md:hidden relative mb-20 form-style"
+          className="flex flex-col justify-center items-center gap-3 bg-transparent border-text border-2 w-[85%] px-[50px] py-[50px] rounded-[20px] md:hidden relative mb-20 form-style"
         >
           <input
             ref={cityInputMobileRef}
-            className={`h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-2xl md:text-3xl ${language === "en" ? "font-amiri input-en" : "font-balooDa input-bn"} font-bold text-[#105A59] outline-none input-style`}
+            className={`h-[68px] w-[274px] bg-transparent border-text border-2 rounded-[15px] pl-5 text-2xl md:text-3xl ${language === "en" ? "font-amiri input-en" : "font-balooDa input-bn"} font-bold text-text outline-none input-style`}
             type="text"
             placeholder={language === "en" ? "City" : "শহর"}
             value={city}
@@ -481,7 +481,7 @@ const Form = () => {
           <div className="relative w-[274px] z-40">
             <input
               ref={countryInputMobileRef}
-              className={`h-[68px] w-[274px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-2xl md:text-3xl ${language === "en" ? "font-amiri input-en" : "font-balooDa input-bn"} font-bold text-[#105A59] outline-none input-style`}
+              className={`h-[68px] w-[274px] bg-transparent border-text border-2 rounded-[15px] pl-5 text-2xl md:text-3xl ${language === "en" ? "font-amiri input-en" : "font-balooDa input-bn"} font-bold text-text outline-none input-style`}
               type="text"
               placeholder={language === "en" ? "Country" : "দেশ"}
               value={country}
@@ -493,7 +493,7 @@ const Form = () => {
             {showCountrySuggestions && countrySuggestions.length > 0 && (
               <ul
                 ref={countrySuggestionsRefMobile}
-                className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] max-h-[200px] overflow-y-auto dropdown-scroll z-50 shadow-lg"
+                className="absolute top-[68px] left-0 w-full bg-text rounded-[15px] max-h-[200px] overflow-y-auto dropdown-scroll z-50 shadow-lg"
               >
                 {countrySuggestions.map((c, index) => (
                   <li
@@ -513,7 +513,7 @@ const Form = () => {
             {showCountrySuggestions &&
               countrySuggestions.length === 0 &&
               country.trim() !== "" && (
-                <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] p-4 text-[#E4F6D9] text-center text-xl font-amiri z-50 shadow-lg">
+                <div className="absolute top-[68px] left-0 w-full bg-text rounded-[15px] p-4 text-[#E4F6D9] text-center text-xl font-amiri z-50 shadow-lg">
                   {language === "en" ? (
                     "No countries found"
                   ) : (
@@ -525,7 +525,7 @@ const Form = () => {
 
           {/* School Dropdown */}
           <div ref={schoolDropdownMobileRef} className="w-[274px] z-30">
-            <label className="mt-5 text-xl font-amiri font-bold text-[#105A59] text-start w-[274px]">
+            <label className="mt-5 text-xl font-amiri font-bold text-text text-start w-[274px]">
               {language === "en" ? (
                 "Select a School"
               ) : (
@@ -534,14 +534,14 @@ const Form = () => {
             </label>
             <div className="relative w-[274px]">
               <div
-                className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-2xl md:text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
+                className="h-[68px] border-2 border-text rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-2xl md:text-3xl font-amiri font-bold text-text bg-transparent"
                 onClick={() => setSchoolOpen(!schoolOpen)}
               >
                 {selectedSchool}
                 <span className="mr-5">&#9662;</span>
               </div>
               {schoolOpen && (
-                <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] overflow-hidden z-50 shadow-lg">
+                <div className="absolute top-[68px] left-0 w-full bg-text rounded-[15px] overflow-hidden z-50 shadow-lg">
                   {schools.map((school) => (
                     <div
                       key={school}
@@ -561,7 +561,7 @@ const Form = () => {
 
           {/* Method Dropdown */}
           <div ref={methodDropdownMobileRef} className="w-[274px] z-20">
-            <label className="mt-5 text-xl font-amiri font-bold text-[#105A59] text-start w-[274px]">
+            <label className="mt-5 text-xl font-amiri font-bold text-text text-start w-[274px]">
               {language === "en" ? (
                 "Select a Method"
               ) : (
@@ -572,14 +572,14 @@ const Form = () => {
             </label>
             <div className="relative w-[274px]">
               <div
-                className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-2xl md:text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
+                className="h-[68px] border-2 border-text rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-2xl md:text-3xl font-amiri font-bold text-text bg-transparent"
                 onClick={() => setMethodOpen(!methodOpen)}
               >
                 {selectedMethod}
                 <span className="mr-5">&#9662;</span>
               </div>
               {methodOpen && (
-                <div className="absolute top-[68px] left-0 w-full bg-[#105A59] max-h-[180px] overflow-y-auto dropdown-scroll rounded-[15px] z-50 shadow-lg">
+                <div className="absolute top-[68px] left-0 w-full bg-text max-h-[180px] overflow-y-auto dropdown-scroll rounded-[15px] z-50 shadow-lg">
                   {methods.map((method) => (
                     <div
                       key={method}
@@ -599,7 +599,7 @@ const Form = () => {
 
           <input
             ref={submitBtnMobileRef}
-            className={`h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold mt-6 cursor-pointer btn-submit`}
+            className={`h-[68px] w-[274px] text-[#E4F6D9] bg-text border-2 rounded-[15px] text-3xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold mt-6 cursor-pointer btn-submit`}
             type="submit"
             value={language === "en" ? "Find" : "খুঁজুন"}
           />
@@ -608,12 +608,12 @@ const Form = () => {
         {/* Tab/Desktop Device */}
         <form
           onSubmit={handleSubmit}
-          className="hidden md:flex flex-col justify-center items-center gap-3 bg-transparent border-[#105A59] border-2 w-[800px] px-[50px] py-[50px] rounded-[20px] mb-20 form-style"
+          className="hidden md:flex flex-col justify-center items-center gap-3 bg-transparent border-text border-2 w-[800px] px-[50px] py-[50px] rounded-[20px] mb-20 form-style"
         >
           <div className="flex justify-center items-start gap-5">
             <input
               ref={cityInputDesktopRef}
-              className={`h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style ${language === "en" ? "input-en" : "input-bn"}`}
+              className={`h-[68px] w-[350px] bg-transparent border-text border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-text outline-none input-style ${language === "en" ? "input-en" : "input-bn"}`}
               type="text"
               placeholder={language === "en" ? "City" : "শহর"}
               value={city}
@@ -625,7 +625,7 @@ const Form = () => {
             <div className="relative w-[350px] z-40">
               <input
                 ref={countryInputDesktopRef}
-                className={`h-[68px] w-[350px] bg-transparent border-[#105A59] border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-[#105A59] outline-none input-style ${language === "en" ? "input-en" : "input-bn"}`}
+                className={`h-[68px] w-[350px] bg-transparent border-text border-2 rounded-[15px] pl-5 text-3xl font-amiri font-bold text-text outline-none input-style ${language === "en" ? "input-en" : "input-bn"}`}
                 type="text"
                 placeholder={language === "en" ? "Country" : "দেশ"}
                 value={country}
@@ -637,7 +637,7 @@ const Form = () => {
               {showCountrySuggestions && countrySuggestions.length > 0 && (
                 <ul
                   ref={countrySuggestionsRefDesktop}
-                  className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] max-h-[200px] overflow-y-auto dropdown-scroll z-50 shadow-lg"
+                  className="absolute top-[68px] left-0 w-full bg-text rounded-[15px] max-h-[200px] overflow-y-auto dropdown-scroll z-50 shadow-lg"
                 >
                   {countrySuggestions.map((c, index) => (
                     <li
@@ -657,7 +657,7 @@ const Form = () => {
               {showCountrySuggestions &&
                 countrySuggestions.length === 0 &&
                 country.trim() !== "" && (
-                  <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] p-4 text-[#E4F6D9] text-center text-xl font-amiri z-50 shadow-lg">
+                  <div className="absolute top-[68px] left-0 w-full bg-text rounded-[15px] p-4 text-[#E4F6D9] text-center text-xl font-amiri z-50 shadow-lg">
                     {language === "en" ? (
                       "No countries found"
                     ) : (
@@ -676,7 +676,7 @@ const Form = () => {
               ref={schoolDropdownDesktopRef}
               className="relative w-[350px] z-30"
             >
-              <label className="text-xl font-amiri font-bold text-[#105A59] text-start w-full mb-2">
+              <label className="text-xl font-amiri font-bold text-text text-start w-full mb-2">
                 {language === "en" ? (
                   "Select a School"
                 ) : (
@@ -684,14 +684,14 @@ const Form = () => {
                 )}
               </label>
               <div
-                className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
+                className="h-[68px] border-2 border-text rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-3xl font-amiri font-bold text-text bg-transparent"
                 onClick={() => setSchoolOpen(!schoolOpen)}
               >
                 {selectedSchool}
                 <span className="mr-5">&#9662;</span>
               </div>
               {schoolOpen && (
-                <div className="absolute top-[68px] left-0 w-full bg-[#105A59] rounded-[15px] overflow-hidden z-50 shadow-lg">
+                <div className="absolute top-[68px] left-0 w-full bg-text rounded-[15px] overflow-hidden z-50 shadow-lg">
                   {schools.map((school) => (
                     <div
                       key={school}
@@ -713,7 +713,7 @@ const Form = () => {
               ref={methodDropdownDesktopRef}
               className="relative w-[350px] z-20"
             >
-              <label className="text-xl font-balooDa font-normal text-[#105A59] text-start w-full mb-2">
+              <label className="text-xl font-balooDa font-normal text-text text-start w-full mb-2">
                 {language === "en" ? (
                   "Select a Method"
                 ) : (
@@ -723,14 +723,14 @@ const Form = () => {
                 )}
               </label>
               <div
-                className="h-[68px] border-2 border-[#105A59] rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-3xl font-amiri font-bold text-[#105A59] bg-transparent"
+                className="h-[68px] border-2 border-text rounded-[15px] pl-5 flex items-center justify-between cursor-pointer text-3xl font-amiri font-bold text-text bg-transparent"
                 onClick={() => setMethodOpen(!methodOpen)}
               >
                 {selectedMethod}
                 <span className="mr-5">&#9662;</span>
               </div>
               {methodOpen && (
-                <div className="absolute top-[68px] left-0 w-full max-h-[180px] overflow-y-auto dropdown-scroll bg-[#105A59] rounded-[15px] z-50 shadow-lg">
+                <div className="absolute top-[68px] left-0 w-full max-h-[180px] overflow-y-auto dropdown-scroll bg-text rounded-[15px] z-50 shadow-lg">
                   {methods.map((method) => (
                     <div
                       key={method}
@@ -750,7 +750,7 @@ const Form = () => {
 
           <input
             ref={submitBtnDesktopRef}
-            className={`h-[68px] w-[274px] text-[#E4F6D9] bg-[#105A59] border-2 rounded-[15px] text-3xl ${language === "en" ? "font-amiri" : "font-balooDa"}  font-bold mt-6 cursor-pointer btn-submit`}
+            className={`h-[68px] w-[274px] text-[#E4F6D9] bg-text border-2 rounded-[15px] text-3xl ${language === "en" ? "font-amiri" : "font-balooDa"}  font-bold mt-6 cursor-pointer btn-submit`}
             type="submit"
             value={language === "en" ? "Find" : "খুঁজুন"}
           />

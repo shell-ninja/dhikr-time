@@ -172,7 +172,7 @@ const Header = () => {
       {/* ================= MOBILE NAVBAR ================= */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50">
         {/* Top bar — logo LEFT, hamburger RIGHT */}
-        <div className="bg-[#105A59] flex justify-between items-center px-5 py-4">
+        <div className="bg-text flex justify-between items-center px-5 py-4">
           {/* Dhikr Time Logo */}
           <div ref={logoRef} className="cursor-pointer">
             <Link
@@ -201,7 +201,7 @@ const Header = () => {
 
         {/* Dropdown — nav links + toggle */}
         <div
-          className={`absolute top-full left-0 w-full bg-[#105A59] font-amiri font-bold text-xl text-[#E4F6D9] tracking-wide transition-all duration-300 ease-in-out overflow-hidden ${
+          className={`absolute top-full left-0 w-full bg-text font-amiri font-bold text-xl text-[#E4F6D9] tracking-wide transition-all duration-300 ease-in-out overflow-hidden ${
             isOpen
               ? "max-h-60 opacity-100"
               : "max-h-0 opacity-0 pointer-events-none"
@@ -226,7 +226,7 @@ const Header = () => {
       {/* ================= DESKTOP NAVBAR ================= */}
       <div
         ref={navbarRef}
-        className="bg-[#105A59] py-7 hidden md:flex justify-around items-center font-amiri font-bold text-3xl text-[#E4F6D9] tracking-wide fixed top-0 left-0 right-0 z-[100]"
+        className="bg-text py-7 hidden md:flex justify-around items-center font-amiri font-bold text-3xl text-[#E4F6D9] tracking-wide fixed top-0 left-0 right-0 z-[100]"
       >
         {/* Logo — desktop only */}
         <div ref={logoRef} className="cursor-pointer">

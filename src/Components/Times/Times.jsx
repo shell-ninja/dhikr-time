@@ -230,7 +230,7 @@ const Times = ({ formData }) => {
     <div className="flex flex-col justify-center items-center my-20">
       <h1
         ref={dateRef}
-        className={`text-4xl md:text-5xl font-bold text-[#105A59] ${
+        className={`text-4xl md:text-5xl font-bold text-text ${
           language === "bn" ? "font-balooDa" : "font-amiri"
         }`}
       >
@@ -239,7 +239,7 @@ const Times = ({ formData }) => {
 
       <h3
         ref={locationRef}
-        className={`text-2xl md:text-3xl font-bold text-[#105A59] mt-3 ${
+        className={`text-2xl md:text-3xl font-bold text-text mt-3 ${
           language === "bn" ? "font-balooDa" : "font-amiri"
         } text-center`}
       >
@@ -248,7 +248,7 @@ const Times = ({ formData }) => {
 
       <div
         ref={dividerRef}
-        className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-[#105A59] to-transparent rounded-2xl mt-4 mb-12"
+        className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text to-transparent rounded-2xl mt-4 mb-12"
       ></div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mt-8">
@@ -256,13 +256,13 @@ const Times = ({ formData }) => {
           <div
             key={name}
             ref={(el) => (prayerCardsRef.current[index] = el)}
-            className={`flex flex-col justify-center items-center bg-transparent border-2 border-[#105A59] rounded-[20px] px-10 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style ${
+            className={`flex flex-col justify-center items-center bg-transparent border-2 border-text rounded-[20px] px-10 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style ${
               index === 6 ? "md:col-span-2 lg:col-span-3" : ""
             }`}
           >
             <div className="flex justify-center items-center gap-3 mb-2">
               <h4
-                className={`text-2xl md:text-3xl font-bold text-[#105A59] ${
+                className={`text-2xl md:text-3xl font-bold text-text ${
                   language === "bn" ? "font-balooDa" : "font-amiri"
                 }`}
               >
@@ -273,14 +273,10 @@ const Times = ({ formData }) => {
                 src={`/icons/${name}.svg`}
                 alt={name}
                 className="w-8 h-8 mb-2"
-                style={{
-                  filter:
-                    "invert(27%) sepia(49%) saturate(712%) hue-rotate(137deg) brightness(95%) contrast(97%)",
-                }}
               />
             </div>
             <p
-              className={`text-3xl md:text-4xl font-bold text-[#105A59] ${
+              className={`text-3xl md:text-4xl font-bold text-text ${
                 language === "bn" ? "font-balooDa" : "font-amiri"
               }`}
             >

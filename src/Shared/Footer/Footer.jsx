@@ -3,7 +3,7 @@ import "./Footer.css";
 
 const Footer = () => {
   return (
-    <div className="bg-[#105A59]">
+    <div className="bg-text">
       <div className="flex justify-between items-center min-h-44 px-[50px] md:px-[100px] py-10">
         <div className="font-amiri font-normal text-xl md:text-2xl text-[#E9F7E6]">
           <h1>A Sadaqah E Jariyah</h1>
