@@ -6,7 +6,6 @@
 
 .hover-card:hover {
   transform: translateY(-8px);
-  /* box-shadow: 0 20px 40px rgba(16, 90, 89, 0.2); */
 }
 
 .card-image-wrapper {
@@ -87,4 +86,13 @@
 
 .toggle-btn.toggled .en {
   display: none;
+}
+
+.form-style-light {
+  box-shadow: 10px 10px 4px #105a59;
+  border-radius: 10px;
+}
+
+.form-style-dark {
+  box-shadow: 10px 10px 4px #c2ebfa;
 }

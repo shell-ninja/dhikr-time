@@ -15,58 +15,65 @@ const Istighfar = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  usePageTitle("Morning And Evening | Dua", " | Dhikr Time");
+  usePageTitle("Istighfar | Dua", " | Dhikr Time");
 
-  // Getting the Language from "Dua" component
-  const [language, setLanguage] = useState(() => {
-    return localStorage.getItem("language") || "en";
-  });
-
-  // Listen for language changes in localStorage
+  // ── Language ──────────────────────────────────────────────
+  const [language, setLanguage] = useState(
+    () => localStorage.getItem("language") || "en",
+  );
   useEffect(() => {
-    const handleStorageChange = () => {
-      const newLanguage = localStorage.getItem("language") || "en";
-      setLanguage(newLanguage);
-    };
-
-    // Listen for storage events (works across tabs)
-    window.addEventListener("storage", handleStorageChange);
-
-    // Custom event for same-tab changes
-    window.addEventListener("languageChange", handleStorageChange);
-
+    const handle = () => setLanguage(localStorage.getItem("language") || "en");
+    window.addEventListener("storage", handle);
+    window.addEventListener("languageChange", handle);
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("languageChange", handleStorageChange);
+      window.removeEventListener("storage", handle);
+      window.removeEventListener("languageChange", handle);
     };
   }, []);
 
-  const url = `https://dua-and-dhikr.vercel.app/${language}/istighfar`; // vercel
-  // const url = `http://localhost:3000/${language}/istighfar`; // to test the app (api)
+  // ── Theme ─────────────────────────────────────────────────
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light",
+  );
+  useEffect(() => {
+    const handle = () => setTheme(localStorage.getItem("theme") || "light");
+    window.addEventListener("storage", handle);
+    window.addEventListener("themeChange", handle);
+    return () => {
+      window.removeEventListener("storage", handle);
+      window.removeEventListener("themeChange", handle);
+    };
+  }, []);
 
+  const isDark = theme === "dark";
+  const textMain = isDark ? "text-text-dark" : "text-text-light";
+  const borderMain = isDark ? "border-text-dark" : "border-text-light";
+  const viaMain = isDark ? "via-text-dark" : "via-text-light";
+  const bgActive = isDark ? "bg-text-dark" : "bg-text-light";
+  const textActive = isDark ? "text-bg-dark" : "text-bg-light";
+  const bgBadge = isDark ? "bg-bg-dark" : "bg-[#E9F7E6]";
+  const hoverBg = isDark ? "hover:bg-bg-dark" : "hover:bg-[#E9F7E6]";
+  const fontClass = language === "en" ? "font-amiri" : "font-balooDa";
+
+  const url = `https://dua-and-dhikr.vercel.app/${language}/istighfar`;
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   if (isLoading) return <Loader />;
   if (error) return <ErrorGPT />;
   if (!data?.duas) return <div>No duas found</div>;
 
-  // Pagination calculations
   const totalPages = Math.ceil(data.duas.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentDuas = data.duas.slice(startIndex, endIndex);
+  const currentDuas = data.duas.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   const toggleCard = (id) => {
     setExpandedCard(expandedCard === id ? null : id);
-    // Close translation dropdown when main card closes
-    if (expandedCard === id) {
-      setExpandedTranslation(null);
-    }
+    if (expandedCard === id) setExpandedTranslation(null);
   };
-
-  const toggleTranslation = (id) => {
+  const toggleTranslation = (id) =>
     setExpandedTranslation(expandedTranslation === id ? null : id);
-  };
 
   const goToPage = (page) => {
     setCurrentPage(page);
@@ -78,53 +85,47 @@ const Istighfar = () => {
   const renderPageNumbers = () => {
     const pages = [];
     const delta = 1;
-
-    const addPage = (page) =>
+    const addPage = (p) =>
       pages.push(
         <button
-          key={page}
-          onClick={() => goToPage(page)}
+          key={p}
+          onClick={() => goToPage(p)}
           className={`w-9 h-9 rounded-lg font-amiri font-semibold transition-colors cursor-pointer text-sm ${
-            currentPage === page
-              ? "bg-text-light text-white"
-              : "bg-[#E9F7E6] text-text-light hover:bg-text-light hover:text-white"
+            currentPage === p
+              ? `${bgActive} ${textActive}`
+              : `${bgBadge} ${textMain} hover:${bgActive} hover:${textActive}`
           }`}
         >
-          {page}
+          {p}
         </button>,
       );
-
     const addEllipsis = (key) =>
       pages.push(
         <span
           key={key}
-          className="w-9 h-9 flex items-center justify-center text-text-light font-bold"
+          className={`w-9 h-9 flex items-center justify-center ${textMain} font-bold`}
         >
           …
         </span>,
       );
 
     addPage(1);
-
-    const leftBound = currentPage - delta;
-    const rightBound = currentPage + delta;
-
-    if (leftBound > 2) addEllipsis("left");
-
-    for (
-      let i = Math.max(2, leftBound);
-      i <= Math.min(totalPages - 1, rightBound);
-      i++
-    ) {
+    const left = currentPage - delta,
+      right = currentPage + delta;
+    if (left > 2) addEllipsis("left");
+    for (let i = Math.max(2, left); i <= Math.min(totalPages - 1, right); i++)
       addPage(i);
-    }
-
-    if (rightBound < totalPages - 1) addEllipsis("right");
-
+    if (right < totalPages - 1) addEllipsis("right");
     if (totalPages > 1) addPage(totalPages);
-
     return pages;
   };
+
+  const prevNextClass = (disabled) =>
+    `flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
+      disabled
+        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+        : `${bgActive} text-white hover:opacity-80`
+    }`;
 
   return (
     <PageTransition>
@@ -132,54 +133,45 @@ const Istighfar = () => {
         ref={containerRef}
         className="min-h-screen flex flex-col items-center px-6 md:px-10 py-20"
       >
-        {/* Title Section */}
         <h1
-          className={`text-4xl md:text-5xl lg:text-6xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-text-light text-center mt-10 md:mt-0 px-4`}
+          className={`text-4xl md:text-5xl lg:text-6xl ${fontClass} font-bold ${textMain} text-center mt-10 md:mt-20 px-4`}
         >
-          {data?.name || "Morning And Evening Dua"}
+          {data?.name || "Istighfar"}
         </h1>
+        <div
+          className={`h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent ${viaMain} to-transparent rounded-2xl mt-4 mb-12`}
+        />
 
-        <div className="h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text-light to-transparent rounded-2xl mt-4 mb-12"></div>
-
-        {/* Page Info */}
-        <p
-          className={`text-xl text-text-light mb-6 ${language === "en" ? "font-amiri" : "font-balooDa"}`}
-        >
+        <p className={`text-xl ${textMain} mb-6 ${fontClass}`}>
           {language === "bn"
             ? `পৃষ্ঠা ${currentPage} / ${totalPages}`
             : `Page ${currentPage} of ${totalPages}`}
         </p>
 
-        {/* Duas Container */}
         <div className="w-full max-w-4xl space-y-4 mb-8">
           {currentDuas.map((dua) => (
             <div
               key={dua.id}
-              className="bg-transparent border-2 border-text-light rounded-2xl overflow-hidden transition-all duration-300 form-style"
+              className={`bg-transparent border-2 ${borderMain} rounded-2xl overflow-hidden transition-all duration-300 form-style-${theme}`}
             >
-              {/* Card Header - Always Visible */}
               <button
                 onClick={() => toggleCard(dua.id)}
-                className="w-full px-6 py-5 flex items-center justify-between hover:bg-[#E9F7E6] transition-colors duration-200"
+                className={`w-full px-6 py-5 flex items-center justify-between ${hoverBg} transition-colors duration-200`}
               >
                 <div className="flex items-center gap-4">
                   <span
-                    className={`text-2xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold text-text-light bg-[#E9F7E6] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0`}
+                    className={`text-2xl ${fontClass} font-bold ${textMain} ${bgBadge} w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0`}
                   >
                     {dua.id}
                   </span>
                   <h3
-                    className={`text-xl md:text-2xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light text-left`}
+                    className={`text-xl md:text-2xl ${fontClass} font-semibold ${textMain} text-left`}
                   >
                     {dua.name}
                   </h3>
                 </div>
-
-                {/* Expand/Collapse Icon */}
                 <svg
-                  className={`w-6 h-6 text-text-light transition-transform duration-300 flex-shrink-0 ${
-                    expandedCard === dua.id ? "rotate-180" : ""
-                  }`}
+                  className={`w-6 h-6 ${textMain} transition-transform duration-300 flex-shrink-0 ${expandedCard === dua.id ? "rotate-180" : ""}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -193,69 +185,61 @@ const Istighfar = () => {
                 </svg>
               </button>
 
-              {/* Card Content - Expandable */}
               <div
-                className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                  expandedCard === dua.id
-                    ? "max-h-[3000px] opacity-100"
-                    : "max-h-0 opacity-0"
-                }`}
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedCard === dua.id ? "max-h-[3000px] opacity-100" : "max-h-0 opacity-0"}`}
               >
-                <div className="px-6 pb-6 space-y-6 border-t-2 border-text-light bg-transparent">
-                  {/* Arabic Dua */}
+                <div
+                  className={`px-6 pb-6 space-y-6 border-t-2 ${borderMain} bg-transparent`}
+                >
                   <div className="pt-6">
                     <h4
-                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light mb-3`}
+                      className={`text-xl ${fontClass} font-semibold ${textMain} mb-3`}
                     >
                       {language === "bn" ? "দু'আ:" : "Dua:"}
                     </h4>
-                    <p className="text-4xl md:text-6xl font-lateef text-text-light leading-loose text-right">
+                    <p
+                      className={`text-4xl md:text-6xl font-lateef ${textMain} leading-loose text-right`}
+                    >
                       {dua.dua}
                     </p>
                   </div>
 
-                  {/* Note */}
-                  {dua.note ? (
+                  {dua.note && (
                     <div>
                       <h4
-                        className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"}  font-semibold text-text-light`}
+                        className={`text-xl ${fontClass} font-semibold ${textMain}`}
                       >
                         {language === "bn" ? "নোট:" : "Note:"}
                       </h4>
                       <p
                         dangerouslySetInnerHTML={{ __html: dua.note }}
-                        className="text-xl md:text-2xl font-lateef text-text-light leading-relaxed"
+                        className={`text-xl md:text-2xl font-lateef ${textMain} leading-relaxed`}
                       />
                     </div>
-                  ) : (
-                    ""
                   )}
 
-                  {/* Pronunciation - Always visible in expanded card */}
                   <div>
                     <h4
-                      className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light mb-3`}
+                      className={`text-xl ${fontClass} font-semibold ${textMain} mb-3`}
                     >
                       {language === "bn" ? "উচ্চারণ:" : "Pronunciation:"}
                     </h4>
                     <p
-                      className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${language === "en" ? "font-amiri" : "font-balooDa"} text-text-light leading-relaxed`}
+                      className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${fontClass} ${textMain} leading-relaxed`}
                     >
                       {dua.pronunciation}
                     </p>
                   </div>
 
-                  {/* Translation - Nested Dropdown */}
                   <div>
                     <button
                       onClick={() => toggleTranslation(dua.id)}
                       className="w-full py-3 flex items-center justify-start gap-2 hover:opacity-70 cursor-pointer transition-opacity duration-200"
                     >
                       <div className="flex items-center gap-2">
-                        {/* Book icon — filled when collapsed, outlined when expanded */}
                         {expandedTranslation === dua.id ? (
                           <svg
-                            className="w-5 h-5 text-text-light flex-shrink-0"
+                            className={`w-5 h-5 ${textMain} flex-shrink-0`}
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -269,7 +253,7 @@ const Istighfar = () => {
                           </svg>
                         ) : (
                           <svg
-                            className="w-5 h-5 text-text-light flex-shrink-0"
+                            className={`w-5 h-5 ${textMain} flex-shrink-0`}
                             fill="currentColor"
                             viewBox="0 0 24 24"
                           >
@@ -277,15 +261,13 @@ const Istighfar = () => {
                           </svg>
                         )}
                         <h4
-                          className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light`}
+                          className={`text-xl ${fontClass} font-semibold ${textMain}`}
                         >
                           {language === "bn" ? "অনুবাদ" : "Translation"}
                         </h4>
                       </div>
                       <svg
-                        className={`w-5 h-5 text-text-light transition-transform duration-300 flex-shrink-0 ${
-                          expandedTranslation === dua.id ? "rotate-180" : ""
-                        }`}
+                        className={`w-5 h-5 ${textMain} transition-transform duration-300 flex-shrink-0 ${expandedTranslation === dua.id ? "rotate-180" : ""}`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -298,17 +280,12 @@ const Istighfar = () => {
                         />
                       </svg>
                     </button>
-
                     <div
-                      className={`overflow-hidden transition-all duration-400 ease-in-out ${
-                        expandedTranslation === dua.id
-                          ? "max-h-[1000px] opacity-100"
-                          : "max-h-0 opacity-0"
-                      }`}
+                      className={`overflow-hidden transition-all duration-400 ease-in-out ${expandedTranslation === dua.id ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"}`}
                     >
                       <div className="pb-4">
                         <p
-                          className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${language === "en" ? "font-amiri" : "font-balooDa"} text-text-light leading-relaxed`}
+                          className={`text-2xl ${language === "bn" ? "md:text-3xl" : "md:text-4xl"} ${fontClass} ${textMain} leading-relaxed`}
                         >
                           {dua.translation}
                         </p>
@@ -316,13 +293,13 @@ const Istighfar = () => {
                     </div>
                   </div>
 
-                  {/* Times and Reference Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t-2 border-text-light">
-                    {/* Times */}
+                  <div
+                    className={`grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t-2 ${borderMain}`}
+                  >
                     {dua.times && (
                       <div className="flex items-start gap-3">
                         <svg
-                          className="w-6 h-6 text-text-light mt-1 flex-shrink-0"
+                          className={`w-6 h-6 ${textMain} mt-1 flex-shrink-0`}
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -340,12 +317,12 @@ const Istighfar = () => {
                         </svg>
                         <div>
                           <h4
-                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light mb-1`}
+                            className={`text-base ${fontClass} font-semibold ${textMain} mb-1`}
                           >
                             {language === "bn" ? "তিলাওয়াত:" : "Recite:"}
                           </h4>
                           <p
-                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-text-light font-bold`}
+                            className={`text-xl ${fontClass} ${textMain} font-bold`}
                           >
                             {dua.times}{" "}
                             {dua.times === "1" || dua.times === 1
@@ -359,12 +336,10 @@ const Istighfar = () => {
                         </div>
                       </div>
                     )}
-
-                    {/* Reference */}
                     {dua.reference && (
                       <div className="flex items-start gap-3">
                         <svg
-                          className="w-6 h-6 text-text-light mt-1 flex-shrink-0"
+                          className={`w-6 h-6 ${textMain} mt-1 flex-shrink-0`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -378,12 +353,12 @@ const Istighfar = () => {
                         </svg>
                         <div>
                           <h4
-                            className={`text-base ${language === "en" ? "font-amiri" : "font-balooDa"} font-semibold text-text-light mb-1`}
+                            className={`text-base ${fontClass} font-semibold ${textMain} mb-1`}
                           >
                             {language === "bn" ? "রেফারেন্স:" : "Reference:"}
                           </h4>
                           <p
-                            className={`text-xl ${language === "en" ? "font-amiri" : "font-balooDa"} text-text-light italic`}
+                            className={`text-xl ${fontClass} ${textMain} italic`}
                           >
                             {dua.reference}
                           </p>
@@ -397,17 +372,11 @@ const Istighfar = () => {
           ))}
         </div>
 
-        {/* Pagination Controls */}
         <div className="flex items-center justify-center gap-1.5 mb-20 w-full max-w-sm px-4">
-          {/* Previous Button */}
           <button
             onClick={() => goToPage(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
-              currentPage === 1
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-text-light text-white hover:bg-[#0d4544]"
-            }`}
+            className={prevNextClass(currentPage === 1)}
             aria-label="Previous page"
           >
             <svg
@@ -424,19 +393,11 @@ const Istighfar = () => {
               />
             </svg>
           </button>
-
-          {/* Page Numbers with Ellipsis */}
           <div className="flex items-center gap-1.5">{renderPageNumbers()}</div>
-
-          {/* Next Button */}
           <button
             onClick={() => goToPage(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className={`flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
-              currentPage === totalPages
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-text-light text-white hover:bg-[#0d4544]"
-            }`}
+            className={prevNextClass(currentPage === totalPages)}
             aria-label="Next page"
           >
             <svg
