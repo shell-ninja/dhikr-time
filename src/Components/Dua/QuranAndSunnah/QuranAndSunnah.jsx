@@ -1,7 +1,7 @@
 import PageTransition from "../../../Hooks/PageTransition";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import "../Pages.css";
 import { usePageTitle } from "../../../Hooks/pageName";
 
@@ -9,17 +9,42 @@ const QuranAndSunnah = () => {
   const containerRef = useRef(null);
   usePageTitle("Other Duas | Dua", " | Dhikr Time");
 
+  // ── Theme ─────────────────────────────────────────────────
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light",
+  );
+  useEffect(() => {
+    const handle = () => setTheme(localStorage.getItem("theme") || "light");
+    window.addEventListener("storage", handle);
+    window.addEventListener("themeChange", handle);
+    return () => {
+      window.removeEventListener("storage", handle);
+      window.removeEventListener("themeChange", handle);
+    };
+  }, []);
+
+  const isDark = theme === "dark";
+  const textMain = isDark ? "text-text-dark" : "text-text-light";
+  const viaMain = isDark ? "via-text-dark" : "via-text-light";
+  const borderCard = isDark ? "border-text-dark/10" : "border-text-light/10";
+  const decoFrom = isDark ? "from-text-dark" : "from-text-light";
+  const decoVia = isDark ? "via-[#c2ebfa]" : "via-[#c2ebfa]";
+  const decoTo = isDark ? "to-text-dark" : "to-text-light";
+  const bodyText = isDark ? "text-gray-300" : "text-gray-700";
+  const bodyTextSm = isDark ? "text-gray-400" : "text-gray-600";
+  const dotBg = isDark ? "bg-text-dark" : "bg-text-light";
+  const circBg = isDark
+    ? "from-text-dark/10 to-[#c2ebfa]/5"
+    : "from-text-light/10 to-[#c2ebfa]/5";
+
   useGSAP(
     () => {
-      // Animate title
       gsap.from(".dua-title", {
         y: -50,
         opacity: 0,
         duration: 0.8,
         ease: "power3.out",
       });
-
-      // Animate line
       gsap.from(".dua-line", {
         scaleX: 0,
         opacity: 0,
@@ -27,8 +52,6 @@ const QuranAndSunnah = () => {
         delay: 0.3,
         ease: "power3.out",
       });
-
-      // Animate content card
       gsap.from(".content-card", {
         y: 50,
         opacity: 0,
@@ -36,8 +59,6 @@ const QuranAndSunnah = () => {
         delay: 0.6,
         ease: "back.out(1.7)",
       });
-
-      // Animate decorative elements
       gsap.from(".deco-circle", {
         scale: 0,
         opacity: 0,
@@ -46,8 +67,6 @@ const QuranAndSunnah = () => {
         stagger: 0.1,
         ease: "elastic.out(1, 0.5)",
       });
-
-      // Floating animation for decorative elements
       gsap.to(".deco-circle", {
         y: -10,
         duration: 2,
@@ -66,35 +85,47 @@ const QuranAndSunnah = () => {
         ref={containerRef}
         className="min-h-screen flex flex-col justify-center items-center px-6 md:px-10 py-20 relative overflow-hidden"
       >
-        {/* Decorative Background Elements */}
-        <div className="deco-circle absolute top-20 left-10 w-32 h-32 bg-text-light opacity-5 rounded-full blur-2xl"></div>
-        <div className="deco-circle absolute bottom-32 right-20 w-40 h-40 bg-text-light opacity-5 rounded-full blur-2xl"></div>
-        <div className="deco-circle absolute top-1/2 left-1/4 w-24 h-24 bg-text-light opacity-5 rounded-full blur-2xl"></div>
+        {/* Decorative background blobs */}
+        <div
+          className={`deco-circle absolute top-20 left-10 w-32 h-32 ${dotBg} opacity-5 rounded-full blur-2xl`}
+        />
+        <div
+          className={`deco-circle absolute bottom-32 right-20 w-40 h-40 ${dotBg} opacity-5 rounded-full blur-2xl`}
+        />
+        <div
+          className={`deco-circle absolute top-1/2 left-1/4 w-24 h-24 ${dotBg} opacity-5 rounded-full blur-2xl`}
+        />
 
-        {/* Title Section */}
-        <h1 className="dua-title text-4xl md:text-5xl lg:text-6xl font-amiri font-bold text-text-light text-center mt-10 md:mt-0 px-4">
+        {/* Title */}
+        <h1
+          className={`dua-title text-4xl md:text-5xl lg:text-6xl font-amiri font-bold ${textMain} text-center mt-10 md:mt-20 px-4`}
+        >
           Duas from the Quran and Sunnah
         </h1>
 
-        <div className="dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent via-text-light to-transparent rounded-2xl mt-4 mb-12"></div>
+        <div
+          className={`dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent ${viaMain} to-transparent rounded-2xl mt-4 mb-12`}
+        />
 
-        {/* Main Content Card */}
+        {/* Main card */}
         <div className="content-card max-w-3xl w-full mx-auto mb-10">
-          {/* Beautiful Card Container */}
-          <div className="relative bg-transparent rounded-3xl shadow-2xl overflow-hidden border border-text-light/10">
-            {/* Decorative Top Border */}
-            <div className="h-1.5 bg-gradient-to-r from-text-light via-[#1a8a88] to-text-light"></div>
+          <div
+            className={`relative bg-transparent rounded-3xl shadow-2xl overflow-hidden border ${borderCard}`}
+          >
+            {/* Top accent bar */}
+            <div
+              className={`h-1.5 bg-gradient-to-r ${decoFrom} ${decoVia} ${decoTo}`}
+            />
 
-            {/* Card Content */}
             <div className="p-8 md:p-12">
-              {/* Icon/Illustration Area */}
+              {/* Icon */}
               <div className="flex justify-center mb-8">
                 <div className="relative">
-                  {/* Circular Background */}
-                  <div className="w-32 h-32 bg-gradient-to-br from-text-light/10 to-[#1a8a88]/5 rounded-full flex items-center justify-center">
-                    {/* Islamic Pattern or Icon */}
+                  <div
+                    className={`w-32 h-32 bg-gradient-to-br ${circBg} rounded-full flex items-center justify-center`}
+                  >
                     <svg
-                      className="w-16 h-16 text-text-light"
+                      className={`w-16 h-16 ${textMain}`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -107,48 +138,71 @@ const QuranAndSunnah = () => {
                       />
                     </svg>
                   </div>
-                  {/* Decorative Rings */}
-                  <div className="absolute inset-0 rounded-full border-2 border-text-light/20 animate-ping-slow"></div>
+                  <div
+                    className={`absolute inset-0 rounded-full border-2 ${isDark ? "border-text-dark/20" : "border-text-light/20"} animate-ping-slow`}
+                  />
                 </div>
               </div>
 
-              {/* Message Section */}
+              {/* Message */}
               <div className="text-center space-y-6">
-                <h2 className="text-2xl md:text-3xl font-amiri font-semibold text-text-light leading-relaxed">
+                <h2
+                  className={`text-2xl md:text-3xl font-amiri font-semibold ${textMain} leading-relaxed`}
+                >
                   Content Coming Soon
                 </h2>
 
-                <div className="w-20 h-1 bg-gradient-to-r from-text-light to-[#1a8a88] mx-auto rounded-full"></div>
+                <div
+                  className={`w-20 h-1 bg-gradient-to-r ${decoFrom} ${decoVia} mx-auto rounded-full`}
+                />
 
-                <p className="text-lg md:text-xl text-gray-700 leading-relaxed font-lateef">
+                <p
+                  className={`text-lg md:text-xl ${bodyText} leading-relaxed font-lateef`}
+                >
                   The REST API for duas are being prepared by the developer.
                 </p>
 
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed font-lateef italic">
+                <p
+                  className={`text-base md:text-lg ${bodyTextSm} leading-relaxed font-lateef italic`}
+                >
                   Have patience, it will be released soon{" "}
-                  <span className="font-amiri font-semibold text-text-light not-italic">
+                  <span
+                    className={`font-amiri font-semibold ${textMain} not-italic`}
+                  >
                     إِنْ شَاءَ ٱللَّٰهُ
                   </span>
                 </p>
 
-                {/* Progress Indicator */}
+                {/* Bouncing dots */}
                 <div className="pt-6">
                   <div className="flex items-center justify-center space-x-2">
-                    <div className="w-3 h-3 bg-text-light rounded-full animate-bounce"></div>
-                    <div className="w-3 h-3 bg-text-light rounded-full animate-bounce delay-100"></div>
-                    <div className="w-3 h-3 bg-text-light rounded-full animate-bounce delay-200"></div>
+                    <div
+                      className={`w-3 h-3 ${dotBg} rounded-full animate-bounce`}
+                    />
+                    <div
+                      className={`w-3 h-3 ${dotBg} rounded-full animate-bounce delay-100`}
+                    />
+                    <div
+                      className={`w-3 h-3 ${dotBg} rounded-full animate-bounce delay-200`}
+                    />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Decorative Bottom Pattern */}
-            <div className="h-2 bg-gradient-to-r from-text-light/5 via-[#1a8a88]/10 to-text-light/5"></div>
+            {/* Bottom accent bar */}
+            <div
+              className={`h-2 bg-gradient-to-r ${isDark ? "from-text-dark/5 via-[#c2ebfa]/10 to-text-dark/5" : "from-text-light/5 via-[#c2ebfa]/10 to-text-light/5"}`}
+            />
           </div>
 
-          {/* Additional Info Card */}
-          <div className="mt-8 bg-transparent backdrop-blur-sm rounded-2xl p-6 border border-text-light/10 shadow-lg">
-            <p className="text-center text-gray-600 text-sm md:text-base font-lateef">
+          {/* Info card */}
+          <div
+            className={`mt-8 bg-transparent backdrop-blur-sm rounded-2xl p-6 border ${borderCard} shadow-lg`}
+          >
+            <p
+              className={`text-center ${bodyTextSm} text-sm md:text-base font-lateef`}
+            >
               Stay tuned for authentic duas from the Quran and the Sunnah
             </p>
           </div>

@@ -4,3 +4,11 @@
   font-family: "Lateef", serif;
   direction: rtl;
 }
+
+.form-style-light {
+  box-shadow: 10px 10px 4px #105a59;
+}
+
+.form-style-dark {
+  box-shadow: 10px 10px 4px #c2ebfa;
+}

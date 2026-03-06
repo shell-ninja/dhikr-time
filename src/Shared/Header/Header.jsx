@@ -152,8 +152,9 @@ const Header = () => {
     });
   }, []);
 
-  // ── Theme-aware class shorthands ──
-  const navBg = isDark ? "bg-bg-dark ifDark" : "bg-text-light";
+  // ── Theme-aware shorthands ────────────────────────────────
+  const logo = isDark ? logoDark : logoLight;
+  const navBg = isDark ? "bg-text-dark/10 backdrop-blur-lg" : "bg-text-light";
   const navText = isDark ? "text-text-dark" : "text-bg-light";
 
   // Desktop refs
@@ -162,7 +163,6 @@ const Header = () => {
   const linksRef = useRef([]);
   const hamburgerIconRef = useRef(null);
 
-  // Animate hamburger icon on every open/close toggle
   useEffect(() => {
     if (hamburgerIconRef.current) {
       gsap.fromTo(
@@ -205,7 +205,9 @@ const Header = () => {
           paddingTop: "0.75rem",
           paddingBottom: "0.75rem",
           backdropFilter: "blur(6px)",
-          boxShadow: "0 10px 35px rgba(0,0,0,0.2)",
+          boxShadow: isDark
+            ? "0 10px 35px rgba(194, 235, 250, 0.15)"
+            : "0 10px 35px rgba(0, 0, 0, 0.2)",
           duration: 0.3,
         });
       },
@@ -221,22 +223,17 @@ const Header = () => {
     });
   }, []);
 
-  const theme = isDark ? "dark" : "light";
-  const logo = isDark ? logoDark : logoLight; // used in both navbars
-  console.log(theme);
-
   return (
     <>
       {/* ================= MOBILE NAVBAR ================= */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50">
-        {/* Top bar */}
         <div className={`${navBg} flex justify-between items-center px-5 py-4`}>
           <div ref={logoRef} className="cursor-pointer">
             <Link
               className={`flex justify-center items-center gap-2 font-amiri font-bold text-xl ${navText}`}
               to="/"
             >
-              <img className="h-[45px] mt-[-5px]" src={logo} alt="" />
+              <img className="h-[45px] mt-[-5px]" src={logo} alt="Dhikr Time" />
               Dhikr Time
             </Link>
           </div>
@@ -290,7 +287,7 @@ const Header = () => {
       >
         <div ref={logoRef} className="cursor-pointer">
           <Link className="flex justify-center items-center gap-2" to="/">
-            <img className="h-[45px] mt-[-5px]" src={logo} alt="" />
+            <img className="h-[45px] mt-[-5px]" src={logo} alt="Dhikr Time" />
             Dhikr Time
           </Link>
         </div>
@@ -302,7 +299,7 @@ const Header = () => {
             className="relative nav-link"
           >
             Dua
-            <span className={`nav-underline-${theme}`} />
+            <span className="nav-underline" />
           </Link>
           <Link
             ref={(el) => (linksRef.current[1] = el)}
@@ -310,7 +307,7 @@ const Header = () => {
             className="relative nav-link"
           >
             Asma Ul Husna
-            <span className={`nav-underline-${theme}`} />
+            <span className="nav-underline" />
           </Link>
           <div ref={(el) => (linksRef.current[2] = el)}>
             <ToggleBtn toggled={toggled} onToggle={handleToggle} />
@@ -325,4 +322,3 @@ const Header = () => {
 };
 
 export default Header;
-
