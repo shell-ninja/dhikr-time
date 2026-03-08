@@ -4,25 +4,27 @@ import gsap from "gsap";
 import { useRef, useState, useEffect } from "react";
 import "../Pages.css";
 import { usePageTitle } from "../../../Hooks/pageName";
+import useTheme from "../../../Hooks/useTheme";
 
 const QuranAndSunnah = () => {
   const containerRef = useRef(null);
   usePageTitle("Other Duas | Dua", " | Dhikr Time");
 
   // ── Theme ─────────────────────────────────────────────────
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light",
-  );
-  useEffect(() => {
-    const handle = () => setTheme(localStorage.getItem("theme") || "light");
-    window.addEventListener("storage", handle);
-    window.addEventListener("themeChange", handle);
-    return () => {
-      window.removeEventListener("storage", handle);
-      window.removeEventListener("themeChange", handle);
-    };
-  }, []);
+  // const [theme, setTheme] = useState(
+  //   () => localStorage.getItem("theme") || "light",
+  // );
+  // useEffect(() => {
+  //   const handle = () => setTheme(localStorage.getItem("theme") || "light");
+  //   window.addEventListener("storage", handle);
+  //   window.addEventListener("themeChange", handle);
+  //   return () => {
+  //     window.removeEventListener("storage", handle);
+  //     window.removeEventListener("themeChange", handle);
+  //   };
+  // }, []);
 
+  const theme = useTheme();
   const isDark = theme === "dark";
   const textMain = isDark ? "text-text-dark" : "text-text-light";
   const viaMain = isDark ? "via-text-dark" : "via-text-light";

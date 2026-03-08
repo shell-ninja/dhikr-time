@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Loader from "../../Hooks/Loader";
 import { countries } from "../../Hooks/CountriesArray";
 import useAlert from "../../Hooks/useAllert";
+import useTheme from "../../Hooks/useTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,19 +56,20 @@ const Form = () => {
   }, []);
 
   // ── Theme ─────────────────────────────────────────────────
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light",
-  );
-  useEffect(() => {
-    const handle = () => setTheme(localStorage.getItem("theme") || "light");
-    window.addEventListener("storage", handle);
-    window.addEventListener("themeChange", handle);
-    return () => {
-      window.removeEventListener("storage", handle);
-      window.removeEventListener("themeChange", handle);
-    };
-  }, []);
+  // const [theme, setTheme] = useState(
+  //   () => localStorage.getItem("theme") || "light",
+  // );
+  // useEffect(() => {
+  //   const handle = () => setTheme(localStorage.getItem("theme") || "light");
+  //   window.addEventListener("storage", handle);
+  //   window.addEventListener("themeChange", handle);
+  //   return () => {
+  //     window.removeEventListener("storage", handle);
+  //     window.removeEventListener("themeChange", handle);
+  //   };
+  // }, []);
 
+  const theme = useTheme();
   const isDark = theme === "dark";
 
   // ── Convenience class shorthands (avoids repeating ternaries) ──
@@ -327,7 +329,9 @@ const Form = () => {
       const data = await res.json();
       if (!data.length) {
         showAlert(
-          "Location not found. Please check your city and country names.",
+          language === "en"
+            ? "Location not found. Please check your city and country names."
+            : "লোকেশনটি পাওয়া যায়নি। দয়া করে শহর ও দেশের নাম সঠিক ভাবে লিখুন",
         );
         setIsLoading(false);
         return;
@@ -705,7 +709,7 @@ const Form = () => {
           {/* Submit — desktop */}
           <input
             ref={submitBtnDesktopRef}
-            className={`h-[68px] w-[274px] ${textInside} ${bgDropdown} border-2 rounded-[15px] text-3xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold mt-6 cursor-pointer btn-submit`}
+            className={`h-[68px] w-full ${textInside} ${bgDropdown} border-2 rounded-[15px] text-4xl ${language === "en" ? "font-amiri" : "font-balooDa"} font-bold mt-6 cursor-pointer`}
             type="submit"
             value={language === "en" ? "Find" : "খুঁজুন"}
           />

@@ -3,6 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../Form/Form.css";
+import useTheme from "../../Hooks/useTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,29 +14,30 @@ const useThemeAndLanguage = () => {
   const [language, setLanguage] = useState(
     () => localStorage.getItem("language") || "en",
   );
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light",
-  );
+  // const [theme, setTheme] = useState(
+  //   () => localStorage.getItem("theme") || "light",
+  // );
 
   useEffect(() => {
     const handleLang = () =>
       setLanguage(localStorage.getItem("language") || "en");
-    const handleTheme = () =>
-      setTheme(localStorage.getItem("theme") || "light");
+    // const handleTheme = () =>
+    //   setTheme(localStorage.getItem("theme") || "light");
 
     window.addEventListener("storage", handleLang);
     window.addEventListener("languageChange", handleLang);
-    window.addEventListener("storage", handleTheme);
-    window.addEventListener("themeChange", handleTheme);
+    // window.addEventListener("storage", handleTheme);
+    // window.addEventListener("themeChange", handleTheme);
 
     return () => {
       window.removeEventListener("storage", handleLang);
       window.removeEventListener("languageChange", handleLang);
-      window.removeEventListener("storage", handleTheme);
-      window.removeEventListener("themeChange", handleTheme);
+      // window.removeEventListener("storage", handleTheme);
+      // window.removeEventListener("themeChange", handleTheme);
     };
   }, []);
 
+  const theme = useTheme();
   const isDark = theme === "dark";
   const textMain = isDark ? "text-text-dark" : "text-text-light";
   const borderMain = isDark ? "border-text-dark" : "border-text-light";

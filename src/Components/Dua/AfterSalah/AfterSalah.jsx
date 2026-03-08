@@ -6,6 +6,7 @@ import useSWR from "swr";
 import Loader from "../../../Hooks/Loader";
 import ErrorGPT from "../../../Hooks/ErrorGPT";
 import "./AfterSalah.css";
+import useTheme from "../../../Hooks/useTheme";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -33,21 +34,20 @@ const AfterSalah = () => {
   }, []);
 
   // ── Theme ─────────────────────────────────────────────────
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light",
-  );
-  useEffect(() => {
-    const handle = () => setTheme(localStorage.getItem("theme") || "light");
-    window.addEventListener("storage", handle);
-    window.addEventListener("themeChange", handle);
-    return () => {
-      window.removeEventListener("storage", handle);
-      window.removeEventListener("themeChange", handle);
-    };
-  }, []);
+  // const [theme, setTheme] = useState(
+  //   () => localStorage.getItem("theme") || "light",
+  // );
+  // useEffect(() => {
+  //   const handle = () => setTheme(localStorage.getItem("theme") || "light");
+  //   window.addEventListener("storage", handle);
+  //   window.addEventListener("themeChange", handle);
+  //   return () => {
+  //     window.removeEventListener("storage", handle);
+  //     window.removeEventListener("themeChange", handle);
+  //   };
+  // }, []);
 
-  console.log(theme);
-
+  const theme = useTheme();
   const isDark = theme === "dark";
   const textMain = isDark ? "text-text-dark" : "text-text-light";
   const borderMain = isDark ? "border-text-dark" : "border-text-light";

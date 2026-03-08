@@ -7,6 +7,7 @@ import ErrorGPT from "../../Hooks/ErrorGPT";
 import { usePageTitle } from "../../Hooks/pageName";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import useTheme from "../../Hooks/useTheme";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const ITEMS_PER_PAGE = 9;
@@ -29,19 +30,20 @@ const AsmaUlHusna = () => {
   }, []);
 
   // ── Theme ─────────────────────────────────────────────────
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light",
-  );
-  useEffect(() => {
-    const handle = () => setTheme(localStorage.getItem("theme") || "light");
-    window.addEventListener("storage", handle);
-    window.addEventListener("themeChange", handle);
-    return () => {
-      window.removeEventListener("storage", handle);
-      window.removeEventListener("themeChange", handle);
-    };
-  }, []);
+  // const [theme, setTheme] = useState(
+  //   () => localStorage.getItem("theme") || "light",
+  // );
+  // useEffect(() => {
+  //   const handle = () => setTheme(localStorage.getItem("theme") || "light");
+  //   window.addEventListener("storage", handle);
+  //   window.addEventListener("themeChange", handle);
+  //   return () => {
+  //     window.removeEventListener("storage", handle);
+  //     window.removeEventListener("themeChange", handle);
+  //   };
+  // }, []);
 
+  const theme = useTheme();
   const isDark = theme === "dark";
   const textMain = isDark ? "text-text-dark" : "text-text-light";
   const viaMain = isDark ? "via-text-dark" : "via-text-light";
