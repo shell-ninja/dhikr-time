@@ -21,7 +21,7 @@ const CustomAlert = ({ message, type = "error", onClose }) => {
     };
   }, []);
 
-  const isDark = theme === "dark" || "light";
+  const isDark = theme === "dark";
 
   const handleClose = () => {
     setIsVisible(false);
