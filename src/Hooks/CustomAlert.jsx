@@ -1,7 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CustomAlert = ({ message, type = "error", onClose }) => {
   const [isVisible, setIsVisible] = useState(true);
+
+  // Get the theme from the Local Storage
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light",
+  );
+
+  // Listen for theme changes in localStorage
+  useEffect(() => {
+    const handleThemeChange = () => {
+      setTheme(localStorage.getItem("theme") || "light");
+    };
+    window.addEventListener("storage", handleThemeChange);
+    window.addEventListener("themeChange", handleThemeChange);
+    return () => {
+      window.removeEventListener("storage", handleThemeChange);
+      window.removeEventListener("themeChange", handleThemeChange);
+    };
+  }, []);
+
+  const isDark = theme === "dark" || "light";
 
   const handleClose = () => {
     setIsVisible(false);
@@ -11,10 +31,21 @@ const CustomAlert = ({ message, type = "error", onClose }) => {
   if (!isVisible) return null;
 
   const typeStyles = {
-    error: "bg-bg-light border-text-light text-text-light",
-    success: "bg-bg-light border-text-light text-text-light",
-    warning: "bg-bg-light border-text-light text-text-light",
-    info: "bg-bg-light border-text-light text-text-light",
+    error: isDark
+      ? "bg-bg-dark border-text-dark text-text-dark"
+      : "bg-bg-light border-text-light text-text-light",
+
+    success: isDark
+      ? "bg-bg-dark border-text-dark text-text-dark"
+      : "bg-bg-light border-text-light text-text-light",
+
+    warning: isDark
+      ? "bg-bg-dark border-text-dark text-text-dark"
+      : "bg-bg-light border-text-light text-text-light",
+
+    info: isDark
+      ? "bg-bg-dark border-text-dark text-text-dark"
+      : "bg-bg-light border-text-light text-text-light",
   };
 
   return (

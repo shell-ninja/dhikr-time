@@ -130,7 +130,7 @@ const Header = () => {
 
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem("theme");
-    if (saved) return saved === "dark";
+    if (saved) return saved === "light";
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 

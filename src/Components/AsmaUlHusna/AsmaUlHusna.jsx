@@ -47,7 +47,7 @@ const AsmaUlHusna = () => {
   const viaMain = isDark ? "via-text-dark" : "via-text-light";
   const bgActive = isDark ? "bg-text-dark" : "bg-text-light";
   const textActive = isDark ? "text-bg-dark" : "text-bg-light";
-  const bgInactive = isDark ? "bg-bg-dark" : "bg-[#E9F7E6]";
+  const bgInactive = isDark ? "bg-bg-dark" : "bg-text-light";
   const fontClass = language === "en" ? "font-amiri" : "font-balooDa";
 
   const [page, setPage] = useState(1);
