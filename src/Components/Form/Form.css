@@ -6,12 +6,18 @@
   box-shadow: 10px 10px 4px #c2ebfa;
 }
 
-.input-style {
+.input-style-light,
+.input-style-dark {
   transition: 0.3s ease-in-out;
 }
 
-.input-style:focus {
+.input-style-light:focus {
   box-shadow: 10px 10px 4px #105a59;
+  transform: scale(1.1);
+}
+
+.input-style-dark:focus {
+  box-shadow: 10px 10px 4px #c2ebfa;
   transform: scale(1.1);
 }
 
@@ -75,9 +81,10 @@
 }
 
 .input-bn::placeholder {
-  font-family: 'Baloo Da', sans-serif;
+  font-family: "Baloo Da", sans-serif;
 }
 
 .input-en::placeholder {
-  font-family: 'Amiri', serif;
+  font-family: "Amiri", serif;
 }
+
