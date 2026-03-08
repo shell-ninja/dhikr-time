@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import "./Form.css";
 import { Link } from "react-router-dom";
 import Times from "../Times/Times";
-import PageTransition from "../../Hooks/PageTransition";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -108,7 +107,7 @@ const Form = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const { alert, showAlert, hideAlert } = useAlert();
+  const { showAlert } = useAlert();
 
   const shouldScroll = useRef(false);
 
@@ -726,4 +725,3 @@ const Form = () => {
 };
 
 export default Form;
-
