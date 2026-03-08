@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Loader from "../../Hooks/Loader";
 import ErrorGPT from "../../Hooks/ErrorGPT";
+import useTheme from "../../Hooks/useTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,8 +25,7 @@ const Times = ({ formData }) => {
     () => localStorage.getItem("language") || "en",
   );
   useEffect(() => {
-    const handle = () =>
-      setLanguage(localStorage.getItem("language") || "en");
+    const handle = () => setLanguage(localStorage.getItem("language") || "en");
     window.addEventListener("storage", handle);
     window.addEventListener("languageChange", handle);
     return () => {
@@ -35,25 +35,26 @@ const Times = ({ formData }) => {
   }, []);
 
   // ── Theme ─────────────────────────────────────────────────
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light",
-  );
-  useEffect(() => {
-    const handle = () =>
-      setTheme(localStorage.getItem("theme") || "light");
-    window.addEventListener("storage", handle);
-    window.addEventListener("themeChange", handle);
-    return () => {
-      window.removeEventListener("storage", handle);
-      window.removeEventListener("themeChange", handle);
-    };
-  }, []);
+  // const [theme, setTheme] = useState(
+  //   () => localStorage.getItem("theme") || "light",
+  // );
+  // useEffect(() => {
+  //   const handle = () =>
+  //     setTheme(localStorage.getItem("theme") || "light");
+  //   window.addEventListener("storage", handle);
+  //   window.addEventListener("themeChange", handle);
+  //   return () => {
+  //     window.removeEventListener("storage", handle);
+  //     window.removeEventListener("themeChange", handle);
+  //   };
+  // }, []);
 
+  const theme = useTheme();
   const isDark = theme === "dark";
-  const textMain   = isDark ? "text-text-dark"  : "text-text-light";
+  const textMain = isDark ? "text-text-dark" : "text-text-light";
   const borderMain = isDark ? "border-text-dark" : "border-text-light";
-  const viaMain    = isDark ? "via-text-dark"    : "via-text-light";
-  const fontClass  = language === "bn" ? "font-balooDa" : "font-amiri";
+  const viaMain = isDark ? "via-text-dark" : "via-text-light";
+  const fontClass = language === "bn" ? "font-balooDa" : "font-amiri";
 
   // ── Form data ─────────────────────────────────────────────
   const {
@@ -65,9 +66,9 @@ const Times = ({ formData }) => {
     Number: schoolNum,
   } = formData;
 
-  const dateRef        = useRef(null);
-  const locationRef    = useRef(null);
-  const dividerRef     = useRef(null);
+  const dateRef = useRef(null);
+  const locationRef = useRef(null);
+  const dividerRef = useRef(null);
   const prayerCardsRef = useRef([]);
 
   const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
@@ -91,9 +92,19 @@ const Times = ({ formData }) => {
         },
       });
 
-    fromScrollTrigger(dateRef,     { y: -50, opacity: 0, duration: 0.8 });
-    fromScrollTrigger(locationRef, { y: -30, opacity: 0, duration: 0.8, delay: 0.1 });
-    fromScrollTrigger(dividerRef,  { scaleX: 0, opacity: 0, duration: 0.8, delay: 0.2 });
+    fromScrollTrigger(dateRef, { y: -50, opacity: 0, duration: 0.8 });
+    fromScrollTrigger(locationRef, {
+      y: -30,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.1,
+    });
+    fromScrollTrigger(dividerRef, {
+      scaleX: 0,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.2,
+    });
 
     prayerCardsRef.current.forEach((card, index) => {
       if (!card) return;
@@ -113,43 +124,76 @@ const Times = ({ formData }) => {
   }, [data]);
 
   if (!shouldFetch) return <ErrorGPT />;
-  if (isLoading)    return <Loader />;
-  if (error)        return <ErrorGPT />;
+  if (isLoading) return <Loader />;
+  if (error) return <ErrorGPT />;
 
-  const date  = data?.data?.date;
+  const date = data?.data?.date;
   const times = data?.data?.times;
 
   if (!date || !times) return <ErrorGPT />;
 
   // ── Translations ──────────────────────────────────────────
   const prayerNames = {
-    en: { Fajr: "Fajr", Sunrise: "Sunrise", Dhuhr: "Dhuhr", Asr: "Asr", Maghrib: "Maghrib", Isha: "Isha", Tahajjud: "Tahajjud" },
-    bn: { Fajr: "ফজর", Sunrise: "সূর্যোদয়", Dhuhr: "যুহর", Asr: "আসর", Maghrib: "মাগরিব", Isha: "ইশা", Tahajjud: "তাহাজ্জুদ" },
+    en: {
+      Fajr: "Fajr",
+      Sunrise: "Sunrise",
+      Dhuhr: "Dhuhr",
+      Asr: "Asr",
+      Maghrib: "Maghrib",
+      Isha: "Isha",
+      Tahajjud: "Tahajjud",
+    },
+    bn: {
+      Fajr: "ফজর",
+      Sunrise: "সূর্যোদয়",
+      Dhuhr: "যুহর",
+      Asr: "আসর",
+      Maghrib: "মাগরিব",
+      Isha: "ইশা",
+      Tahajjud: "তাহাজ্জুদ",
+    },
   };
 
   const prayerTimes = {
-    Fajr:     times.Fajr,
-    Sunrise:  times.Sunrise,
-    Dhuhr:    times.Dhuhr,
-    Asr:      times.Asr,
-    Maghrib:  times.Maghrib,
-    Isha:     times.Isha,
+    Fajr: times.Fajr,
+    Sunrise: times.Sunrise,
+    Dhuhr: times.Dhuhr,
+    Asr: times.Asr,
+    Maghrib: times.Maghrib,
+    Isha: times.Isha,
     Tahajjud: times.Lastthird,
   };
 
   // ── Helpers ───────────────────────────────────────────────
   const toBengaliNumber = (num) => {
-    const bn = ["০","১","২","৩","৪","৫","৬","৭","৮","৯"];
-    return num.toString().split("").map((d) => bn[parseInt(d)]).join("");
+    const bn = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+    return num
+      .toString()
+      .split("")
+      .map((d) => bn[parseInt(d)])
+      .join("");
   };
 
   const formatDate = (dateObj) => {
     if (language === "bn") {
-      const monthsBn = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
-      const parts      = dateObj.readable.split(" ");
-      const day        = toBengaliNumber(parseInt(parts[0]));
+      const monthsBn = [
+        "জানুয়ারি",
+        "ফেব্রুয়ারি",
+        "মার্চ",
+        "এপ্রিল",
+        "মে",
+        "জুন",
+        "জুলাই",
+        "আগস্ট",
+        "সেপ্টেম্বর",
+        "অক্টোবর",
+        "নভেম্বর",
+        "ডিসেম্বর",
+      ];
+      const parts = dateObj.readable.split(" ");
+      const day = toBengaliNumber(parseInt(parts[0]));
       const monthIndex = new Date(Date.parse(parts[1] + " 1, 2000")).getMonth();
-      const year       = toBengaliNumber(parts[2].replace(",", ""));
+      const year = toBengaliNumber(parts[2].replace(",", ""));
       return `${day} ${monthsBn[monthIndex]}, ${year}`;
     }
     return dateObj.readable;
@@ -157,7 +201,7 @@ const Times = ({ formData }) => {
 
   const formatTime = (time) => {
     const [h, m] = time.split(":").map(Number);
-    const hour   = h % 12 || 12;
+    const hour = h % 12 || 12;
     const period = h >= 12 ? "PM" : "AM";
     if (language === "bn") {
       return `${toBengaliNumber(hour)}:${toBengaliNumber(m.toString().padStart(2, "0"))} ${period}`;
@@ -197,12 +241,20 @@ const Times = ({ formData }) => {
             }`}
           >
             <div className="flex justify-center items-center gap-3 mb-2">
-              <h4 className={`text-2xl md:text-3xl font-bold ${textMain} ${fontClass}`}>
+              <h4
+                className={`text-2xl md:text-3xl font-bold ${textMain} ${fontClass}`}
+              >
                 {prayerNames[language][name]}
               </h4>
-              <img src={`/icons/${theme}/${name}.svg`} alt={name} className="w-8 h-8 mb-2" />
+              <img
+                src={`/icons/${theme}/${name}.svg`}
+                alt={name}
+                className="w-8 h-8 mb-2"
+              />
             </div>
-            <p className={`text-3xl md:text-4xl font-bold ${textMain} ${fontClass}`}>
+            <p
+              className={`text-3xl md:text-4xl font-bold ${textMain} ${fontClass}`}
+            >
               {formatTime(time)}
             </p>
           </div>
@@ -213,3 +265,4 @@ const Times = ({ formData }) => {
 };
 
 export default Times;
+

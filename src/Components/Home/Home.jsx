@@ -6,6 +6,7 @@ import Form from "../Form/Form";
 import PageTransition from "../../Hooks/PageTransition";
 import CountriesArray from "../../Hooks/CountriesArray";
 import { usePageTitle } from "../../Hooks/pageName";
+import useTheme from "../../Hooks/useTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,11 +25,9 @@ const Home = () => {
   });
 
   // Get the theme from the Local Storage
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light",
-  );
-
-  const isDark = theme === "dark";
+  // const [theme, setTheme] = useState(
+  //   () => localStorage.getItem("theme") || "light",
+  // );
 
   // Listen for language changes in localStorage
   useEffect(() => {
@@ -45,17 +44,20 @@ const Home = () => {
   }, []);
 
   // Listen for theme changes in localStorage
-  useEffect(() => {
-    const handleThemeChange = () => {
-      setTheme(localStorage.getItem("theme") || "light");
-    };
-    window.addEventListener("storage", handleThemeChange);
-    window.addEventListener("themeChange", handleThemeChange);
-    return () => {
-      window.removeEventListener("storage", handleThemeChange);
-      window.removeEventListener("themeChange", handleThemeChange);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleThemeChange = () => {
+  //     setTheme(localStorage.getItem("theme") || "light");
+  //   };
+  //   window.addEventListener("storage", handleThemeChange);
+  //   window.addEventListener("themeChange", handleThemeChange);
+  //   return () => {
+  //     window.removeEventListener("storage", handleThemeChange);
+  //     window.removeEventListener("themeChange", handleThemeChange);
+  //   };
+  // }, []);
+
+  const theme = useTheme();
+  const isDark = theme === "dark";
 
   useGSAP(() => {
     const isMobile = window.innerWidth < 768;
@@ -247,4 +249,3 @@ const Home = () => {
 };
 
 export default Home;
-

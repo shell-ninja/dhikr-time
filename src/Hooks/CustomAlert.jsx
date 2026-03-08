@@ -1,26 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import useTheme from "./useTheme";
 
 const CustomAlert = ({ message, type = "error", onClose }) => {
   const [isVisible, setIsVisible] = useState(true);
 
-  // Get the theme from the Local Storage
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light",
-  );
-
-  // Listen for theme changes in localStorage
-  useEffect(() => {
-    const handleThemeChange = () => {
-      setTheme(localStorage.getItem("theme") || "light");
-    };
-    window.addEventListener("storage", handleThemeChange);
-    window.addEventListener("themeChange", handleThemeChange);
-    return () => {
-      window.removeEventListener("storage", handleThemeChange);
-      window.removeEventListener("themeChange", handleThemeChange);
-    };
-  }, []);
-
+  const theme = useTheme();
   const isDark = theme === "dark";
 
   const handleClose = () => {
