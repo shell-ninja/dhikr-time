@@ -29,27 +29,13 @@ const AsmaUlHusna = () => {
     };
   }, []);
 
-  // ── Theme ─────────────────────────────────────────────────
-  // const [theme, setTheme] = useState(
-  //   () => localStorage.getItem("theme") || "light",
-  // );
-  // useEffect(() => {
-  //   const handle = () => setTheme(localStorage.getItem("theme") || "light");
-  //   window.addEventListener("storage", handle);
-  //   window.addEventListener("themeChange", handle);
-  //   return () => {
-  //     window.removeEventListener("storage", handle);
-  //     window.removeEventListener("themeChange", handle);
-  //   };
-  // }, []);
-
   const theme = useTheme();
   const isDark = theme === "dark";
   const textMain = isDark ? "text-text-dark" : "text-text-light";
   const viaMain = isDark ? "via-text-dark" : "via-text-light";
   const bgActive = isDark ? "bg-text-dark" : "bg-text-light";
   const textActive = isDark ? "text-bg-dark" : "text-bg-light";
-  const bgInactive = isDark ? "bg-bg-dark" : "bg-text-light";
+  const bgInactive = isDark ? "bg-bg-dark" : "bg-bg-transparent";
   const fontClass = language === "en" ? "font-amiri" : "font-balooDa";
 
   const [page, setPage] = useState(1);
@@ -58,6 +44,8 @@ const AsmaUlHusna = () => {
   const API_KEY = import.meta.env.VITE_SECRET_API_KEY;
   const url = `https://islamicapi.com/api/v1/asma-ul-husna/?language=${language}&api_key=${API_KEY}`;
   const { data, error, isLoading } = useSWR(url, fetcher);
+
+  console.log(data);
 
   useGSAP(
     () => {
