@@ -5,8 +5,7 @@ import "./Header.css";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import logoDark from "../../assets/logo-dhikr-time-dark.png";
-import logoLight from "../../assets/logo-dhikr-time-light.png";
+import logoDT from "../../assets/dhikr-time.svg"
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -153,9 +152,19 @@ const Header = () => {
   }, []);
 
   // ── Theme-aware shorthands ────────────────────────────────
-  const logo = isDark ? logoDark : logoLight;
+  const logo = logoDT;
   const navBg = isDark ? "bg-text-dark/10 backdrop-blur-lg" : "bg-text-light";
   const navText = isDark ? "text-text-dark" : "text-bg-light";
+
+  // ── SVG logo tint for dark mode (#c2ebfa) ─────────────────
+  // This CSS filter chain converts any solid-color SVG to the target hex.
+  // In light mode no filter is applied so the SVG renders as-is.
+  const logoStyle = isDark
+    ? {
+        filter:
+          "brightness(0) saturate(100%) invert(90%) sepia(22%) saturate(500%) hue-rotate(170deg) brightness(105%) contrast(95%)",
+      }
+    : {};
 
   // Desktop refs
   const navbarRef = useRef(null);
@@ -233,7 +242,12 @@ const Header = () => {
               className={`flex justify-center items-center gap-2 font-amiri font-bold text-xl ${navText}`}
               to="/"
             >
-              <img className="h-[45px] mt-[-5px]" src={logo} alt="Dhikr Time" />
+              <img
+                className="h-[45px] mt-[-5px]"
+                src={logo}
+                alt="Dhikr Time"
+                style={logoStyle}
+              />
               Dhikr Time
             </Link>
           </div>
@@ -287,7 +301,12 @@ const Header = () => {
       >
         <div ref={logoRef} className="cursor-pointer">
           <Link className="flex justify-center items-center gap-2" to="/">
-            <img className="h-[45px] mt-[-5px]" src={logo} alt="Dhikr Time" />
+            <img
+              className="h-[45px] mt-[-5px]"
+              src={logo}
+              alt="Dhikr Time"
+              style={logoStyle}
+            />
             Dhikr Time
           </Link>
         </div>
