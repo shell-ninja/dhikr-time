@@ -138,7 +138,7 @@ const AsmaUlHusna = () => {
     `flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
       disabled
         ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-        : `${bgActive} text-white hover:opacity-80`
+        : `${bgActive} ${textActive} hover:opacity-80`
     }`;
 
   return (

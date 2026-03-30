@@ -14,26 +14,17 @@ const useThemeAndLanguage = () => {
   const [language, setLanguage] = useState(
     () => localStorage.getItem("language") || "en",
   );
-  // const [theme, setTheme] = useState(
-  //   () => localStorage.getItem("theme") || "light",
-  // );
 
   useEffect(() => {
     const handleLang = () =>
       setLanguage(localStorage.getItem("language") || "en");
-    // const handleTheme = () =>
-    //   setTheme(localStorage.getItem("theme") || "light");
 
     window.addEventListener("storage", handleLang);
     window.addEventListener("languageChange", handleLang);
-    // window.addEventListener("storage", handleTheme);
-    // window.addEventListener("themeChange", handleTheme);
 
     return () => {
       window.removeEventListener("storage", handleLang);
       window.removeEventListener("languageChange", handleLang);
-      // window.removeEventListener("storage", handleTheme);
-      // window.removeEventListener("themeChange", handleTheme);
     };
   }, []);
 
@@ -104,7 +95,7 @@ const Card = ({ cardData }) => {
 /* ─────────────────────────────────────────────────────────────
    CardItem — single expandable card
 ───────────────────────────────────────────────────────────── */
-const CardItem = ({ info, index, cardRef }) => {
+const CardItem = ({ info, cardRef }) => {
   const [isOpen, setIsOpen] = useState(false);
   const {
     language,
@@ -116,6 +107,8 @@ const CardItem = ({ info, index, cardRef }) => {
     hoverBg,
     fontClass,
   } = useThemeAndLanguage();
+
+  // console.log(info);
 
   return (
     <div
@@ -132,7 +125,7 @@ const CardItem = ({ info, index, cardRef }) => {
           <span
             className={`text-lg ${fontClass} font-bold ${textMain} ${bgBadge} w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0`}
           >
-            {index + 1}.
+            {info.number}.
           </span>
 
           {/* Arabic name */}
