@@ -45,6 +45,7 @@ const MorningEvening = () => {
   const fontClass = language === "en" ? "font-amiri" : "font-balooDa";
 
   const url = `https://dua-and-dhikr.vercel.app/${language}/morning-evening`;
+  // const url = `http://localhost:3000/${language}/morning-evening`; // to test locally
   const { data, error, isLoading } = useSWR(url, fetcher);
 
   if (isLoading) return <Loader />;
@@ -201,8 +202,18 @@ const MorningEvening = () => {
                     >
                       {language === "bn" ? "দু'আ:" : "Dua:"}
                     </h4>
+                    {/* Bismillahir Rahmanir Rahim*/}
+                    {[2, 3, 4].includes(dua.id) ? (
+                      <p
+                        className={`text-2xl md:text-4xl font-amiri ${textMain} leading-loose text-center`}
+                      >
+                        ﷽
+                      </p>
+                    ) : null}
+
+                    {/**/}
                     <p
-                      className={`text-4xl md:text-6xl font-lateef ${textMain} leading-loose text-right`}
+                      className={`text-4xl md:text-5xl font-lateef ${textMain} leading-loose text-right`}
                     >
                       {dua.dua}
                     </p>
