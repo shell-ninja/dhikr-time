@@ -214,6 +214,17 @@ const AfterSalah = () => {
                     >
                       {language === "bn" ? "দু'আ:" : "Dua:"}
                     </h4>
+
+                    {/* Bismillahir Rahmanir Rahim*/}
+                    {[11, 12, 13].includes(dua.id) ? (
+                      <p
+                        className={`text-2xl md:text-4xl font-amiri ${textMain} leading-loose text-center`}
+                      >
+                        ﷽
+                      </p>
+                    ) : null}
+
+                    {/**/}
                     <p
                       className={`text-4xl md:text-6xl font-lateef ${textMain} leading-loose text-right`}
                     >
