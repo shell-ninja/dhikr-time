@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import useSWR from "swr";
 import { useEffect, useState, useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -14,6 +14,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const Surah = () => {
   const { id } = useParams();
+  const location = useLocation();
   const language = useLanguage();
   const theme = useTheme();
 
@@ -36,6 +37,18 @@ const Surah = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [jumpTarget, setJumpTarget] = useState(null);
+
+  // Pick up jumpToAyah from router state (e.g. from universal search)
+  useEffect(() => {
+    if (location.state?.jumpToAyah) {
+      const ayahNum = location.state.jumpToAyah;
+      const targetPage = Math.ceil(ayahNum / itemsPerPage);
+      setCurrentPage(targetPage);
+      setJumpTarget(ayahNum);
+      // Clear the router state so back-navigation doesn't re-trigger
+      window.history.replaceState({}, document.title);
+    }
+  }, []);
   
   // Reset page conditionally: only if we haven't just jumped.
   useEffect(() => {

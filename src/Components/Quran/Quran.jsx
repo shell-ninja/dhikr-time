@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import PageTransition from "../../Hooks/PageTransition";
 import useLanguage from "../../Hooks/useLanguage";
 import useTheme from "../../Hooks/useTheme";
-import { FiChevronLeft, FiChevronRight, FiSearch } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiSearch, FiLoader } from "react-icons/fi";
 import surahsData from "../../Data/surahs.json";
 
 const Quran = () => {
@@ -18,20 +18,101 @@ const Quran = () => {
   const borderMain = isDark ? "border-text-dark" : "border-text-light";
   const viaMain = isDark ? "via-text-dark" : "via-text-light";
   const fontClass = language === "en" ? "font-lateef tracking-wide" : "font-balooDa";
+  const dropdownBg = isDark ? "bg-bg-dark" : "bg-bg-light";
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  // Section 1: Surah name matches (local)
+  const [nameSuggestions, setNameSuggestions] = useState([]);
+  // Section 2: Ayah word matches (API)
+  const [wordResults, setWordResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchRef = useRef(null);
+  const debounceRef = useRef(null);
   const itemsPerPage = 10;
   const containerRef = useRef(null);
+  const navigate = useNavigate();
 
-  // Reset page to 1 when navigating back, remounting, or searching
+  // Reset page on scroll
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
 
+  // Debounced universal search
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery]);
+    const q = searchQuery.trim();
+
+    if (!q) {
+      setNameSuggestions([]);
+      setWordResults([]);
+      setShowDropdown(false);
+      setIsSearching(false);
+      return;
+    }
+
+    // Always show name matches immediately from local data
+    const lower = q.toLowerCase();
+    const nameMatched = surahsData.filter(
+      (s) =>
+        s.englishName.toLowerCase().includes(lower) ||
+        s.bengaliName.includes(q) ||
+        s.englishNameTranslation.toLowerCase().includes(lower) ||
+        (s.bengaliNameTranslation && s.bengaliNameTranslation.includes(q))
+    ).slice(0, 4);
+    setNameSuggestions(nameMatched);
+    setShowDropdown(true);
+
+    // Debounce API word search (only if query >= 3 chars)
+    if (q.length >= 3) {
+      clearTimeout(debounceRef.current);
+      setIsSearching(true);
+      debounceRef.current = setTimeout(async () => {
+        try {
+          const edition = language === "bn" ? "bn.bengali" : "en.asad";
+          const res = await fetch(
+            `https://api.alquran.cloud/v1/search/${encodeURIComponent(q)}/all/${edition}`
+          );
+          const json = await res.json();
+          if (json.code === 200 && json.data?.matches) {
+            setWordResults(json.data.matches.slice(0, 8));
+          } else {
+            setWordResults([]);
+          }
+        } catch {
+          setWordResults([]);
+        } finally {
+          setIsSearching(false);
+        }
+      }, 500);
+    } else {
+      setWordResults([]);
+      setIsSearching(false);
+    }
+  }, [searchQuery, language]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSelectSurah = (surahNumber) => {
+    setSearchQuery("");
+    setShowDropdown(false);
+    navigate(`/quran/${surahNumber}`);
+  };
+
+  const handleSelectAyah = (surahNumber, ayahNumber) => {
+    setSearchQuery("");
+    setShowDropdown(false);
+    navigate(`/quran/${surahNumber}`, { state: { jumpToAyah: ayahNumber } });
+  };
 
   // GSAP Animations
   useGSAP(
@@ -59,20 +140,15 @@ const Quran = () => {
         ease: "back.out(1.5)",
       });
     },
-    { scope: containerRef, dependencies: [currentPage] } // Re-animate when page changes
+    { scope: containerRef, dependencies: [currentPage] }
   );
 
   const surahs = surahsData;
-  const filteredSurahs = surahs.filter(
-    (s) =>
-      s.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.bengaliName.includes(searchQuery)
-  );
-  
-  // Pagination Math
-  const totalPages = Math.ceil(filteredSurahs.length / itemsPerPage);
+
+  // Pagination Math (always shows all 114)
+  const totalPages = Math.ceil(surahs.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedSurahs = filteredSurahs.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedSurahs = surahs.slice(startIndex, startIndex + itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
@@ -139,6 +215,8 @@ const Quran = () => {
         : `${bgActive} ${textActive} hover:opacity-80 cursor-pointer`
     }`;
 
+  const hasDropdownContent = nameSuggestions.length > 0 || wordResults.length > 0 || isSearching;
+
   return (
     <PageTransition>
       <div ref={containerRef} className="min-h-screen py-24 px-5 md:px-10 max-w-7xl mx-auto">
@@ -156,21 +234,114 @@ const Quran = () => {
         />
 
         <p className={`dua-title text-xl md:text-2xl opacity-80 ${textMain} ${fontClass}`}>
-          {language === "en" ? "Read and reflect upon the words of Allah" : "আল্লাহর বাণী পড়ুন ও অনুধাবন করুন"}
+          {language === "en" ? "Read and reflect upon the words of Allah" : "আল্লাহর বাণী পড়ুন ও অনুধাবন করুন"}
         </p>
 
-        {/* Search Bar */}
-        <div className="w-full max-w-md mx-auto mt-8 relative dua-title">
-          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-            <FiSearch className={`text-xl opacity-50 ${textMain}`} />
+        {/* Universal Search Bar */}
+        <div ref={searchRef} className="w-full max-w-xl mx-auto mt-8 relative z-40 dua-title">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none z-10">
+            {isSearching
+              ? <FiLoader className={`text-xl animate-spin text-emerald-500`} />
+              : <FiSearch className={`text-xl opacity-50 ${textMain}`} />
+            }
           </div>
           <input
             type="text"
-            placeholder={language === "en" ? "Search Surah..." : "সূরা অনুসন্ধান করুন..."}
+            placeholder={language === "en" ? "Search a Surah or any word across the Quran..." : "সূরা বা যেকোনো শব্দ কুরআন জুড়ে খুঁজুন..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={`w-full py-4 pl-12 pr-4 rounded-[15px] border-2 bg-transparent focus:outline-none transition-all duration-300 font-bold ${textMain} ${fontClass} form-style-${theme} ${isDark ? "focus:bg-bg-dark/50 border-text-dark/20 focus:border-text-dark" : "focus:bg-bg-light/50 border-text-light/20 focus:border-text-light"}`}
+            onFocus={() => hasDropdownContent && setShowDropdown(true)}
+            className={`w-full py-4 pl-12 pr-4 rounded-[20px] border-2 bg-transparent focus:outline-none transition-all duration-300 text-lg font-bold ${textMain} ${fontClass} ${isDark ? "focus:bg-white/5 border-white/20 focus:border-white/50" : "focus:bg-black/5 border-black/20 focus:border-black/50"}`}
           />
+
+          {/* Suggestions Dropdown */}
+          {showDropdown && (searchQuery.trim().length > 0) && (
+            <div className={`absolute top-full mt-3 w-full rounded-[20px] border-2 ${borderMain} overflow-hidden shadow-2xl z-[9999] ${dropdownBg} max-h-[60vh] overflow-y-auto`}>
+
+              {/* ── Section 1: Surah Name Matches ── */}
+              {nameSuggestions.length > 0 && (
+                <div>
+                  <div className={`px-5 py-2 text-xs font-bold uppercase tracking-widest text-emerald-500 border-b ${borderMain}`}>
+                    {language === "en" ? "Surahs" : "সূরাসমূহ"}
+                  </div>
+                  {nameSuggestions.map((s) => (
+                    <div
+                      key={`name-${s.number}`}
+                      onClick={() => handleSelectSurah(s.number)}
+                      className={`px-5 py-3.5 cursor-pointer transition-all duration-200 border-b ${borderMain} hover:bg-emerald-500/15 group flex items-center gap-4`}
+                    >
+                      <span className="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold text-base">
+                        {language === "en" ? s.number : toBengaliNumber(s.number)}
+                      </span>
+                      <div className="flex flex-col min-w-0 flex-1 text-left">
+                        <span className={`font-bold text-lg group-hover:text-emerald-500 transition-colors ${textMain} truncate ${language === "bn" ? "font-balooDa" : "font-lateef tracking-wide"}`}>
+                          {language === "en" ? s.englishName : s.bengaliName}
+                        </span>
+                        <span className={`text-sm opacity-55 ${textMain} truncate ${language === "bn" ? "font-balooDa" : ""}`}>
+                          {language === "en" ? s.englishNameTranslation : s.bengaliNameTranslation}
+                        </span>
+                      </div>
+                      <span className={`font-lateef text-2xl flex-shrink-0 opacity-75 ${textMain}`} dir="rtl">
+                        {s.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* ── Section 2: Ayah Word Matches ── */}
+              {isSearching && wordResults.length === 0 && (
+                <div className={`px-5 py-5 flex items-center gap-3 ${textMain} opacity-60`}>
+                  <FiLoader className="animate-spin text-emerald-500" />
+                  <span className={`text-base ${fontClass}`}>
+                    {language === "en" ? "Searching across Quran..." : "কুরআন জুড়ে অনুসন্ধান করা হচ্ছে..."}
+                  </span>
+                </div>
+              )}
+
+              {!isSearching && wordResults.length > 0 && (
+                <div>
+                  <div className={`px-5 py-2 text-xs font-bold uppercase tracking-widest text-emerald-500 border-b ${borderMain}`}>
+                    {language === "en" ? `Ayahs containing "${searchQuery}"` : `"${searchQuery}" সম্বলিত আয়াতসমূহ`}
+                  </div>
+                  {wordResults.map((match, idx) => {
+                    const localSurah = surahsData.find(s => s.number === match.surah.number);
+                    const displayName = language === "en"
+                      ? (localSurah?.englishName || match.surah.englishName)
+                      : (localSurah?.bengaliName || match.surah.englishName);
+                    return (
+                      <div
+                        key={`word-${idx}`}
+                        onClick={() => handleSelectAyah(match.surah.number, match.numberInSurah)}
+                        className={`px-5 py-4 cursor-pointer transition-all duration-200 border-b last:border-b-0 ${borderMain} hover:bg-emerald-500/15 group`}
+                      >
+                        {/* Surah + Ayah ref */}
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                            {displayName}
+                          </span>
+                          <span className={`text-xs opacity-50 font-semibold ${textMain}`}>
+                            {language === "en" ? `Ayah ${match.numberInSurah}` : `আয়াত ${toBengaliNumber(match.numberInSurah)}`}
+                          </span>
+                        </div>
+                        {/* Snippet */}
+                        <p className={`text-base leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity ${textMain} ${fontClass} line-clamp-2`}>
+                          {match.text}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* No results at all */}
+              {!isSearching && nameSuggestions.length === 0 && wordResults.length === 0 && searchQuery.trim().length > 0 && (
+                <div className={`px-5 py-6 text-center opacity-60 ${textMain} ${fontClass} text-base`}>
+                  {language === "en" ? "No results found." : "কোনো ফলাফল পাওয়া যায়নি।"}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -227,15 +398,6 @@ const Quran = () => {
           >
             <FiChevronRight size={22} />
           </button>
-        </div>
-      )}
-
-      {/* No Results Fallback */}
-      {paginatedSurahs.length === 0 && (
-        <div className="flex justify-center items-center h-40">
-          <p className={`text-xl font-bold opacity-60 ${textMain} ${fontClass}`}>
-            {language === "en" ? "No Surahs found matching your search." : "আপনার অনুসন্ধানের সাথে মেলে এমন কোনো সূরা পাওয়া যায়নি।"}
-          </p>
         </div>
       )}
       </div>
