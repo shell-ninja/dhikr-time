@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import PageTransition from "../../Hooks/PageTransition";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiSearch } from "react-icons/fi";
 import Loader from "../../Hooks/Loader";
 import useLanguage from "../../Hooks/useLanguage";
 import useTheme from "../../Hooks/useTheme";
@@ -32,10 +32,30 @@ const Surah = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const containerRef = useRef(null);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [jumpTarget, setJumpTarget] = useState(null);
   
+  // Reset page conditionally: only if we haven't just jumped.
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (!jumpTarget) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }, [currentPage]);
+
+  // Handle Ayah Jumping Effect
+  useEffect(() => {
+    if (jumpTarget) {
+      setTimeout(() => {
+        const el = document.getElementById(`ayah-${jumpTarget}`);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        setJumpTarget(null); // Clear once executed
+      }, 500); // Wait for React to render the new window layout and GSAP hooks to finish
+    }
+  }, [currentPage, jumpTarget]);
   
   // GSAP Animations
   useGSAP(
@@ -80,6 +100,32 @@ const Surah = () => {
   const bgActive = isDark ? "bg-text-dark" : "bg-text-light";
   const textActive = isDark ? "text-bg-dark" : "text-bg-light";
 
+  const arabicData = data?.data?.[0];
+  const translationData = data?.data?.[1];
+  const ayahs = arabicData?.ayahs;
+  const translationAyahs = translationData?.ayahs;
+
+  // Search Logic Effect
+  useEffect(() => {
+    if (searchTerm.trim().length > 2 && ayahs && translationAyahs) {
+      const term = searchTerm.toLowerCase();
+      const matches = translationAyahs
+        .map((tAyah, index) => ({
+          transInfo: tAyah,
+          arabicInfo: ayahs[index],
+        }))
+        .filter(
+          (bundle) =>
+            bundle.transInfo.text.toLowerCase().includes(term) ||
+            bundle.arabicInfo.text.includes(term)
+        )
+        .slice(0, 5); // Limit to top 5 hits
+      setSuggestions(matches);
+    } else {
+      setSuggestions([]);
+    }
+  }, [searchTerm, ayahs, translationAyahs]);
+
   if (isLoading) {
     return <Loader />;
   }
@@ -95,12 +141,6 @@ const Surah = () => {
     );
   }
 
-  // The API returns an array in data.data for "editions".
-  // Index 0: quran-uthmani (Arabic text)
-  // Index 1: The translation
-  const arabicData = data.data && data.data[0];
-  const translationData = data.data && data.data[1];
-
   if (!arabicData || !translationData) return null;
   
   const metaSurah = surahsData.find((s) => s.number.toString() === id);
@@ -108,8 +148,6 @@ const Surah = () => {
   const surahName = language === "en" ? metaSurah?.englishName : metaSurah?.bengaliName;
   const surahArabicName = arabicData.name;
   const revelationType = arabicData.revelationType;
-  const ayahs = arabicData.ayahs;
-  const translationAyahs = translationData.ayahs;
 
   const totalPages = Math.ceil(ayahs.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -123,6 +161,16 @@ const Surah = () => {
 
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
+
+  const handleJumpToAyah = (ayahNumber) => {
+    const page = Math.ceil(ayahNumber / itemsPerPage);
+    setSearchTerm("");
+    setSuggestions([]);
+    setJumpTarget(ayahNumber);
+    if (currentPage !== page) {
+      setCurrentPage(page);
+    }
   };
 
   // Render Page Numbers internally now that totalPages is known
@@ -226,16 +274,52 @@ const Surah = () => {
         </div>
       </div>
 
-      {/* Ayahs List */}
-      <div className="space-y-10 mt-12">
-        {paginatedAyahs.map((ayah, index) => {
-          const translationText = paginatedTranslationAyahs[index]?.text || "Translation missing";
+        {/* Search Ayah Bar */}
+        <div className="w-full relative mb-12 z-20">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+            <FiSearch className={`text-xl opacity-50 ${textMain}`} />
+          </div>
+          <input
+            type="text"
+            placeholder={language === "en" ? "Search translation or Arabic..." : "অনুবাদ বা আরবি খুঁজুন..."}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`w-full py-4 pl-12 pr-4 rounded-[15px] border-2 bg-transparent focus:outline-none transition-all duration-300 font-bold ${textMain} ${fontClass} form-style-${theme} ${isDark ? "focus:bg-bg-dark/50 border-text-dark/20 focus:border-text-dark" : "focus:bg-bg-light/50 border-text-light/20 focus:border-text-light"}`}
+          />
           
-          return (
-            <div
-              key={ayah.numberInSurah}
-              className={`ayah-card flex flex-col justify-center items-center bg-transparent border-2 ${borderMain} rounded-[20px] px-8 py-10 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style-${theme}`}
-            >
+          {/* Dropdown Suggestions */}
+          {suggestions.length > 0 && (
+            <div className={`absolute top-full mt-3 w-full rounded-[20px] border-2 ${borderMain} overflow-hidden shadow-2xl backdrop-blur-xl z-50 form-style-${theme}`}>
+              {suggestions.map((s, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => handleJumpToAyah(s.transInfo.numberInSurah)}
+                  className={`px-6 md:px-8 py-5 cursor-pointer transition-all duration-300 border-b last:border-b-0 ${borderMain} hover:bg-emerald-500/20 group`}
+                >
+                  <div className="flex justify-between items-center gap-6">
+                    <p className={`truncate w-[80%] text-lg md:text-xl font-medium opacity-90 transition-colors group-hover:text-emerald-500 ${textMain} ${fontClass}`}>
+                      {s.transInfo.text}
+                    </p>
+                    <span className={`px-4 py-2 rounded-[12px] text-base md:text-lg font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 shadow-sm whitespace-nowrap`}>
+                      Ayah {language === "en" ? s.transInfo.numberInSurah : toBengaliNumber(s.transInfo.numberInSurah)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-8 items-center w-full relative z-10">
+          {paginatedAyahs.map((ayah, index) => {
+            const translationAyah = paginatedTranslationAyahs[index];
+            const translationText = translationAyah?.text || "Translation missing";
+            return (
+              <div
+                key={ayah.numberInSurah}
+                id={`ayah-${ayah.numberInSurah}`}
+                className={`ayah-card flex flex-col justify-center items-center bg-transparent border-2 ${borderMain} rounded-[20px] px-8 py-10 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style-${theme}`}
+              >
               <div className="flex flex-col w-full text-center items-center gap-8">
                 
                 {/* Header (Verse Number & Decor) */}

@@ -5,7 +5,7 @@ import gsap from "gsap";
 import PageTransition from "../../Hooks/PageTransition";
 import useLanguage from "../../Hooks/useLanguage";
 import useTheme from "../../Hooks/useTheme";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiSearch } from "react-icons/fi";
 import surahsData from "../../Data/surahs.json";
 
 const Quran = () => {
@@ -20,13 +20,18 @@ const Quran = () => {
   const fontClass = language === "en" ? "font-lateef tracking-wide" : "font-balooDa";
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const itemsPerPage = 10;
   const containerRef = useRef(null);
 
-  // Reset page to 1 when navigating back or remounting
+  // Reset page to 1 when navigating back, remounting, or searching
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   // GSAP Animations
   useGSAP(
@@ -58,11 +63,16 @@ const Quran = () => {
   );
 
   const surahs = surahsData;
+  const filteredSurahs = surahs.filter(
+    (s) =>
+      s.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.bengaliName.includes(searchQuery)
+  );
   
   // Pagination Math
-  const totalPages = Math.ceil(surahs.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredSurahs.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedSurahs = surahs.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedSurahs = filteredSurahs.slice(startIndex, startIndex + itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
@@ -148,6 +158,20 @@ const Quran = () => {
         <p className={`dua-title text-xl md:text-2xl opacity-80 ${textMain} ${fontClass}`}>
           {language === "en" ? "Read and reflect upon the words of Allah" : "আল্লাহর বাণী পড়ুন ও অনুধাবন করুন"}
         </p>
+
+        {/* Search Bar */}
+        <div className="w-full max-w-md mx-auto mt-8 relative dua-title">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+            <FiSearch className={`text-xl opacity-50 ${textMain}`} />
+          </div>
+          <input
+            type="text"
+            placeholder={language === "en" ? "Search Surah..." : "সূরা অনুসন্ধান করুন..."}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={`w-full py-4 pl-12 pr-4 rounded-[15px] border-2 bg-transparent focus:outline-none transition-all duration-300 font-bold ${textMain} ${fontClass} form-style-${theme} ${isDark ? "focus:bg-bg-dark/50 border-text-dark/20 focus:border-text-dark" : "focus:bg-bg-light/50 border-text-light/20 focus:border-text-light"}`}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mx-auto">
@@ -203,6 +227,15 @@ const Quran = () => {
           >
             <FiChevronRight size={22} />
           </button>
+        </div>
+      )}
+
+      {/* No Results Fallback */}
+      {paginatedSurahs.length === 0 && (
+        <div className="flex justify-center items-center h-40">
+          <p className={`text-xl font-bold opacity-60 ${textMain} ${fontClass}`}>
+            {language === "en" ? "No Surahs found matching your search." : "আপনার অনুসন্ধানের সাথে মেলে এমন কোনো সূরা পাওয়া যায়নি।"}
+          </p>
         </div>
       )}
       </div>
