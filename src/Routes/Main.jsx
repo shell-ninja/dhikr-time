@@ -1,18 +1,16 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "../Shared/Header/Header";
 import Footer from "../Shared/Footer/Footer";
-import { AnimatePresence } from "framer-motion";
-
 
 const Main = () => {
+  const location = useLocation();
+  
   return (
     <div>
       <Header />
-      <AnimatePresence mode="wait">
-        <div key={location.pathname}>
-          <Outlet />
-        </div>
-      </AnimatePresence>
+      <div key={location.pathname}>
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Loader from "../../Hooks/Loader";
 import ErrorGPT from "../../Hooks/ErrorGPT";
 import useTheme from "../../Hooks/useTheme";
+import useLanguage from "../../Hooks/useLanguage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,18 +22,7 @@ const fetcher = async (url) => {
 
 const Times = ({ formData }) => {
   // ── Language ──────────────────────────────────────────────
-  const [language, setLanguage] = useState(
-    () => localStorage.getItem("language") || "en",
-  );
-  useEffect(() => {
-    const handle = () => setLanguage(localStorage.getItem("language") || "en");
-    window.addEventListener("storage", handle);
-    window.addEventListener("languageChange", handle);
-    return () => {
-      window.removeEventListener("storage", handle);
-      window.removeEventListener("languageChange", handle);
-    };
-  }, []);
+  const language = useLanguage();
 
   // ── Theme ─────────────────────────────────────────────────
   // const [theme, setTheme] = useState(
@@ -106,21 +96,20 @@ const Times = ({ formData }) => {
       delay: 0.2,
     });
 
-    prayerCardsRef.current.forEach((card, index) => {
-      if (!card) return;
-      gsap.from(card, {
+    if (prayerCardsRef.current.length > 0) {
+      gsap.from(prayerCardsRef.current, {
         y: 50,
         opacity: 0,
         duration: 0.6,
-        delay: 0.4 + index * 0.1,
+        stagger: 0.1,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: card,
+          trigger: prayerCardsRef.current[0],
           start: "top 90%",
           toggleActions: "play none none reverse",
         },
       });
-    });
+    }
   }, [data]);
 
   if (!shouldFetch) return <ErrorGPT />;

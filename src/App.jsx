@@ -1,7 +1,6 @@
 import { RouterProvider } from "react-router-dom";
 import { useState, createContext } from "react";
 import "./App.css";
-import Home from "./Components/Home/Home";
 import { routes } from "./Routes/Routes";
 import CustomAlert from "./Hooks/CustomAlert"; // Import CustomAlert here
 

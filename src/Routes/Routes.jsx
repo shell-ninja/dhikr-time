@@ -5,6 +5,7 @@ import AsmaUlHusna from "../Components/AsmaUlHusna/AsmaUlHusna";
 import Dua from "../Components/Dua/Dua";
 import Times from "../Components/Times/Times";
 import Methods from "../Components/Form/Methods";
+import Tasbeeh from "../Components/Tasbeeh/Tasbeeh";
 
 import MorningEvening from "../Components/Dua/MorningEvening/MorningEvening";
 import AfterSalah from "../Components/Dua/AfterSalah/AfterSalah";
@@ -21,11 +22,11 @@ export const routes = createBrowserRouter([
         Component: Home,
       },
       {
-        path: "dua", // ✅ relative
+        path: "dua",
         Component: Dua,
       },
       {
-        path: "dua/morning-evening", // /dua/morning-evening
+        path: "dua/morning-evening",
         Component: MorningEvening,
       },
       {
@@ -43,6 +44,10 @@ export const routes = createBrowserRouter([
       {
         path: "asma-ul-husna",
         Component: AsmaUlHusna,
+      },
+      {
+        path: "tasbeeh",
+        Component: Tasbeeh,
       },
       {
         path: "methods",

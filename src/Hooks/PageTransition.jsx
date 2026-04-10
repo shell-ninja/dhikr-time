@@ -1,37 +1,23 @@
-import { motion } from "framer-motion";
-
-const pageVariants = {
-  initial: {
-    opacity: 0,
-    x: "-100vw", // Start from left off-screen
-  },
-  in: {
-    opacity: 1,
-    x: 0, // Slide to center
-  },
-  out: {
-    opacity: 0,
-    x: "100vw", // Exit to right off-screen
-  },
-};
-
-const pageTransition = {
-  type: "tween",
-  ease: "easeInOut",
-  duration: 0.5,
-};
+import { useEffect, useState } from "react";
 
 const PageTransition = ({ children }) => {
+  const [fadeIn, setFadeIn] = useState(false);
+
+  useEffect(() => {
+    // Small delay to trigger CSS transition correctly on mount
+    const timer = setTimeout(() => setFadeIn(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <motion.div
-      initial="initial"
-      animate="in"
-      exit="out"
-      variants={pageVariants}
-      transition={pageTransition}
+    <div
+      style={{
+        opacity: fadeIn ? 1 : 0,
+        transition: "opacity 0.4s ease-in-out",
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 

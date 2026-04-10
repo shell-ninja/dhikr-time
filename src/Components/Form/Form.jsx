@@ -9,6 +9,7 @@ import Loader from "../../Hooks/Loader";
 import { countries } from "../../Hooks/CountriesArray";
 import useAlert from "../../Hooks/useAllert";
 import useTheme from "../../Hooks/useTheme";
+import useLanguage from "../../Hooks/useLanguage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,18 +43,7 @@ const STORAGE_KEY = "prayerTimesFormData";
 
 const Form = () => {
   // ── Language ──────────────────────────────────────────────
-  const [language, setLanguage] = useState(
-    () => localStorage.getItem("language") || "en",
-  );
-  useEffect(() => {
-    const handle = () => setLanguage(localStorage.getItem("language") || "en");
-    window.addEventListener("storage", handle);
-    window.addEventListener("languageChange", handle);
-    return () => {
-      window.removeEventListener("storage", handle);
-      window.removeEventListener("languageChange", handle);
-    };
-  }, []);
+  const language = useLanguage();
 
   // ── Theme ─────────────────────────────────────────────────
   // const [theme, setTheme] = useState(
@@ -218,64 +208,7 @@ const Form = () => {
       },
     });
 
-    const animateRef = (ref, props) => {
-      if (ref.current)
-        gsap.from(ref.current, {
-          ...props,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        });
-    };
 
-    animateRef(cityInputMobileRef, { x: -100, opacity: 0, duration: 0.8 });
-    animateRef(countryInputMobileRef, {
-      x: 100,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.1,
-    });
-    animateRef(schoolDropdownMobileRef, {
-      x: -100,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.2,
-    });
-    animateRef(methodDropdownMobileRef, {
-      x: 100,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.3,
-    });
-    animateRef(submitBtnMobileRef, {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.4,
-    });
-    animateRef(cityInputDesktopRef, { x: -150, opacity: 0, duration: 0.8 });
-    animateRef(countryInputDesktopRef, { x: 150, opacity: 0, duration: 0.8 });
-    animateRef(schoolDropdownDesktopRef, {
-      x: -150,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.2,
-    });
-    animateRef(methodDropdownDesktopRef, {
-      x: 150,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.2,
-    });
-    animateRef(submitBtnDesktopRef, {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.4,
-    });
   }, []);
 
   // ── Handlers ──────────────────────────────────────────────

@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../Form/Form.css";
 import useTheme from "../../Hooks/useTheme";
+import useLanguage from "../../Hooks/useLanguage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,22 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
    useThemeAndLanguage — shared hook for both components
 ───────────────────────────────────────────────────────────── */
 const useThemeAndLanguage = () => {
-  const [language, setLanguage] = useState(
-    () => localStorage.getItem("language") || "en",
-  );
-
-  useEffect(() => {
-    const handleLang = () =>
-      setLanguage(localStorage.getItem("language") || "en");
-
-    window.addEventListener("storage", handleLang);
-    window.addEventListener("languageChange", handleLang);
-
-    return () => {
-      window.removeEventListener("storage", handleLang);
-      window.removeEventListener("languageChange", handleLang);
-    };
-  }, []);
+  const language = useLanguage();
 
   const theme = useTheme();
   const isDark = theme === "dark";

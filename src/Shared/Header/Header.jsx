@@ -121,6 +121,7 @@ const DarkModeToggle = ({ isDark, onToggle }) => {
 ───────────────────────────────────────────────────────────── */
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDesktopMenuOpen, setIsDesktopMenuOpen] = useState(false);
 
   const [toggled, setToggled] = useState(() => {
     const saved = localStorage.getItem("language");
@@ -281,12 +282,15 @@ const Header = () => {
             <Link to="/asma-ul-husna" onClick={handleLinkClick}>
               Asma Ul Husna
             </Link>
+            <Link to="/tasbeeh" onClick={handleLinkClick}>
+              Tasbeeh
+            </Link>
 
-            <div className="flex flex-col justify-center items-center gap-4">
-              <div ref={(el) => (linksRef.current[2] = el)}>
+            <div className="flex flex-row justify-center items-center gap-6">
+              <div ref={(el) => (linksRef.current[5] = el)}>
                 <ToggleBtn toggled={toggled} onToggle={handleToggle} />
               </div>
-              <div ref={(el) => (linksRef.current[3] = el)}>
+              <div ref={(el) => (linksRef.current[6] = el)}>
                 <DarkModeToggle isDark={isDark} onToggle={handleThemeToggle} />
               </div>
             </div>
@@ -328,10 +332,28 @@ const Header = () => {
             Asma Ul Husna
             <span className="nav-underline" />
           </Link>
-          <div ref={(el) => (linksRef.current[2] = el)}>
-            <ToggleBtn toggled={toggled} onToggle={handleToggle} />
+          <div className="relative flex items-center justify-center" ref={(el) => (linksRef.current[2] = el)}>
+            <button
+              onClick={() => setIsDesktopMenuOpen(!isDesktopMenuOpen)}
+              onBlur={() => setTimeout(() => setIsDesktopMenuOpen(false), 200)}
+              className={`relative flex items-center justify-center px-1 py-1 rounded-lg transition-colors cursor-pointer ${isDark ? 'hover:bg-text-dark/10' : 'hover:bg-text-light/10'}`}
+              aria-expanded={isDesktopMenuOpen}
+              aria-label="More Options"
+            >
+              <FiMenu className="w-8 h-8" />
+            </button>
+            <div 
+               className={`absolute top-full -right-2 mt-6 w-52 ${isDark ? 'bg-text-dark' : 'bg-text-light'} shadow-2xl rounded-[15px] overflow-hidden flex flex-col transition-all duration-300 origin-top-right ${isDesktopMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+            >
+               <Link to="/tasbeeh" className={`px-5 py-4 transition-all duration-200 tracking-widest font-bold ${isDark ? 'text-bg-dark hover:bg-bg-dark hover:text-text-dark' : 'text-bg-light hover:bg-bg-light hover:text-text-light'}`}>
+                 Tasbeeh
+               </Link>
+            </div>
           </div>
           <div ref={(el) => (linksRef.current[3] = el)}>
+            <ToggleBtn toggled={toggled} onToggle={handleToggle} />
+          </div>
+          <div ref={(el) => (linksRef.current[4] = el)}>
             <DarkModeToggle isDark={isDark} onToggle={handleThemeToggle} />
           </div>
         </div>
