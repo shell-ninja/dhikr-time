@@ -285,6 +285,9 @@ const Header = () => {
             <Link to="/tasbeeh" onClick={handleLinkClick}>
               Tasbeeh
             </Link>
+            <Link to="/quran" onClick={handleLinkClick}>
+              Quran
+            </Link>
 
             <div className="flex flex-row justify-center items-center gap-6">
               <div ref={(el) => (linksRef.current[5] = el)}>
@@ -301,7 +304,7 @@ const Header = () => {
       {/* ================= DESKTOP NAVBAR ================= */}
       <div
         ref={navbarRef}
-        className={`${navBg} py-7 hidden md:flex justify-around items-center font-amiri font-bold text-3xl ${navText} tracking-wide fixed top-0 left-0 right-0 z-[100]`}
+        className={`${navBg} py-7 hidden md:flex justify-between items-center px-10 xl:px-16 font-amiri font-bold text-3xl ${navText} tracking-wide fixed top-0 left-0 right-0 z-[100]`}
       >
         <div ref={logoRef} className="cursor-pointer">
           <Link className="flex justify-center items-center gap-2" to="/">
@@ -318,6 +321,14 @@ const Header = () => {
         <div className="flex items-center gap-10 text-2xl">
           <Link
             ref={(el) => (linksRef.current[0] = el)}
+            to="/quran"
+            className="relative nav-link"
+          >
+            Quran
+            <span className="nav-underline" />
+          </Link>
+          <Link
+            ref={(el) => (linksRef.current[1] = el)}
             to="/dua"
             className="relative nav-link"
           >
@@ -325,14 +336,14 @@ const Header = () => {
             <span className="nav-underline" />
           </Link>
           <Link
-            ref={(el) => (linksRef.current[1] = el)}
+            ref={(el) => (linksRef.current[2] = el)}
             to="/asma-ul-husna"
             className="relative nav-link"
           >
             Asma Ul Husna
             <span className="nav-underline" />
           </Link>
-          <div className="relative flex items-center justify-center" ref={(el) => (linksRef.current[2] = el)}>
+          <div className="relative flex items-center justify-center" ref={(el) => (linksRef.current[3] = el)}>
             <button
               onClick={() => setIsDesktopMenuOpen(!isDesktopMenuOpen)}
               onBlur={() => setTimeout(() => setIsDesktopMenuOpen(false), 200)}
@@ -350,10 +361,10 @@ const Header = () => {
                </Link>
             </div>
           </div>
-          <div ref={(el) => (linksRef.current[3] = el)}>
+          <div ref={(el) => (linksRef.current[4] = el)}>
             <ToggleBtn toggled={toggled} onToggle={handleToggle} />
           </div>
-          <div ref={(el) => (linksRef.current[4] = el)}>
+          <div ref={(el) => (linksRef.current[5] = el)}>
             <DarkModeToggle isDark={isDark} onToggle={handleThemeToggle} />
           </div>
         </div>
