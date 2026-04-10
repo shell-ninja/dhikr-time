@@ -5,25 +5,15 @@ import PageTransition from "../../Hooks/PageTransition";
 import { ScrollTrigger } from "gsap/all";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import useTheme from "../../Hooks/useTheme";
+import useLanguage from "../../Hooks/useLanguage";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Dua = () => {
   // ── Language ──────────────────────────────────────────────
-  const [language, setLanguage] = useState(
-    () => localStorage.getItem("language") || "en",
-  );
-  useEffect(() => {
-    const handle = () => setLanguage(localStorage.getItem("language") || "en");
-    window.addEventListener("storage", handle);
-    window.addEventListener("languageChange", handle);
-    return () => {
-      window.removeEventListener("storage", handle);
-      window.removeEventListener("languageChange", handle);
-    };
-  }, []);
+  const language = useLanguage();
 
   // ── Theme ─────────────────────────────────────────────────
   // const [theme, setTheme] = useState(

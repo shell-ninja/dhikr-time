@@ -7,6 +7,7 @@ import PageTransition from "../../Hooks/PageTransition";
 import CountriesArray from "../../Hooks/CountriesArray";
 import { usePageTitle } from "../../Hooks/pageName";
 import useTheme from "../../Hooks/useTheme";
+import useLanguage from "../../Hooks/useLanguage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,29 +20,7 @@ const Home = () => {
   const chapterRef = useRef(null);
   const formRef = useRef(null);
 
-  // Get the Language from the Local Storage
-  const [language, setLanguage] = useState(() => {
-    return localStorage.getItem("language") || "en";
-  });
-
-  // Get the theme from the Local Storage
-  // const [theme, setTheme] = useState(
-  //   () => localStorage.getItem("theme") || "light",
-  // );
-
-  // Listen for language changes in localStorage
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const newLanguage = localStorage.getItem("language") || "en";
-      setLanguage(newLanguage);
-    };
-    window.addEventListener("storage", handleStorageChange);
-    window.addEventListener("languageChange", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("languageChange", handleStorageChange);
-    };
-  }, []);
+  const language = useLanguage();
 
   // Listen for theme changes in localStorage
   // useEffect(() => {

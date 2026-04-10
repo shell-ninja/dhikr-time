@@ -7,6 +7,7 @@ import Loader from "../../../Hooks/Loader";
 import ErrorGPT from "../../../Hooks/ErrorGPT";
 import "./MorningEvening.css";
 import useTheme from "../../../Hooks/useTheme";
+import useLanguage from "../../../Hooks/useLanguage";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -20,18 +21,7 @@ const MorningEvening = () => {
   usePageTitle("Morning And Evening | Dua", " | Dhikr Time");
 
   // ── Language ──────────────────────────────────────────────
-  const [language, setLanguage] = useState(
-    () => localStorage.getItem("language") || "en",
-  );
-  useEffect(() => {
-    const handle = () => setLanguage(localStorage.getItem("language") || "en");
-    window.addEventListener("storage", handle);
-    window.addEventListener("languageChange", handle);
-    return () => {
-      window.removeEventListener("storage", handle);
-      window.removeEventListener("languageChange", handle);
-    };
-  }, []);
+  const language = useLanguage();
 
   const theme = useTheme();
   const isDark = theme === "dark";
