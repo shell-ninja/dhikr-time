@@ -9,8 +9,8 @@ import gsap from "gsap";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const PRESETS = [
-  { id: "subhanallah", en: "SubhanAllah", bn: "সুবহানাল্লাহ", target: 33 },
-  { id: "alhamdulillah", en: "Alhamdulillah", bn: "আলহামদুলিল্লাহ", target: 33 },
+  { id: "subhanallah", en: "SubhanAllah", bn: "সুবহান-আল্লাহ", target: 33 },
+  { id: "alhamdulillah", en: "Alhamdulillah", bn: "আল'হামদুলিল্লাহ", target: 33 },
   { id: "allahuakbar", en: "Allahu Akbar", bn: "আল্লাহু আকবার", target: 34 },
   { id: "astaghfirullah", en: "Astaghfirullah", bn: "আস্তাগফিরুল্লাহ", target: 100 },
   { id: "general", en: "General", bn: "সাধারণ", target: Infinity },

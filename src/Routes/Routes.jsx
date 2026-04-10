@@ -12,6 +12,9 @@ import AfterSalah from "../Components/Dua/AfterSalah/AfterSalah";
 import Istighfar from "../Components/Dua/Istighfar/Istighfar";
 import QuranAndSunnah from "../Components/Dua/QuranAndSunnah/QuranAndSunnah";
 
+import Quran from "../Components/Quran/Quran";
+import Surah from "../Components/Quran/Surah";
+
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -56,6 +59,14 @@ export const routes = createBrowserRouter([
       {
         path: "times",
         Component: Times,
+      },
+      {
+        path: "quran",
+        Component: Quran,
+      },
+      {
+        path: "quran/:id",
+        Component: Surah,
       },
     ],
   },
