@@ -2,7 +2,7 @@
 
 @theme {
   --font-amiri: "Amiri", sans-serif;
-  --font-lateef: "Lateef", sans-serif;
+  --font-mirza: "Mirza", serif;
   --font-balooDa: "Baloo Da 2", sans-serif;
 
   /* Colors */
@@ -36,6 +36,8 @@ body {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 * {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }

@@ -116,7 +116,7 @@ const CardItem = ({ info, cardRef }) => {
 
           {/* Arabic name */}
           <h2
-            className={`font-normal text-5xl font-lateef tracking-wider ${textMain} text-right ml-5 font-style-${theme}`}
+            className={`font-normal text-5xl font-mirza tracking-wider ${textMain} text-right ml-5 font-style-${theme}`}
           >
             {info.name}
           </h2>
@@ -124,9 +124,8 @@ const CardItem = ({ info, cardRef }) => {
 
         {/* Chevron */}
         <svg
-          className={`w-6 h-6 ${textMain} transition-transform duration-300 flex-shrink-0 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`w-6 h-6 ${textMain} transition-transform duration-300 flex-shrink-0 ${isOpen ? "rotate-180" : ""
+            }`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -142,9 +141,8 @@ const CardItem = ({ info, cardRef }) => {
 
       {/* Expandable content */}
       <div
-        className={`overflow-hidden transition-all duration-500 ease-in-out ${
-          isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+          }`}
       >
         <div className={`px-6 pb-6 space-y-4 border-t-2 ${borderMain}`}>
           {/* Transliteration */}

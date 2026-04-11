@@ -70,11 +70,10 @@ const QuranAndSunnah = () => {
         <button
           key={p}
           onClick={() => goToPage(p)}
-          className={`w-9 h-9 rounded-lg font-amiri font-semibold transition-colors cursor-pointer text-sm ${
-            currentPage === p
+          className={`w-9 h-9 rounded-lg font-amiri font-semibold transition-colors cursor-pointer text-sm ${currentPage === p
               ? `${bgActive} ${textActive}`
               : `${bgBadge} ${textMain} hover:${bgActive} hover:${textActive}`
-          }`}
+            }`}
         >
           {p}
         </button>,
@@ -101,10 +100,9 @@ const QuranAndSunnah = () => {
   };
 
   const prevNextClass = (disabled) =>
-    `flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
-      disabled
-        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-        : `${bgActive} ${textActive} hover:opacity-80`
+    `flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${disabled
+      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+      : `${bgActive} ${textActive} hover:opacity-80`
     }`;
 
   return (
@@ -191,7 +189,7 @@ const QuranAndSunnah = () => {
 
                     {/**/}
                     <p
-                      className={`text-4xl md:text-5xl font-lateef ${textMain} leading-loose text-right`}
+                      className={`text-4xl md:text-5xl font-mirza ${textMain} leading-loose text-right`}
                     >
                       {dua.dua}
                     </p>
@@ -206,7 +204,7 @@ const QuranAndSunnah = () => {
                       </h4>
                       <p
                         dangerouslySetInnerHTML={{ __html: dua.note }}
-                        className={`text-xl md:text-2xl font-lateef ${textMain} leading-relaxed`}
+                        className={`text-xl md:text-2xl font-mirza ${textMain} leading-relaxed`}
                       />
                     </div>
                   )}

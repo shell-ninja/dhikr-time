@@ -23,7 +23,7 @@ const Surah = () => {
   const textMain = isDark ? "text-text-dark" : "text-text-light";
   const borderMain = isDark ? "border-text-dark" : "border-text-light";
   const fontClass =
-    language === "en" ? "font-lateef tracking-wide" : "font-balooDa";
+    language === "en" ? "font-mirza tracking-wide" : "font-balooDa";
 
   const translationEdition = language === "bn" ? 161 : 20;
 
@@ -143,14 +143,15 @@ const Surah = () => {
 
   const arabicData = data?.[0];
   const translationData = data?.[1];
-  
+
   // Quran.com API returns { verses: [...] } and { translations: [...] }
   const ayahs = useMemo(() => {
     return arabicData?.verses?.map(v => ({
       ...v,
       numberInSurah: parseInt(v.verse_key.split(":")[1]),
       // Strip Private Use Area (PUA) characters because Lateef doesn't support them
-      text: v.text_indopak.replace(/[\uE000-\uF8FF]/g, '')
+      // Add a non-breaking space before Waqf marks (U+06D6 - U+06DC) so they don't cluster on top of each other
+      text: v.text_indopak.replace(/[\uE000-\uF8FF]/g, '').replace(/([\u06D6-\u06DC])/g, '\u00A0$1').replace(/([\u06D6-\u06DC])/g, '\u00A0$1')
     }));
   }, [arabicData]);
 
@@ -249,11 +250,10 @@ const Surah = () => {
         <button
           key={pageNum}
           onClick={() => setCurrentPage(pageNum)}
-          className={`w-10 h-10 rounded-[10px] font-bold transition-colors cursor-pointer text-sm shadow-none !drop-shadow-none ${fontClass} ${
-            currentPage === pageNum
+          className={`w-10 h-10 rounded-[10px] font-bold transition-colors cursor-pointer text-sm shadow-none !drop-shadow-none ${fontClass} ${currentPage === pageNum
               ? `${bgActive} ${textActive}`
               : `bg-transparent border-2 ${borderMain} ${textMain} hover:${bgActive} hover:${textActive}`
-          }`}
+            }`}
         >
           {language === "en" ? pageNum : toBengaliNumber(pageNum)}
         </button>,
@@ -287,10 +287,9 @@ const Surah = () => {
   };
 
   const prevNextClass = (disabled) =>
-    `flex items-center justify-center w-10 h-10 rounded-[10px] font-bold transition-colors flex-shrink-0 shadow-none !drop-shadow-none ${
-      disabled
-        ? `bg-gray-400/20 text-gray-500 cursor-not-allowed border-2 border-transparent`
-        : `${bgActive} ${textActive} hover:opacity-80 cursor-pointer`
+    `flex items-center justify-center w-10 h-10 rounded-[10px] font-bold transition-colors flex-shrink-0 shadow-none !drop-shadow-none ${disabled
+      ? `bg-gray-400/20 text-gray-500 cursor-not-allowed border-2 border-transparent`
+      : `${bgActive} ${textActive} hover:opacity-80 cursor-pointer`
     }`;
 
   return (
@@ -315,7 +314,7 @@ const Surah = () => {
             <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
 
             <h1
-              className={`surah-header-text text-5xl md:text-6xl font-lateef font-bold mb-3 ${textMain} relative z-10`}
+              className={`surah-header-text text-5xl md:text-6xl font-mirza font-bold mb-3 ${textMain} relative z-10`}
             >
               {surahArabicName}
             </h1>
@@ -338,8 +337,8 @@ const Surah = () => {
                 <p
                   className={`bismillah-text text-5xl md:text-6xl font-amiri mb-2 ${textMain}`}
                 >
-          ﷽                
-                  </p>
+                  ﷽
+                </p>
               </div>
             )}
           </div>
@@ -419,7 +418,7 @@ const Surah = () => {
 
                   {/* Arabic Text */}
                   <div
-                    className={`text-5xl md:text-6xl mb-2 leading-tight md:leading-snug font-lateef ${textMain}`}
+                    className={`text-5xl md:text-6xl mb-2 leading-tight md:leading-snug font-mirza ${textMain}`}
                     dir="rtl"
                   >
                     {ayah.text}
@@ -466,11 +465,10 @@ const Surah = () => {
         {/* Go to Top Button */}
         <button
           onClick={goToTop}
-          className={`fixed bottom-5 right-5 md:bottom-8 md:right-8 z-50 p-2.5 md:p-3.5 rounded-full bg-emerald-500 text-bg-light shadow-xl hover:bg-emerald-600 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center border-2 border-emerald-400 dark:border-emerald-600 ${
-            showTopBtn
+          className={`fixed bottom-5 right-5 md:bottom-8 md:right-8 z-50 p-2.5 md:p-3.5 rounded-full bg-emerald-500 text-bg-light shadow-xl hover:bg-emerald-600 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center border-2 border-emerald-400 dark:border-emerald-600 ${showTopBtn
               ? "opacity-100 translate-y-0 visible"
               : "opacity-0 translate-y-10 invisible"
-          }`}
+            }`}
           aria-label="Go to top"
         >
           <FiArrowUp className="w-5 h-5 md:w-6 md:h-6" />
