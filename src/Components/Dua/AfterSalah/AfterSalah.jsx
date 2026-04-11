@@ -82,11 +82,10 @@ const AfterSalah = () => {
         <button
           key={p}
           onClick={() => goToPage(p)}
-          className={`w-9 h-9 rounded-lg font-amiri font-semibold transition-colors cursor-pointer text-sm ${
-            currentPage === p
+          className={`w-9 h-9 rounded-lg font-amiri font-semibold transition-colors cursor-pointer text-sm ${currentPage === p
               ? `${bgActive} ${textActive}`
               : `${bgBadge} ${textMain} hover:${bgActive} hover:${textActive}`
-          }`}
+            }`}
         >
           {p}
         </button>,
@@ -115,10 +114,9 @@ const AfterSalah = () => {
   };
 
   const prevNextClass = (disabled) =>
-    `flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${
-      disabled
-        ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-        : `${bgActive} ${textActive} hover:opacity-80`
+    `flex items-center justify-center w-9 h-9 rounded-lg font-amiri font-semibold transition-colors flex-shrink-0 ${disabled
+      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+      : `${bgActive} ${textActive} hover:opacity-80`
     }`;
 
   return (
@@ -170,9 +168,8 @@ const AfterSalah = () => {
                   </h3>
                 </div>
                 <svg
-                  className={`w-6 h-6 ${textMain} transition-transform duration-300 flex-shrink-0 ${
-                    expandedCard === dua.id ? "rotate-180" : ""
-                  }`}
+                  className={`w-6 h-6 ${textMain} transition-transform duration-300 flex-shrink-0 ${expandedCard === dua.id ? "rotate-180" : ""
+                    }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -188,11 +185,10 @@ const AfterSalah = () => {
 
               {/* Card content */}
               <div
-                className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                  expandedCard === dua.id
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedCard === dua.id
                     ? "max-h-[3000px] opacity-100"
                     : "max-h-0 opacity-0"
-                }`}
+                  }`}
               >
                 <div
                   className={`px-6 pb-6 space-y-6 border-t-2 ${borderMain} bg-transparent`}
@@ -216,7 +212,7 @@ const AfterSalah = () => {
 
                     {/**/}
                     <p
-                      className={`text-4xl md:text-6xl font-lateef ${textMain} leading-loose text-right`}
+                      className={`text-4xl md:text-6xl font-mirza ${textMain} leading-loose text-right`}
                     >
                       {dua.dua}
                     </p>
@@ -232,7 +228,7 @@ const AfterSalah = () => {
                       </h4>
                       <p
                         dangerouslySetInnerHTML={{ __html: dua.note }}
-                        className={`text-xl md:text-2xl font-lateef ${textMain} leading-relaxed`}
+                        className={`text-xl md:text-2xl font-mirza ${textMain} leading-relaxed`}
                       />
                     </div>
                   )}
@@ -288,9 +284,8 @@ const AfterSalah = () => {
                         </h4>
                       </div>
                       <svg
-                        className={`w-5 h-5 ${textMain} transition-transform duration-300 flex-shrink-0 ${
-                          expandedTranslation === dua.id ? "rotate-180" : ""
-                        }`}
+                        className={`w-5 h-5 ${textMain} transition-transform duration-300 flex-shrink-0 ${expandedTranslation === dua.id ? "rotate-180" : ""
+                          }`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -305,11 +300,10 @@ const AfterSalah = () => {
                     </button>
 
                     <div
-                      className={`overflow-hidden transition-all duration-400 ease-in-out ${
-                        expandedTranslation === dua.id
+                      className={`overflow-hidden transition-all duration-400 ease-in-out ${expandedTranslation === dua.id
                           ? "max-h-[1000px] opacity-100"
                           : "max-h-0 opacity-0"
-                      }`}
+                        }`}
                     >
                       <div className="pb-4">
                         <p

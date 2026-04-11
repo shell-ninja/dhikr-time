@@ -22,19 +22,6 @@ const Home = () => {
 
   const language = useLanguage();
 
-  // Listen for theme changes in localStorage
-  // useEffect(() => {
-  //   const handleThemeChange = () => {
-  //     setTheme(localStorage.getItem("theme") || "light");
-  //   };
-  //   window.addEventListener("storage", handleThemeChange);
-  //   window.addEventListener("themeChange", handleThemeChange);
-  //   return () => {
-  //     window.removeEventListener("storage", handleThemeChange);
-  //     window.removeEventListener("themeChange", handleThemeChange);
-  //   };
-  // }, []);
-
   const theme = useTheme();
   const isDark = theme === "dark";
 
@@ -165,9 +152,8 @@ const Home = () => {
           <div className="absolute md:top-[350px] flex flex-col items-center justify-center text-center px-6">
             <p
               ref={ayahRef}
-              className={`text-4xl md:text-6xl lg:text-8xl font-lateef leading-relaxed ${
-                isDark ? "text-text-dark" : "text-text-light"
-              }`}
+              className={`text-4xl md:text-5xl lg:text-6xl font-mirza leading-relaxed ${isDark ? "text-text-dark" : "text-text-light"
+                }`}
             >
               یٰۤاَیُّهَا الَّذِیۡنَ اٰمَنُوا اسۡتَعِیۡنُوۡا بِالصَّبۡرِ وَ
               الصَّلٰوۃِ ؕ اِنَّ اللّٰهَ مَعَ الصّٰبِرِیۡنَ
@@ -176,9 +162,8 @@ const Home = () => {
             {language === "en" ? (
               <p
                 ref={translationRef}
-                className={`mt-6 text-2xl md:text-3xl lg:text-4xl font-amiri font-bold px-2 md:px-6 ${
-                  isDark ? "text-text-dark" : "text-text-light"
-                }`}
+                className={`mt-6 text-2xl md:text-3xl font-amiri font-bold px-2 md:px-6 ${isDark ? "text-text-dark" : "text-text-light"
+                  }`}
               >
                 O you who have believed, seek help through patience and prayer.
                 Indeed, Allah is with the patient.
@@ -186,9 +171,8 @@ const Home = () => {
             ) : (
               <p
                 ref={translationRef}
-                className={`mt-6 text-xl md:text-3xl lg:text-4xl font-balooDa font-bold px-2 md:px-6 ${
-                  isDark ? "text-text-dark" : "text-text-light"
-                }`}
+                className={`mt-6 text-xl md:text-3xl font-balooDa font-bold px-2 md:px-6 ${isDark ? "text-text-dark" : "text-text-light"
+                  }`}
               >
                 হে ঈমানদারগণ! তোমরা সাহায্য চাও সবর ও সালাতের মাধ্যমে। নিশ্চয়ই
                 আল্লাহ্‌ সবরকারীদের সাথে আছেন।
@@ -198,18 +182,16 @@ const Home = () => {
             {language === "en" ? (
               <p
                 ref={chapterRef}
-                className={`mt-5 md:mt-10 text-xl md:text-3xl font-amiri font-normal ${
-                  isDark ? "text-text-dark" : "text-text-light"
-                }`}
+                className={`mt-5 md:mt-10 text-xl md:text-3xl font-amiri font-normal ${isDark ? "text-text-dark" : "text-text-light"
+                  }`}
               >
                 Al-Baqarah 2:153
               </p>
             ) : (
               <p
                 ref={chapterRef}
-                className={`mt-5 md:mt-10 text-xl md:text-3xl font-balooDa font-normal ${
-                  isDark ? "text-text-dark" : "text-text-light"
-                }`}
+                className={`mt-5 md:mt-10 text-xl md:text-3xl font-balooDa font-normal ${isDark ? "text-text-dark" : "text-text-light"
+                  }`}
               >
                 আল-বাকারা ২ঃ১৫৩
               </p>
