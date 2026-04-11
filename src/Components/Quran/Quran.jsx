@@ -69,13 +69,21 @@ const Quran = () => {
       setIsSearching(true);
       debounceRef.current = setTimeout(async () => {
         try {
-          const edition = language === "bn" ? "bn.bengali" : "en.asad";
-          const res = await fetch(
-            `https://api.alquran.cloud/v1/search/${encodeURIComponent(q)}/all/${edition}`
-          );
+          const langParam = language === "en" ? "en" : "bn";
+          const res = await fetch(`https://api.quran.com/api/v4/search?q=${encodeURIComponent(q)}&size=8&language=${langParam}`);
           const json = await res.json();
-          if (json.code === 200 && json.data?.matches) {
-            setWordResults(json.data.matches.slice(0, 8));
+          
+          if (json.search?.results) {
+            const mappedResults = json.search.results.map(match => {
+              const [surahNum, ayahNum] = match.verse_key.split(":");
+              return {
+                surah: { number: parseInt(surahNum) },
+                numberInSurah: parseInt(ayahNum),
+                // Quran.com returns translation if queried in translation language
+                text: match.translations?.[0]?.text || match.text
+              };
+            });
+            setWordResults(mappedResults);
           } else {
             setWordResults([]);
           }
@@ -325,9 +333,10 @@ const Quran = () => {
                           </span>
                         </div>
                         {/* Snippet */}
-                        <p className={`text-base leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity ${textMain} ${fontClass} line-clamp-2`}>
-                          {match.text}
-                        </p>
+                        <p 
+                          className={`text-base leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity ${textMain} ${fontClass} line-clamp-2`}
+                          dangerouslySetInnerHTML={{ __html: match.text }}
+                        />
                       </div>
                     );
                   })}
