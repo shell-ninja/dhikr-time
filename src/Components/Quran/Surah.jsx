@@ -335,7 +335,7 @@ const Surah = () => {
             {id !== "9" && id !== "1" && (
               <div className="pt-6 mt-6 border-t border-dashed border-emerald-500/30">
                 <p
-                  className={`bismillah-text text-5xl md:text-6xl font-amiri mb-2 ${textMain}`}
+                  className={`bismillah-text text-2xl md:text-4xl lg:text-6xl font-amiri mb-2 ${textMain}`}
                 >
                   ﷽
                 </p>
