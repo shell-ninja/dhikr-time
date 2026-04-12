@@ -4,13 +4,20 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import PageTransition from "../../Hooks/PageTransition";
-import { FiChevronLeft, FiChevronRight, FiSearch, FiArrowLeft, FiArrowUp } from "react-icons/fi";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiSearch,
+  FiArrowLeft,
+  FiArrowUp,
+} from "react-icons/fi";
 import Loader from "../../Hooks/Loader";
 import useLanguage from "../../Hooks/useLanguage";
 import useTheme from "../../Hooks/useTheme";
 import surahsData from "../../Data/surahs.json";
 
-const fetcher = (urls) => Promise.all(urls.map((url) => fetch(url).then((res) => res.json())));
+const fetcher = (urls) =>
+  Promise.all(urls.map((url) => fetch(url).then((res) => res.json())));
 
 const Surah = () => {
   const { id } = useParams();
@@ -30,9 +37,9 @@ const Surah = () => {
   const { data, error, isLoading } = useSWR(
     [
       `https://api.quran.com/api/v4/quran/verses/indopak?chapter_number=${id}`,
-      `https://api.quran.com/api/v4/quran/translations/${translationEdition}?chapter_number=${id}`
+      `https://api.quran.com/api/v4/quran/translations/${translationEdition}?chapter_number=${id}`,
     ],
-    fetcher
+    fetcher,
   );
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -146,19 +153,22 @@ const Surah = () => {
 
   // Quran.com API returns { verses: [...] } and { translations: [...] }
   const ayahs = useMemo(() => {
-    return arabicData?.verses?.map(v => ({
+    return arabicData?.verses?.map((v) => ({
       ...v,
       numberInSurah: parseInt(v.verse_key.split(":")[1]),
       // Strip Private Use Area (PUA) characters because Lateef doesn't support them
       // Add a non-breaking space before Waqf marks (U+06D6 - U+06DC) so they don't cluster on top of each other
-      text: v.text_indopak.replace(/[\uE000-\uF8FF]/g, '').replace(/([\u06D6-\u06DC])/g, '\u00A0$1').replace(/([\u06D6-\u06DC])/g, '\u00A0$1')
+      text: v.text_indopak
+        .replace(/[\uE000-\uF8FF]/g, "")
+        .replace(/([\u06D6-\u06DC])/g, "\u00A0$1")
+        .replace(/([\u06D6-\u06DC])/g, "\u00A0$1"),
     }));
   }, [arabicData]);
 
   const translationAyahs = useMemo(() => {
     return translationData?.translations?.map((t, idx) => ({
       ...t,
-      numberInSurah: idx + 1
+      numberInSurah: idx + 1,
     }));
   }, [translationData]);
 
@@ -174,7 +184,8 @@ const Surah = () => {
         .filter(
           (bundle) =>
             // Handle possibility of empty or undefined text
-            (bundle.transInfo.text && bundle.transInfo.text.toLowerCase().includes(term)) ||
+            (bundle.transInfo.text &&
+              bundle.transInfo.text.toLowerCase().includes(term)) ||
             (bundle.arabicInfo.text && bundle.arabicInfo.text.includes(term)),
         )
         .slice(0, 5); // Limit to top 5 hits
@@ -250,10 +261,11 @@ const Surah = () => {
         <button
           key={pageNum}
           onClick={() => setCurrentPage(pageNum)}
-          className={`w-10 h-10 rounded-[10px] font-bold transition-colors cursor-pointer text-sm shadow-none !drop-shadow-none ${fontClass} ${currentPage === pageNum
+          className={`w-10 h-10 rounded-[10px] font-bold transition-colors cursor-pointer text-sm shadow-none !drop-shadow-none ${fontClass} ${
+            currentPage === pageNum
               ? `${bgActive} ${textActive}`
               : `bg-transparent border-2 ${borderMain} ${textMain} hover:${bgActive} hover:${textActive}`
-            }`}
+          }`}
         >
           {language === "en" ? pageNum : toBengaliNumber(pageNum)}
         </button>,
@@ -287,9 +299,10 @@ const Surah = () => {
   };
 
   const prevNextClass = (disabled) =>
-    `flex items-center justify-center w-10 h-10 rounded-[10px] font-bold transition-colors flex-shrink-0 shadow-none !drop-shadow-none ${disabled
-      ? `bg-gray-400/20 text-gray-500 cursor-not-allowed border-2 border-transparent`
-      : `${bgActive} ${textActive} hover:opacity-80 cursor-pointer`
+    `flex items-center justify-center w-10 h-10 rounded-[10px] font-bold transition-colors flex-shrink-0 shadow-none !drop-shadow-none ${
+      disabled
+        ? `bg-gray-400/20 text-gray-500 cursor-not-allowed border-2 border-transparent`
+        : `${bgActive} ${textActive} hover:opacity-80 cursor-pointer`
     }`;
 
   return (
@@ -335,7 +348,7 @@ const Surah = () => {
             {id !== "9" && id !== "1" && (
               <div className="pt-6 mt-6 border-t border-dashed border-emerald-500/30">
                 <p
-                  className={`bismillah-text text-5xl md:text-6xl font-amiri mb-2 ${textMain}`}
+                  className={`bismillah-text text-2xl md:text-3xl lg:text-5xl font-amiri mb-2 ${textMain}`}
                 >
                   ﷽
                 </p>
@@ -465,10 +478,11 @@ const Surah = () => {
         {/* Go to Top Button */}
         <button
           onClick={goToTop}
-          className={`fixed bottom-5 right-5 md:bottom-8 md:right-8 z-50 p-2.5 md:p-3.5 rounded-full bg-emerald-500 text-bg-light shadow-xl hover:bg-emerald-600 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center border-2 border-emerald-400 dark:border-emerald-600 ${showTopBtn
+          className={`fixed bottom-5 right-5 md:bottom-8 md:right-8 z-50 p-2.5 md:p-3.5 rounded-full bg-emerald-500 text-bg-light shadow-xl hover:bg-emerald-600 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center border-2 border-emerald-400 dark:border-emerald-600 ${
+            showTopBtn
               ? "opacity-100 translate-y-0 visible"
               : "opacity-0 translate-y-10 invisible"
-            }`}
+          }`}
           aria-label="Go to top"
         >
           <FiArrowUp className="w-5 h-5 md:w-6 md:h-6" />
