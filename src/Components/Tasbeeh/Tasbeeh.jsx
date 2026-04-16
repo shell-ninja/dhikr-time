@@ -26,11 +26,11 @@ const Tasbeeh = () => {
   const isDark = theme === "dark";
   const textMain = isDark ? "text-text-dark" : "text-text-light";
   const bgMainStyle = isDark ? "rgba(10, 31, 28, 0.5)" : "rgba(255, 255, 255, 0.2)";
-  const strokeColor = isDark ? "#c2ebfa" : "#0d3b35";
-  const secondaryStroke = isDark ? "rgba(194, 235, 250, 0.2)" : "rgba(13, 59, 53, 0.2)";
-  const btnBg = isDark ? "bg-[#c2ebfa]/10" : "bg-[#0d3b35]/10";
-  const btnActiveBg = isDark ? "bg-[#c2ebfa]" : "bg-[#0d3b35]";
-  const btnActiveText = isDark ? "text-[#0a1f1c]" : "text-[#c2ebfa]";
+  const strokeColor = isDark ? "var(--color-text-dark)" : "#0d3b35";
+  const secondaryStroke = isDark ? "rgba(228, 246, 217, 0.2)" : "rgba(13, 59, 53, 0.2)";
+  const btnBg = isDark ? "bg-[var(--color-text-dark)]/10" : "bg-[#0d3b35]/10";
+  const btnActiveBg = isDark ? "bg-[var(--color-text-dark)]" : "bg-[#0d3b35]";
+  const btnActiveText = isDark ? "text-[#0a1f1c]" : "text-[var(--color-text-dark)]";
   const dividerVia = isDark ? "via-text-dark" : "via-text-light";
 
   const fontClass = language === "en" ? "font-amiri" : "font-balooDa";

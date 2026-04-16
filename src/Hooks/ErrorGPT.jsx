@@ -17,10 +17,10 @@ const ErrorGPT = () => {
 
   const isDark = theme === "dark";
 
-  // light: #105A59  |  dark: #c2ebfa
-  const primary = isDark ? "#c2ebfa" : "#105A59";
+  // light: #105A59  |  dark: var(--color-text-dark)
+  const primary = isDark ? "var(--color-text-dark)" : "#105A59";
   const primaryMuted = isDark
-    ? "rgba(194,235,250,0.75)"
+    ? "rgba(228, 246, 217,0.75)"
     : "rgba(16,90,89,0.75)";
   const arabicClass = isDark ? "text-text-dark" : "text-text-light";
 

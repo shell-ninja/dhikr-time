@@ -19,8 +19,8 @@ const useThemeAndLanguage = () => {
   const textMain = isDark ? "text-text-dark" : "text-text-light";
   const borderMain = isDark ? "border-text-dark" : "border-text-light";
   const viaMain = isDark ? "via-text-dark" : "via-text-light";
-  const bgBadge = isDark ? "bg-bg-dark" : "bg-[#E9F7E6]";
-  const hoverBg = isDark ? "hover:bg-bg-dark" : "hover:bg-[#E9F7E6]";
+  const bgBadge = isDark ? "bg-bg-dark" : "bg-[var(--color-bg-light)]";
+  const hoverBg = isDark ? "hover:bg-bg-dark" : "hover:bg-[var(--color-bg-light)]";
   const fontClass = language === "en" ? "font-amiri" : "font-balooDa";
 
   return {

@@ -157,7 +157,7 @@ const Header = () => {
   const navBg = isDark ? "bg-text-dark/10 backdrop-blur-lg" : "bg-text-light";
   const navText = isDark ? "text-text-dark" : "text-bg-light";
 
-  // ── SVG logo tint for dark mode (#c2ebfa) ─────────────────
+  // ── SVG logo tint for dark mode (var(--color-text-dark)) ─────────────────
   // This CSS filter chain converts any solid-color SVG to the target hex.
   // In light mode no filter is applied so the SVG renders as-is.
   const logoStyle = isDark
@@ -216,7 +216,7 @@ const Header = () => {
           paddingBottom: "0.75rem",
           backdropFilter: "blur(6px)",
           boxShadow: isDark
-            ? "0 10px 35px rgba(194, 235, 250, 0.15)"
+            ? "0 10px 35px rgba(228, 246, 217, 0.15)"
             : "0 10px 35px rgba(0, 0, 0, 0.2)",
           duration: 0.3,
         });

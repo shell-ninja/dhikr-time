@@ -9,7 +9,7 @@
   display: block;
   height: 2px;
   width: 0;
-  background-color: #e4f6d9;
+  background-color: var(--color-bg-light);
   border-radius: 2px;
   transition: width 0.3s ease;
   position: absolute;
@@ -18,11 +18,11 @@
 }
 
 .ifDark {
-  box-shadow: 0 5px 5px -2px #c2ebfa;
+  box-shadow: 0 5px 5px -2px var(--color-text-dark);
 }
 
 .dark .nav-underline {
-  background-color: #c2ebfa;
+  background-color: var(--color-text-dark);
 }
 
 .nav-link:hover .nav-underline {
@@ -51,7 +51,7 @@
     background 0.35s ease;
 }
 .dark .lang-toggle {
-  border-color: rgba(194, 235, 250, 0.55);
+  border-color: rgba(228, 246, 217, 0.55);
 }
 
 .lang-toggle:hover {
@@ -61,10 +61,10 @@
     0 0 18px rgba(228, 246, 217, 0.12);
 }
 .dark .lang-toggle:hover {
-  border-color: rgba(194, 235, 250, 0.9);
+  border-color: rgba(228, 246, 217, 0.9);
   box-shadow:
-    0 0 0 4px rgba(194, 235, 250, 0.08),
-    0 0 18px rgba(194, 235, 250, 0.12);
+    0 0 0 4px rgba(228, 246, 217, 0.08),
+    0 0 18px rgba(228, 246, 217, 0.12);
 }
 
 /* Knob stretches slightly on press */
@@ -79,9 +79,9 @@
   box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
 }
 .dark .lang-toggle.on {
-  border-color: rgba(194, 235, 250, 0.9);
-  background: rgba(194, 235, 250, 0.1);
-  box-shadow: inset 0 0 12px rgba(194, 235, 250, 0.08);
+  border-color: rgba(228, 246, 217, 0.9);
+  background: rgba(228, 246, 217, 0.1);
+  box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
 }
 
 /* ── Ripple ring ── */
@@ -105,8 +105,8 @@
   100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
 }
 @keyframes toggleRippleDark {
-  0%   { inset: -2px;  border-color: rgba(194, 235, 250, 0.6); border-radius: 18px; }
-  100% { inset: -10px; border-color: rgba(194, 235, 250, 0);   border-radius: 26px; }
+  0%   { inset: -2px;  border-color: rgba(228, 246, 217, 0.6); border-radius: 18px; }
+  100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
 }
 
 /* ── Knob ── */
@@ -118,7 +118,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #e4f6d9;
+  background: var(--color-bg-light);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
@@ -130,7 +130,7 @@
     box-shadow 0.35s ease;
 }
 .dark .lang-toggle-knob {
-  background: #c2ebfa;
+  background: var(--color-text-dark);
 }
 
 .lang-toggle.on .lang-toggle-knob {
@@ -141,8 +141,8 @@
 }
 .dark .lang-toggle.on .lang-toggle-knob {
   box-shadow:
-    0 2px 12px rgba(194, 235, 250, 0.35),
-    0 0 0 3px rgba(194, 235, 250, 0.12);
+    0 2px 12px rgba(228, 246, 217, 0.35),
+    0 0 0 3px rgba(228, 246, 217, 0.12);
 }
 
 /* ── Labels inside knob ── */
@@ -155,7 +155,7 @@
   font-weight: 700;
   font-size: 15px;
   line-height: 1;
-  color: #105a59;
+  color: var(--color-text-light);
   white-space: nowrap;
   transition:
     opacity 0.2s ease,
@@ -198,7 +198,7 @@
   transition: opacity 0.3s ease;
 }
 .dark .lang-toggle-hint {
-  color: rgba(194, 235, 250, 0.35);
+  color: rgba(228, 246, 217, 0.35);
 }
 
 .lang-toggle-hint-bn {
@@ -238,7 +238,7 @@
     background 0.35s ease;
 }
 .dark .dark-mode-toggle {
-  border-color: rgba(194, 235, 250, 0.55);
+  border-color: rgba(228, 246, 217, 0.55);
 }
 
 .dark-mode-toggle:hover {
@@ -248,10 +248,10 @@
     0 0 18px rgba(228, 246, 217, 0.12);
 }
 .dark .dark-mode-toggle:hover {
-  border-color: rgba(194, 235, 250, 0.9);
+  border-color: rgba(228, 246, 217, 0.9);
   box-shadow:
-    0 0 0 4px rgba(194, 235, 250, 0.08),
-    0 0 18px rgba(194, 235, 250, 0.12);
+    0 0 0 4px rgba(228, 246, 217, 0.08),
+    0 0 18px rgba(228, 246, 217, 0.12);
 }
 
 .dark-mode-toggle:active .dark-toggle-knob {
@@ -264,9 +264,9 @@
   box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
 }
 .dark .dark-mode-toggle.on {
-  border-color: rgba(194, 235, 250, 0.9);
-  background: rgba(194, 235, 250, 0.1);
-  box-shadow: inset 0 0 12px rgba(194, 235, 250, 0.08);
+  border-color: rgba(228, 246, 217, 0.9);
+  background: rgba(228, 246, 217, 0.1);
+  box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
 }
 
 /* ── Ripple ring ── */
@@ -290,8 +290,8 @@
   100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
 }
 @keyframes darkToggleRippleDark {
-  0%   { inset: -2px;  border-color: rgba(194, 235, 250, 0.6); border-radius: 18px; }
-  100% { inset: -10px; border-color: rgba(194, 235, 250, 0);   border-radius: 26px; }
+  0%   { inset: -2px;  border-color: rgba(228, 246, 217, 0.6); border-radius: 18px; }
+  100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
 }
 
 /* ── Knob ── */
@@ -303,7 +303,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #e4f6d9;
+  background: var(--color-bg-light);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
@@ -315,7 +315,7 @@
     box-shadow 0.35s ease;
 }
 .dark .dark-toggle-knob {
-  background: #c2ebfa;
+  background: var(--color-text-dark);
 }
 
 .dark-mode-toggle.on .dark-toggle-knob {
@@ -326,8 +326,8 @@
 }
 .dark .dark-mode-toggle.on .dark-toggle-knob {
   box-shadow:
-    0 2px 12px rgba(194, 235, 250, 0.35),
-    0 0 0 3px rgba(194, 235, 250, 0.12);
+    0 2px 12px rgba(228, 246, 217, 0.35),
+    0 0 0 3px rgba(228, 246, 217, 0.12);
 }
 
 /* ── Icons inside knob ── */
@@ -348,7 +348,7 @@
 .dark-toggle-sun {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
-  color: #105a59;
+  color: var(--color-text-light);
 }
 .dark-mode-toggle.on .dark-toggle-sun {
   opacity: 0;
@@ -358,7 +358,7 @@
 .dark-toggle-moon {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.5);
-  color: #105a59;
+  color: var(--color-text-light);
 }
 .dark-mode-toggle.on .dark-toggle-moon {
   opacity: 1;
@@ -378,7 +378,7 @@
   line-height: 1;
 }
 .dark .dark-toggle-hint {
-  color: rgba(194, 235, 250, 0.35);
+  color: rgba(228, 246, 217, 0.35);
 }
 
 .dark-toggle-hint-moon {
