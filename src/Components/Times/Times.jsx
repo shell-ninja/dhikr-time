@@ -189,9 +189,9 @@ const Times = ({ formData }) => {
           }
 
           setNextPrayerInfo(
-             language === "bn" 
-             ? `পরবর্তী নামাজের সময়: ${diffStrBn} (${translatePrayer(nextFound, "bn")})`
-             : `Next Prayer Time in: ${diffStrEn} (${translatePrayer(nextFound, "en")})`
+            language === "bn"
+              ? { label: "পরবর্তী নামাজের সময়:", value: `${diffStrBn} (${translatePrayer(nextFound, "bn")})` }
+              : { label: "Next Prayer Time in:", value: `${diffStrEn} (${translatePrayer(nextFound, "en")})` }
           );
       }
     };
@@ -305,29 +305,32 @@ const Times = ({ formData }) => {
       </h3>
 
       {nextPrayerInfo && (
-        <p className={`text-xl md:text-2xl font-medium ${textMain} mt-4 text-center opacity-80 ${fontClass}`}>
-          {nextPrayerInfo}
-        </p>
-      )}
+          <div className={`flex flex-col items-center mt-4 text-center opacity-80 ${fontClass}`}>
+            <p className={`text-xl md:text-2xl font-medium ${textMain}`}>
+              {nextPrayerInfo.label}
+            </p>
+            <p className={`text-xl md:text-2xl font-bold ${textMain}`}>
+              {nextPrayerInfo.value}
+            </p>
+          </div>
+        )}
 
       <div
         ref={dividerRef}
         className={`dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent ${viaMain} to-transparent rounded-2xl mt-4 mb-12`}
       />
 
-      <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mt-8 pb-4 snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-4 md:px-0">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mt-8 px-4">
         {Object.entries(prayerTimes).map(([name, time], index) => (
           <div
             key={name}
             ref={(el) => (prayerCardsRef.current[index] = el)}
-            className={`flex flex-col justify-center items-center bg-transparent border-2 ${borderMain} rounded-[20px] px-10 py-6 shrink-0 shadow-lg hover:shadow-xl transition-shadow duration-300 w-[85vw] md:w-full snap-center form-style-${theme} ${
-              index === 6 ? "md:col-span-2 lg:col-span-3" : ""
+            className={`flex flex-col justify-center items-center bg-transparent border-2 ${borderMain} rounded-[20px] px-10 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 form-style-${theme} ${
+              index === 6 ? "sm:col-span-2 lg:col-span-3" : ""
             }`}
           >
             <div className="flex justify-center items-center gap-3 mb-2">
-              <h4
-                className={`text-2xl md:text-3xl font-bold ${textMain} ${fontClass}`}
-              >
+              <h4 className={`text-2xl md:text-3xl font-bold ${textMain} ${fontClass}`}>
                 {prayerNames[language][name]}
               </h4>
               <img
@@ -336,9 +339,7 @@ const Times = ({ formData }) => {
                 className="w-8 h-8 mb-2"
               />
             </div>
-            <p
-              className={`text-3xl md:text-4xl font-bold ${textMain} ${fontClass}`}
-            >
+            <p className={`text-3xl md:text-4xl font-bold ${textMain} ${fontClass}`}>
               {formatTime(time)}
             </p>
           </div>

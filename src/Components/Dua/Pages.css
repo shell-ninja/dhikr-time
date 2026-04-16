@@ -35,5 +35,5 @@
 
 .content-card > div:hover {
   transform: translateY(-4px);
-  box-shadow: 0 25px 50px -12px rgba(16, 90, 89, 0.25);
+  box-shadow: 0 25px 50px -12px #9bc8dba8;
 }

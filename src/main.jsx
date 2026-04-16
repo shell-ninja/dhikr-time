@@ -22,7 +22,7 @@ const ThemedApp = () => {
 
   // ✅ return is inside the component, so `theme` is in scope
   return (
-    <div className={theme === "dark" ? "bg-[#111918]" : "bg-[var(--color-bg-light)]"}>
+    <div className={theme === "dark" ? "bg-[#0b1220]" : "bg-[var(--color-bg-light)]"}>
       <App />
     </div>
   );

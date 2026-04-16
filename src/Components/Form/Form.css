@@ -3,7 +3,7 @@
 }
 
 .form-style-dark {
-  box-shadow: 10px 10px 4px var(--color-text-dark);
+  box-shadow: 10px 10px 4px #9bc8dba8;
 }
 
 .input-style-light,
@@ -17,7 +17,7 @@
 }
 
 .input-style-dark:focus {
-  box-shadow: 10px 10px 4px var(--color-text-dark);
+  box-shadow: 10px 10px 4px #9bc8dba8;
   transform: scale(1.1);
 }
 

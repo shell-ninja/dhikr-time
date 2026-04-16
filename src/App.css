@@ -12,9 +12,9 @@
   --color-bg-light: #e4f6d9;
 
   /* Dark Mode */
-  /* Premium deep slate-charcoal with a whisper of teal — rich, elegant, night-sky comfortable */
-  --color-text-dark: #e4f6d9;
-  --color-bg-dark: #111918;
+  /* Background: Deep Night Blue — not pure black, easier on eyes, matches night-sky/Islamic mood */
+  --color-bg-dark: #0b1220;
+  --color-text-dark: #9bc8db;
 }
 
 * {

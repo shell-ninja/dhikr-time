@@ -216,7 +216,7 @@ const Header = () => {
           paddingBottom: "0.75rem",
           backdropFilter: "blur(6px)",
           boxShadow: isDark
-            ? "0 10px 35px rgba(228, 246, 217, 0.15)"
+            ? "0 10px 35px #9bc8dba8"
             : "0 10px 35px rgba(0, 0, 0, 0.2)",
           duration: 0.3,
         });
