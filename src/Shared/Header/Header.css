@@ -18,7 +18,7 @@
 }
 
 .ifDark {
-  box-shadow: 0 5px 5px -2px var(--color-text-dark);
+  box-shadow: 0 5px 8px -2px #9bc8dba8;
 }
 
 .dark .nav-underline {
@@ -51,7 +51,7 @@
     background 0.35s ease;
 }
 .dark .lang-toggle {
-  border-color: rgba(228, 246, 217, 0.55);
+  border-color: #9bc8dba8;
 }
 
 .lang-toggle:hover {
@@ -61,10 +61,10 @@
     0 0 18px rgba(228, 246, 217, 0.12);
 }
 .dark .lang-toggle:hover {
-  border-color: rgba(228, 246, 217, 0.9);
+  border-color: #9bc8db;
   box-shadow:
-    0 0 0 4px rgba(228, 246, 217, 0.08),
-    0 0 18px rgba(228, 246, 217, 0.12);
+    0 0 0 4px #9bc8db28,
+    0 0 18px #9bc8dba8;
 }
 
 /* Knob stretches slightly on press */
@@ -79,9 +79,9 @@
   box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
 }
 .dark .lang-toggle.on {
-  border-color: rgba(228, 246, 217, 0.9);
-  background: rgba(228, 246, 217, 0.1);
-  box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
+  border-color: #9bc8db;
+  background: #9bc8db14;
+  box-shadow: inset 0 0 14px #9bc8dba8;
 }
 
 /* ── Ripple ring ── */
@@ -105,8 +105,8 @@
   100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
 }
 @keyframes toggleRippleDark {
-  0%   { inset: -2px;  border-color: rgba(228, 246, 217, 0.6); border-radius: 18px; }
-  100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
+  0%   { inset: -2px;  border-color: rgba(52, 211, 153, 0.7);  border-radius: 18px; }
+  100% { inset: -10px; border-color: rgba(34, 211, 238, 0);    border-radius: 26px; }
 }
 
 /* ── Knob ── */
@@ -130,7 +130,7 @@
     box-shadow 0.35s ease;
 }
 .dark .lang-toggle-knob {
-  background: var(--color-text-dark);
+  background: #9bc8db;
 }
 
 .lang-toggle.on .lang-toggle-knob {
@@ -141,8 +141,8 @@
 }
 .dark .lang-toggle.on .lang-toggle-knob {
   box-shadow:
-    0 2px 12px rgba(228, 246, 217, 0.35),
-    0 0 0 3px rgba(228, 246, 217, 0.12);
+    0 2px 14px #9bc8dba8,
+    0 0 0 3px #9bc8db40;
 }
 
 /* ── Labels inside knob ── */
@@ -198,7 +198,7 @@
   transition: opacity 0.3s ease;
 }
 .dark .lang-toggle-hint {
-  color: rgba(228, 246, 217, 0.35);
+  color: rgba(52, 211, 153, 0.4);
 }
 
 .lang-toggle-hint-bn {
@@ -238,7 +238,7 @@
     background 0.35s ease;
 }
 .dark .dark-mode-toggle {
-  border-color: rgba(228, 246, 217, 0.55);
+  border-color: rgba(52, 211, 153, 0.55);
 }
 
 .dark-mode-toggle:hover {
@@ -248,10 +248,10 @@
     0 0 18px rgba(228, 246, 217, 0.12);
 }
 .dark .dark-mode-toggle:hover {
-  border-color: rgba(228, 246, 217, 0.9);
+  border-color: #9bc8db;
   box-shadow:
-    0 0 0 4px rgba(228, 246, 217, 0.08),
-    0 0 18px rgba(228, 246, 217, 0.12);
+    0 0 0 4px #9bc8db28,
+    0 0 18px #9bc8dba8;
 }
 
 .dark-mode-toggle:active .dark-toggle-knob {
@@ -264,9 +264,9 @@
   box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
 }
 .dark .dark-mode-toggle.on {
-  border-color: rgba(228, 246, 217, 0.9);
-  background: rgba(228, 246, 217, 0.1);
-  box-shadow: inset 0 0 12px rgba(228, 246, 217, 0.08);
+  border-color: #9bc8db;
+  background: #9bc8db14;
+  box-shadow: inset 0 0 14px #9bc8dba8;
 }
 
 /* ── Ripple ring ── */
@@ -290,8 +290,8 @@
   100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
 }
 @keyframes darkToggleRippleDark {
-  0%   { inset: -2px;  border-color: rgba(228, 246, 217, 0.6); border-radius: 18px; }
-  100% { inset: -10px; border-color: rgba(228, 246, 217, 0);   border-radius: 26px; }
+  0%   { inset: -2px;  border-color: #9bc8dba8; border-radius: 18px; }
+  100% { inset: -10px; border-color: #9bc8db00; border-radius: 26px; }
 }
 
 /* ── Knob ── */
@@ -315,7 +315,7 @@
     box-shadow 0.35s ease;
 }
 .dark .dark-toggle-knob {
-  background: var(--color-text-dark);
+  background: #9bc8db;
 }
 
 .dark-mode-toggle.on .dark-toggle-knob {
@@ -326,8 +326,8 @@
 }
 .dark .dark-mode-toggle.on .dark-toggle-knob {
   box-shadow:
-    0 2px 12px rgba(228, 246, 217, 0.35),
-    0 0 0 3px rgba(228, 246, 217, 0.12);
+    0 2px 14px #9bc8dba8,
+    0 0 0 3px #9bc8db40;
 }
 
 /* ── Icons inside knob ── */
@@ -378,7 +378,7 @@
   line-height: 1;
 }
 .dark .dark-toggle-hint {
-  color: rgba(228, 246, 217, 0.35);
+  color: rgba(52, 211, 153, 0.4);
 }
 
 .dark-toggle-hint-moon {

@@ -25,9 +25,9 @@ const Tasbeeh = () => {
 
   const isDark = theme === "dark";
   const textMain = isDark ? "text-text-dark" : "text-text-light";
-  const bgMainStyle = isDark ? "rgba(10, 31, 28, 0.5)" : "rgba(255, 255, 255, 0.2)";
+  const bgMainStyle = isDark ? "#9bc8db1f" : "rgba(255, 255, 255, 0.2)";
   const strokeColor = isDark ? "var(--color-text-dark)" : "#0d3b35";
-  const secondaryStroke = isDark ? "rgba(228, 246, 217, 0.2)" : "rgba(13, 59, 53, 0.2)";
+  const secondaryStroke = isDark ? "#9bc8db86" : "rgba(13, 59, 53, 0.2)";
   const btnBg = isDark ? "bg-[var(--color-text-dark)]/10" : "bg-[#0d3b35]/10";
   const btnActiveBg = isDark ? "bg-[var(--color-text-dark)]" : "bg-[#0d3b35]";
   const btnActiveText = isDark ? "text-[#0a1f1c]" : "text-[var(--color-text-dark)]";

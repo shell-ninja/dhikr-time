@@ -15,20 +15,6 @@ const Dua = () => {
   // ── Language ──────────────────────────────────────────────
   const language = useLanguage();
 
-  // ── Theme ─────────────────────────────────────────────────
-  // const [theme, setTheme] = useState(
-  //   () => localStorage.getItem("theme") || "light",
-  // );
-  // useEffect(() => {
-  //   const handle = () => setTheme(localStorage.getItem("theme") || "light");
-  //   window.addEventListener("storage", handle);
-  //   window.addEventListener("themeChange", handle);
-  //   return () => {
-  //     window.removeEventListener("storage", handle);
-  //     window.removeEventListener("themeChange", handle);
-  //   };
-  // }, []);
-
   const theme = useTheme();
   const isDark = theme === "dark";
   const textMain = isDark ? "text-text-dark" : "text-text-light";

@@ -29,5 +29,5 @@
 }
 
  .isDark {
-    box-shadow: 0px -2px 5px var(--color-text-dark);
+    box-shadow: 0px -2px 8px #9bc8dba8;
 }
