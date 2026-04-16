@@ -45,19 +45,6 @@ const Form = () => {
   // ── Language ──────────────────────────────────────────────
   const language = useLanguage();
 
-  // ── Theme ─────────────────────────────────────────────────
-  // const [theme, setTheme] = useState(
-  //   () => localStorage.getItem("theme") || "light",
-  // );
-  // useEffect(() => {
-  //   const handle = () => setTheme(localStorage.getItem("theme") || "light");
-  //   window.addEventListener("storage", handle);
-  //   window.addEventListener("themeChange", handle);
-  //   return () => {
-  //     window.removeEventListener("storage", handle);
-  //     window.removeEventListener("themeChange", handle);
-  //   };
-  // }, []);
 
   const theme = useTheme();
   const isDark = theme === "dark";
@@ -444,14 +431,11 @@ const Form = () => {
 
           {/* Method — mobile */}
           <div ref={methodDropdownMobileRef} className="w-[274px] z-20">
-            <label className={`mt-5 ${labelClass}`}>
-              {language === "en" ? (
-                "Select a Method"
-              ) : (
-                <Link className="font-bold" to="/methods">
-                  গণনা পদ্ধতি
-                </Link>
-              )}
+            <label className={`mt-5 ${labelClass} flex items-center justify-between`}>
+              <span>{language === "en" ? "Select a Method" : <span className="font-balooDa font-normal">গণনা পদ্ধতি</span>}</span>
+              <Link to="/methods" title={language === "en" ? "View all calculation methods" : "সব গণনা পদ্ধতি দেখুন"} className="text-sm font-normal underline opacity-80 hover:opacity-100 transition-opacity ml-2">
+                {language === "en" ? "See all" : "সব দেখুন"}
+              </Link>
             </label>
             <div className="relative w-[274px]">
               <div
@@ -602,14 +586,11 @@ const Form = () => {
               ref={methodDropdownDesktopRef}
               className="relative w-[350px] z-20"
             >
-              <label className={`${labelClass} font-balooDa font-normal mb-2`}>
-                {language === "en" ? (
-                  "Select a Method"
-                ) : (
-                  <Link className="font-bold" to="/methods">
-                    গণনা পদ্ধতি
-                  </Link>
-                )}
+              <label className={`${labelClass} mb-2 flex items-end justify-between`}>
+                <span>{language === "en" ? "Select a Method" : <span className="font-balooDa font-normal">গণনা পদ্ধতি</span>}</span>
+                <Link to="/methods" title={language === "en" ? "View all calculation methods" : "সব গণনা পদ্ধতি দেখুন"} className="text-sm font-normal underline opacity-80 hover:opacity-100 transition-opacity ml-2 font-amiri">
+                  {language === "en" ? "See all" : "সব দেখুন"}
+                </Link>
               </label>
               <div
                 className={`${dropdownTriggerClass} text-3xl`}

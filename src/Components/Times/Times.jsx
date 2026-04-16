@@ -67,6 +67,8 @@ const Times = ({ formData }) => {
 
   const { data, error, isLoading } = useSWR(shouldFetch ? API : null, fetcher);
 
+  const [nextPrayerInfo, setNextPrayerInfo] = useState(null);
+
   // ── Animations ────────────────────────────────────────────
   useGSAP(() => {
     if (!data) return;
@@ -111,6 +113,93 @@ const Times = ({ formData }) => {
       });
     }
   }, [data]);
+
+  useEffect(() => {
+    const dataTimes = data?.data?.times;
+    if (!dataTimes) return;
+
+    const translatePrayer = (name, lang) => {
+      const names = {
+        en: {
+          Fajr: "Fajr", Sunrise: "Sunrise", Dhuhr: "Dhuhr",
+          Asr: "Asr", Maghrib: "Maghrib", Isha: "Isha", Tahajjud: "Tahajjud",
+        },
+        bn: {
+          Fajr: "ফজর", Sunrise: "সূর্যোদয়", Dhuhr: "যুহর",
+          Asr: "আসর", Maghrib: "মাগরিব", Isha: "ইশা", Tahajjud: "তাহাজ্জুদ",
+        },
+      };
+      return names[lang][name];
+    };
+
+    const convertBn = (num) => {
+      const bn = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+      return num.toString().split("").map((d) => bn[parseInt(d)]).join("");
+    };
+
+    const calculateNextPrayer = () => {
+      const now = new Date();
+      const currentTotalMinutes = now.getHours() * 60 + now.getMinutes();
+
+      let nextFound = null;
+      let minDiff = Infinity;
+
+      const pTimes = {
+        Fajr: dataTimes.Fajr,
+        Sunrise: dataTimes.Sunrise,
+        Dhuhr: dataTimes.Dhuhr,
+        Asr: dataTimes.Asr,
+        Maghrib: dataTimes.Maghrib,
+        Isha: dataTimes.Isha,
+        Tahajjud: dataTimes.Lastthird,
+      };
+
+      console.log(data);
+
+      Object.entries(pTimes).forEach(([pName, pTime]) => {
+        if (!pTime) return;
+        const parts = pTime.split(":");
+        if (parts.length < 2) return;
+        const h = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        let pTotalMinutes = h * 60 + m;
+        
+        if (pTotalMinutes <= currentTotalMinutes) {
+           pTotalMinutes += 24 * 60;
+        }
+
+        const diff = pTotalMinutes - currentTotalMinutes;
+        if (diff > 0 && diff < minDiff) {
+            minDiff = diff;
+            nextFound = pName;
+        }
+      });
+
+      if (nextFound && minDiff !== Infinity) {
+          const hours = Math.floor(minDiff / 60);
+          const minutes = minDiff % 60;
+          let diffStrEn = "";
+          let diffStrBn = "";
+          if (hours > 0) {
+              diffStrEn = `${hours} Hour${hours > 1 ? 's' : ''} ${minutes} Minute${minutes !== 1 ? 's' : ''}`;
+              diffStrBn = `${convertBn(hours)} ঘণ্টা ${convertBn(minutes)} মিনিট`;
+          } else {
+              diffStrEn = `${minutes} Minute${minutes !== 1 ? 's' : ''}`;
+              diffStrBn = `${convertBn(minutes)} মিনিট`;
+          }
+
+          setNextPrayerInfo(
+             language === "bn" 
+             ? `পরবর্তী নামাজের সময়: ${diffStrBn} (${translatePrayer(nextFound, "bn")})`
+             : `Next Prayer Time in: ${diffStrEn} (${translatePrayer(nextFound, "en")})`
+          );
+      }
+    };
+
+    calculateNextPrayer();
+    const interval = setInterval(calculateNextPrayer, 1000);
+    return () => clearInterval(interval);
+  }, [data, language]);
 
   if (!shouldFetch) return <ErrorGPT />;
   if (isLoading) return <Loader />;
@@ -215,17 +304,23 @@ const Times = ({ formData }) => {
         {city}, {country}
       </h3>
 
+      {nextPrayerInfo && (
+        <p className={`text-xl md:text-2xl font-medium ${textMain} mt-4 text-center opacity-80 ${fontClass}`}>
+          {nextPrayerInfo}
+        </p>
+      )}
+
       <div
         ref={dividerRef}
         className={`dua-line h-2 w-[75%] md:w-[40%] bg-gradient-to-r from-transparent ${viaMain} to-transparent rounded-2xl mt-4 mb-12`}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mt-8">
+      <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mt-8 pb-4 snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-4 md:px-0">
         {Object.entries(prayerTimes).map(([name, time], index) => (
           <div
             key={name}
             ref={(el) => (prayerCardsRef.current[index] = el)}
-            className={`flex flex-col justify-center items-center bg-transparent border-2 ${borderMain} rounded-[20px] px-10 py-6 shadow-lg hover:shadow-xl transition-shadow duration-300 w-full form-style-${theme} ${
+            className={`flex flex-col justify-center items-center bg-transparent border-2 ${borderMain} rounded-[20px] px-10 py-6 shrink-0 shadow-lg hover:shadow-xl transition-shadow duration-300 w-[85vw] md:w-full snap-center form-style-${theme} ${
               index === 6 ? "md:col-span-2 lg:col-span-3" : ""
             }`}
           >

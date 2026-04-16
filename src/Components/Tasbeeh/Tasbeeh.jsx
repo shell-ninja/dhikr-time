@@ -403,6 +403,22 @@ const Tasbeeh = () => {
                    {language === "en" ? "MashaAllah! You've accomplished your daily goal!" : "মাশাআল্লাহ্‌! আপনি আজকের লক্ষ্য পূরণ করেছেন!"}
                 </div>
              )}
+
+             {/* Reset Dashboard Button */}
+             <button
+                 onClick={() => {
+                     const confirmMsg = language === "en" 
+                         ? "Are you sure you want to reset all daily counts?" 
+                         : "আপনি কি নিশ্চিত যে আপনি সমস্ত দৈনিক গণনা রিসেট করতে চান?";
+                     if (window.confirm(confirmMsg)) {
+                         setDailyStats({ date: new Date().toLocaleDateString(), sessionsCompleted: 0, totalCount: 0 });
+                         localStorage.removeItem(DAILY_TRACKER_KEY);
+                     }
+                 }}
+                 className={`mt-8 px-6 py-2 rounded-[12px] text-sm md:text-base font-bold cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white ${fontClass}`}
+             >
+                 {language === "en" ? "Reset Sessions & Counts" : "সেশন এবং গণনা রিসেট করুন"}
+             </button>
           </div>
 
         </div>
