@@ -1,9 +1,9 @@
 .form-style-light {
-  box-shadow: 10px 10px 4px #105a59;
+  box-shadow: 10px 10px 4px var(--color-text-light);
 }
 
 .form-style-dark {
-  box-shadow: 10px 10px 4px #c2ebfa;
+  box-shadow: 10px 10px 4px var(--color-text-dark);
 }
 
 .input-style-light,
@@ -12,12 +12,12 @@
 }
 
 .input-style-light:focus {
-  box-shadow: 10px 10px 4px #105a59;
+  box-shadow: 10px 10px 4px var(--color-text-light);
   transform: scale(1.1);
 }
 
 .input-style-dark:focus {
-  box-shadow: 10px 10px 4px #c2ebfa;
+  box-shadow: 10px 10px 4px var(--color-text-dark);
   transform: scale(1.1);
 }
 

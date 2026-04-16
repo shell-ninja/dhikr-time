@@ -1,7 +1,7 @@
 .loader-light {
   width: 50px;
   aspect-ratio: 1;
-  --c: no-repeat radial-gradient(farthest-side, #105a59 92%, #0000);
+  --c: no-repeat radial-gradient(farthest-side, var(--color-text-light) 92%, #0000);
   background:
     var(--c) 50% 0,
     var(--c) 50% 100%,
@@ -17,7 +17,7 @@
   position: absolute;
   inset: 0;
   margin: 3px;
-  background: repeating-conic-gradient(#0000 0 35deg, #105a59 0 90deg);
+  background: repeating-conic-gradient(#0000 0 35deg, var(--color-text-light) 0 90deg);
   -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 0);
   border-radius: 50%;
 }
@@ -25,7 +25,7 @@
 .loader-dark {
   width: 50px;
   aspect-ratio: 1;
-  --c: no-repeat radial-gradient(farthest-side, #c2ebfa 92%, #0000);
+  --c: no-repeat radial-gradient(farthest-side, var(--color-text-dark) 92%, #0000);
   background:
     var(--c) 50% 0,
     var(--c) 50% 100%,
@@ -41,7 +41,7 @@
   position: absolute;
   inset: 0;
   margin: 3px;
-  background: repeating-conic-gradient(#0000 0 35deg, #c2ebfa 0 90deg);
+  background: repeating-conic-gradient(#0000 0 35deg, var(--color-text-dark) 0 90deg);
   -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 0);
   border-radius: 50%;
 }

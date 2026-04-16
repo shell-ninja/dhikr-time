@@ -148,7 +148,10 @@ const Dua = () => {
                   <img
                     src={src}
                     alt={alt}
-                    className="w-full h-full object-cover card-image"
+                    className="w-full h-full object-cover card-image transition-all duration-500"
+                    style={isDark ? {
+                      filter: "brightness(0) saturate(100%) invert(95%) sepia(10%) saturate(400%) hue-rotate(80deg) brightness(1.05)",
+                    } : {}}
                   />
                 </div>
                 <div className="py-3 px-4 bg-transparent">

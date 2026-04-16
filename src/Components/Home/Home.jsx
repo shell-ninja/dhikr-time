@@ -138,13 +138,15 @@ const Home = () => {
           ref={heroRef}
           className="relative min-h-screen flex items-center justify-center px-[50px] overflow-hidden"
         >
-          {/* Background image — swapped via inline style, not dynamic Tailwind class */}
+          {/* Background image — leveraging BG-light for both modes with CSS filters */}
           <div
             ref={bgRef}
-            className="absolute inset-0 bg-no-repeat bg-cover bg-center"
+            className="absolute inset-0 bg-no-repeat bg-cover bg-center transition-all duration-700"
             style={{
-              backgroundImage: `url('/images/BG-${isDark ? "dark" : "light"}.png')`,
-              opacity: 0.45,
+              backgroundImage: "url('/images/BG-light.png')",
+              opacity: isDark ? 0.25 : 0.45,
+              filter: isDark ? "invert(85%) hue-rotate(160deg) saturate(150%) brightness(0.9)" : "none",
+              mixBlendMode: isDark ? "screen" : "normal"
             }}
           />
 
