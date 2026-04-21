@@ -154,8 +154,6 @@ const Times = ({ formData }) => {
         Tahajjud: dataTimes.Lastthird,
       };
 
-      console.log(data);
-
       Object.entries(pTimes).forEach(([pName, pTime]) => {
         if (!pTime) return;
         const parts = pTime.split(":");
