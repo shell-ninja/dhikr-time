@@ -58,12 +58,26 @@ const Footer = () => {
       <div
         className={`${theme == "light" ? "text-bg-light" : "text-text-dark"} font-amiri text-xl pb-4 px-5 flex flex-col justify-center items-center text-center`}
       >
-        <p className="tracking-wider">Prayer Times and Asma Ul Husna API</p>
-        <p>
-          <a className="font-bold tracking-wide" href="https://islamicapi.com/">
-            IslamicAPI
+        <div className="flex flex-col items-center">
+          <p className="tracking-wider">Prayer Times and Asma Ul Husna API</p>
+          <p>
+            <a className="font-bold tracking-wide hover:underline" href="https://islamicapi.com/" target="_blank" rel="noreferrer">
+              IslamicAPI
+            </a>
+          </p>
+        </div>
+
+        <div className="flex flex-col items-center mt-4 border-t border-current/20 pt-4 w-full max-w-md">
+          <p className="tracking-wider text-lg">Free and Open Source Project</p>
+          <a
+            className="font-bold tracking-wide flex items-center gap-2 hover:underline mt-1"
+            href="https://github.com/shell-ninja/dhikr-time"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaGithub /> GitHub Repository
           </a>
-        </p>
+        </div>
       </div>
     </div>
   );

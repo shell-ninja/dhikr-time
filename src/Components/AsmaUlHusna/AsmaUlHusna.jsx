@@ -35,8 +35,6 @@ const AsmaUlHusna = () => {
   const url = `https://islamicapi.com/api/v1/asma-ul-husna/?language=${language}&api_key=${API_KEY}`;
   const { data, error, isLoading } = useSWR(url, fetcher);
 
-  console.log(data);
-
   useGSAP(
     () => {
       gsap.from(".asma-title", {
